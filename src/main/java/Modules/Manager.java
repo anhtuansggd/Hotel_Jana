@@ -1,4 +1,4 @@
 package Modules;
-public class Housekeeper extends Person {
+public class Manager extends Receptionist {
     public void assignToRoom(){};
 }
