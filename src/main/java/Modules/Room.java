@@ -1,10 +1,17 @@
 package Modules;
+
+
 public class Room {
     private String roomNumber;
     private RoomStyle style;
-    private boolean status;
-    private double bookingPrice;
     private boolean isSmoking;
+
+    enum RoomStyle {
+        STANDARD,
+        DELUXE,
+        FAMILY_SUITE,
+        BUSINESS_SUITE
+    }
 
     public boolean isRoomAvailable(){ return false; };
     public boolean checkin(){return false;};
@@ -26,20 +33,11 @@ public class Room {
         this.style = style;
     }
 
-    public boolean isStatus() {
-        return status;
-    }
+    public void getStatus(boolean status) {
+        /**
+         * Implement Start Date + duration
+         */
 
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public double getBookingPrice() {
-        return bookingPrice;
-    }
-
-    public void setBookingPrice(double bookingPrice) {
-        this.bookingPrice = bookingPrice;
     }
 
     public boolean isSmoking() {
@@ -49,4 +47,6 @@ public class Room {
     public void setSmoking(boolean smoking) {
         isSmoking = smoking;
     }
+
 }
+

@@ -6,9 +6,6 @@ public class RoomBooking {
     private String reservationNumber;
     private Date startDate;
     private int durationInDays;
-    private Date checkin;
-    private Date checkout;
-
     private int guestId;
     private Room room;
 
@@ -36,22 +33,6 @@ public class RoomBooking {
 
     public void setDurationInDays(int durationInDays) {
         this.durationInDays = durationInDays;
-    }
-
-    public Date getCheckin() {
-        return checkin;
-    }
-
-    public void setCheckin(Date checkin) {
-        this.checkin = checkin;
-    }
-
-    public Date getCheckout() {
-        return checkout;
-    }
-
-    public void setCheckout(Date checkout) {
-        this.checkout = checkout;
     }
 
     public int getGuestId() {
