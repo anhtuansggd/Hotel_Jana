@@ -6,7 +6,7 @@ public class Room {
     private RoomStyle style;
     private boolean isSmoking;
 
-    enum RoomStyle {
+    public enum RoomStyle {
         STANDARD,
         DELUXE,
         FAMILY_SUITE,
