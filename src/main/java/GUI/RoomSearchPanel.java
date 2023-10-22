@@ -24,9 +24,13 @@ public class RoomSearchPanel extends JPanel {
     JButton searchButton;
     
     JTable roomTable;
+    String roomTableColumns[] = {
+        "ID", "NAME", "SALARY"
+    };
 
     public RoomSearchPanel() {
         super();
+        setLayout(null);
         
         // Room style input
         roomStyleLabel = new JLabel("Room style");
@@ -59,7 +63,7 @@ public class RoomSearchPanel extends JPanel {
         durationLabel.setHorizontalAlignment(JLabel.LEFT);
         add(durationLabel);
 
-        NumberFormat numFormat = new DecimalFormat("#"); 
+        NumberFormat numFormat = new DecimalFormat("#");
         NumberFormatter numFormatter  = new NumberFormatter(numFormat); 
         durationTextField = new JFormattedTextField(numFormatter);
         durationTextField.setBounds(130, 100, 40, 20);
@@ -73,20 +77,12 @@ public class RoomSearchPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 // System.out.println((Date)dateTextField.getValue());
                 System.out.printf("Duration: %d days\n", durationTextField.getValue());
-                
             }
         });
         add(searchButton);
 
         // Room table
-        String data[][] = {
-            {"101", "Ami", "650"},
-            {"102", "FSi", "730"},
-        };
-        String columns[] = {
-            "ID", "NAME", "SALARY"
-        };
-        roomTable = new JTable(data, columns) {
+        roomTable = new JTable(getRoomTableData(), roomTableColumns) {
             private static final long serialVersionUID = 1L;
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -108,7 +104,13 @@ public class RoomSearchPanel extends JPanel {
         // Room info
             // Add labels that show selected room info
             // Add buttons to book the room
+    }
 
-        setLayout(null);
+    String[][] getRoomTableData() {
+        String[][] data = {
+            {"101", "Ami", "650"},
+            {"102", "FSi", "730"},
+        };
+        return data;
     }
 }

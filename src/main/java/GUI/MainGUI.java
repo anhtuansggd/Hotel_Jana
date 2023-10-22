@@ -9,7 +9,7 @@ public class MainGUI {
     public static void main(String[] args) {
         // For debugging children panels
         // uncomment the below block and run MainGUI.java
-        /*
+        
         JFrame f = new JFrame("Children panels debugging");    
  
         JPanel p1 = new JPanel();
@@ -26,6 +26,6 @@ public class MainGUI {
         f.setSize(1080, 720);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setVisible(true);
-        */
+        
     }
 }
