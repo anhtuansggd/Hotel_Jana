@@ -1,6 +1,5 @@
 package Modules;
 
-
 public class Room {
     private String roomNumber;
     private RoomStyle style;

@@ -5,13 +5,12 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.NumberFormatter;
-
 import java.awt.event.*;
 import java.text.*;
 import Modules.Room;
 
 
-public class RoomSearchPanel extends JPanel {
+public class RoomSearchPanel extends ChildrenPanel {
     JLabel roomStyleLabel;
     JComboBox<Room.RoomStyle> roomStyleComboBox;
 
@@ -22,8 +21,10 @@ public class RoomSearchPanel extends JPanel {
     JFormattedTextField durationTextField;
 
     JButton searchButton;
-    
+    JButton bookButton;
+
     JTable roomTable;
+    JScrollPane roomScrollPane;
     String roomTableColumns[] = {
         "ID", "NAME", "SALARY"
     };
@@ -33,47 +34,30 @@ public class RoomSearchPanel extends JPanel {
         setLayout(null);
         
         // Room style input
-        roomStyleLabel = new JLabel("Room style");
-        roomStyleLabel.setBounds(30, 30, 100, 30);
-        roomStyleLabel.setVerticalAlignment(JLabel.BOTTOM);
-        roomStyleLabel.setHorizontalAlignment(JLabel.LEFT);
+        roomStyleLabel = getFormattedLabel("Room style", 30, 30, 120, 30);
         add(roomStyleLabel);
-
-        roomStyleComboBox = new JComboBox<Room.RoomStyle>(Room.RoomStyle.values());
-        roomStyleComboBox.setBounds(130, 40, 100, 20);
+        roomStyleComboBox = getFormattedComboBox(Room.RoomStyle.class, 130, 40, 120, 20);
         add(roomStyleComboBox);
 
         // Date input
-        dateLabel = new JLabel("Date");
-        dateLabel.setBounds(30, 60, 100, 30);
-        dateLabel.setVerticalAlignment(JLabel.BOTTOM);
-        dateLabel.setHorizontalAlignment(JLabel.LEFT);
+        dateLabel = getFormattedLabel("Date", 30, 60, 120, 30);
         add(dateLabel);
 
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        dateTextField = new JFormattedTextField(df);
-        dateTextField.setBounds(130, 70, 100, 20);
-        dateTextField.setText("10/2/2024");
+        dateTextField = getFormattedTextField(df, 130, 70, 120, 20, "10/2/2024");
         add(dateTextField);
 
         // Duration input
-        durationLabel = new JLabel("Duration");
-        durationLabel.setBounds(30, 90, 100, 30);
-        durationLabel.setVerticalAlignment(JLabel.BOTTOM);
-        durationLabel.setHorizontalAlignment(JLabel.LEFT);
+        durationLabel = getFormattedLabel("Duration", 30, 90, 120, 30);
         add(durationLabel);
 
         NumberFormat numFormat = new DecimalFormat("#");
         NumberFormatter numFormatter  = new NumberFormatter(numFormat); 
-        durationTextField = new JFormattedTextField(numFormatter);
-        durationTextField.setBounds(130, 100, 40, 20);
-        durationTextField.setText("2");
+        durationTextField = getFormattedTextField(numFormatter, 130, 100, 40, 20, "2");
         add(durationTextField);
 
         // Search button
-        searchButton = new JButton("Seach");
-        searchButton.setBounds(50, 130, 80, 30);
-        searchButton.addActionListener(new ActionListener() {
+        searchButton = getFormattedButton("Search", 30, 160, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // System.out.println((Date)dateTextField.getValue());
                 System.out.printf("Duration: %d days\n", durationTextField.getValue());
@@ -81,25 +65,29 @@ public class RoomSearchPanel extends JPanel {
         });
         add(searchButton);
 
-        // Room table
-        roomTable = new JTable(getRoomTableData(), roomTableColumns) {
-            private static final long serialVersionUID = 1L;
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        roomTable.setCellSelectionEnabled(false);
-        roomTable.setRowSelectionAllowed(true);;
-        ListSelectionModel selectionModel = roomTable.getSelectionModel();
-        selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        selectionModel.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                System.out.println("Row " + roomTable.getSelectedRow() + " selected");
+        bookButton =  getFormattedButton("Book", 30, 200, 80, 24, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // System.out.println((Date)dateTextField.getValue());
+                if (roomTable.getSelectedRow() != -1) {
+                    Object roomNumber = roomTable.getValueAt(roomTable.getSelectedRow(), 0);
+                    System.out.printf("Book room number " + roomNumber + " for " + durationTextField.getValue() + " days\n");
+                }
             }
         });
-        JScrollPane sp = new JScrollPane(roomTable);
-        sp.setBounds(260, 30, 650, 200);
-        add(sp);
+        add(bookButton);
+
+        // Room table
+        TableScrollPane tableScrollPane = getFormattedTableScrollPane(
+            getRoomTableData(), roomTableColumns, 280, 30, 630, 200,
+            new ListSelectionListener() {
+                public void valueChanged(ListSelectionEvent e) {
+                    System.out.println("Row " + roomTable.getSelectedRow() + " selected");
+                }
+            }
+        );
+        roomTable = tableScrollPane.table;
+        roomScrollPane = tableScrollPane.scrollPane;
+        add(roomScrollPane);
 
         // Room info
             // Add labels that show selected room info

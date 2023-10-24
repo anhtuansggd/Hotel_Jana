@@ -15,7 +15,7 @@ public class Controller {
             System.err.println("Connected to the server");
 
             // Statement stmt = conn.createStatement();
-            // ResultSet rSet = stmt.executeQuery("SELECT * FROM room");
+            // ResultSet rSet = stmt.executeQuery("SELECT * FROM room");e
 
             // while (rSet.next()) {
             //     int n = rSet.getInt("room_number");
@@ -29,5 +29,6 @@ public class Controller {
 
     public static void main(String[] args) {
         Controller con = new Controller();
+        System.out.println("Establish " + con);
     }
 }
