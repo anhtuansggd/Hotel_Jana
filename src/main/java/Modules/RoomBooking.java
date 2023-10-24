@@ -1,29 +1,38 @@
 package Modules;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class RoomBooking {
-    private String reservationNumber;
-    private Date startDate;
+    private int reservationNumber;
+    private LocalDate startDate;
     private int durationInDays;
     private int guestId;
-    private Room room;
+    private String roomId;
 
-    public static RoomBooking fectchDetails(String reservationNumber){return null;};
+    public RoomBooking(int reservationNumber, LocalDate startDate, int durationInDays, int guestId,  String roomId) {
+        this.reservationNumber = reservationNumber;
+        this.startDate = startDate;
+        this.durationInDays = durationInDays;
+        this.guestId = guestId;
+        this.roomId = roomId;
+    }
 
-    public String getReservationNumber() {
+    public RoomBooking fectchDetails(String reservationNumber){return null;};
+
+    public int getReservationNumber() {
         return reservationNumber;
     }
 
-    public void setReservationNumber(String reservationNumber) {
+    public void setReservationNumber(int reservationNumber) {
         this.reservationNumber = reservationNumber;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
@@ -43,11 +52,12 @@ public class RoomBooking {
         this.guestId = guestId;
     }
 
-    public Room getRoom() {
-        return room;
+    public String getRoomId() {
+        return roomId;
     }
 
-    public void setRoom(Room room) {
-        this.room = room;
+    public void setRoom(String room) {
+        this.roomId = room;
     }
+
 }
