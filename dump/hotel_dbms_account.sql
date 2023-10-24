@@ -24,12 +24,13 @@ DROP TABLE IF EXISTS `account`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `account` (
   `id` int NOT NULL,
+  `account_type` enum('Manager','Receptionist','Guest') NOT NULL DEFAULT 'Guest',
   `user_name` varchar(45) NOT NULL,
   `password` varchar(45) NOT NULL,
   `name` varchar(45) NOT NULL,
   `race` enum('Frankenstein','Human','Invisible Human','Mummy','Vampire','Werewolf','Witch','Zombie') NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='	';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +39,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (1,'drac_34','password','Dracula','Vampire'),(2,'flyingsfun','abcdef','Mavis','Vampire'),(3,'djjohnny','gunth32','Johnny','Human'),(4,'frfr','123456','Frank','Frankenstein'),(5,'mywifespregnantagain','parentingsuck','Wayne','Werewolf'),(6,'sandsorcerer482','papertowel','Murray','Mummy'),(7,'marvingaye','426h8Q','Griffin','Invisible Human');
+INSERT INTO `account` VALUES (1,'Manager','drac_34','password','Dracula','Vampire'),(2,'Receptionist','flyingsfun','abcdef','Mavis','Vampire'),(3,'Guest','djjohnny','gunth32','Johnny','Human'),(4,'Guest','frfr','123456','Frank','Frankenstein'),(5,'Guest','mywifespregnantagain','parentingsuck','Wayne','Werewolf'),(6,'Guest','sandsorcerer482','papertowel','Murray','Mummy'),(7,'Guest','marvingaye','426h8Q','Griffin','Invisible Human');
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-22 23:01:41
+-- Dump completed on 2023-10-24 18:57:56
