@@ -56,7 +56,7 @@ public class MainGUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        //MainGUI m = new MainGUI(new Account());
-        //System.out.println("Initialize " + m);
+        MainGUI m = new MainGUI(new Account(null, null, null,null, null,null ));
+        System.out.println("Initialize " + m);
     }
 }

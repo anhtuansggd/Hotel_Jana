@@ -1,36 +1,37 @@
 package Controllers;
 
 
-import Modules.Room;
+import Modules.RoomBooking;
 
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.logging.*;
 
 
-public class RoomController implements Controller<Room>{
-    @Override
-    public void add(Room R){
-        Connection connection = null;
+public class BookingReviewController extends Controller implements Delete<RoomBooking>{
+
+    public BookingReviewController() {
+        super();
+    }
+
+    public void add(RoomBooking R){
         PreparedStatement ppsm = null;
 
         try{
-            connection = Controller.getConnection();
             ppsm = connection.prepareStatement(
-                    "INSERT INTO room VALUES(?,?,?)");
-            ppsm.setString(1, R.getRoomNumber());
-            ppsm.setString(2, R.getStyle().toString());
-            ppsm.setInt(3, R.isSmoking());
+                    "INSERT INTO room_booking VALUES(?,?,?,?,?)");
+            ppsm.setInt(1, R.getReservationNumber());
+            ppsm.setDate(2, java.sql.Date.valueOf(R.getStartDate()));
+            ppsm.setInt(3, R.getDurationInDays());
+            ppsm.setString(4, R.getRoomId());
+            ppsm.setInt(5, R.getGuestId());
             ppsm.executeUpdate();
 
-            System.out.println("Room insert succeeded");
+            System.out.println("RoomBooking insert succeeded");
         }catch (SQLException e){
-            /*
-            Logger logger = Logger.getLogger(RoomBookingController.class.getName());
-            logger.log(Level.INFO, "Inserted failed");
-             */
-            System.out.println("Room insert failed " + e.toString());
+
+            //Logger logger = Logger.getLogger(RoomBookingController.class.getName());
+            //logger.log(Level.INFO, "Inserted failed");
+
+            System.out.println("RoomBooking insert failed " + e.toString());
         } finally {
             try {
                 connection.close();
@@ -46,21 +47,21 @@ public class RoomController implements Controller<Room>{
         }
     }
 
-    @Override
-    public void update(Room R){
-        Connection connection = null;
+    public void update(RoomBooking R){
         PreparedStatement ppsm = null;
 
         try{
             /*
             reservation_number is pk
              */
-            connection = Controller.getConnection();
+
             ppsm = connection.prepareStatement(
-                    "UPDATE room SET room_style=?, is_smoking=? WHERE room_number=?;");
-            ppsm.setString(1, R.getStyle().toString());
-            ppsm.setInt(2, R.isSmoking());
-            ppsm.setString(3, R.getRoomNumber());
+                    "UPDATE room_booking SET start_date=?, duration=?, room_number=?, account_id=? WHERE reservation_number=?;");
+            ppsm.setDate(1, java.sql.Date.valueOf(R.getStartDate()));
+            ppsm.setInt(2, R.getDurationInDays());
+            ppsm.setString(3, R.getRoomId());
+            ppsm.setInt(4, R.getGuestId());
+            ppsm.setInt(5, R.getReservationNumber());
             ppsm.executeUpdate();
 
             System.out.println("RoomBooking update succeeded");
@@ -81,21 +82,19 @@ public class RoomController implements Controller<Room>{
         }
     }
 
-    @Override
-    public void delete(Room R){
-        Connection connection = null;
+
+    public void delete(RoomBooking R){
         PreparedStatement ppsm = null;
 
         try{
-            connection = Controller.getConnection();
             ppsm = connection.prepareStatement(
-                    "DELETE FROM room WHERE room_number=?;");
-            ppsm.setString(1, R.getRoomNumber());
+                    "DELETE FROM WHERE reservation_number=?;");
+            ppsm.setInt(1, R.getReservationNumber());
             ppsm.executeUpdate();
 
-            System.out.println("Room delete succeeded");
+            System.out.println("RoomBooking delete succeeded");
         }catch (SQLException e){
-            System.out.println("Room delete failed");
+            System.out.println("RoomBooking delete failed");
         } finally {
             try {
                 connection.close();
@@ -114,7 +113,6 @@ public class RoomController implements Controller<Room>{
     public boolean find(int reservation_number){
         return false;
     };
-
 
 
 }

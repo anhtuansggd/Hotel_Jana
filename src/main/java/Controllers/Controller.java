@@ -2,11 +2,11 @@ package Controllers;
 
 import java.sql.*;
 
-/*
+
 public class Controller {
     Connection connection;
 
-    Controller() {
+    public Controller() {
         try {
             String dbUrl = "jdbc:mysql://localhost:3306/hotel_dbms";
             String userName = "tuan";
@@ -33,10 +33,11 @@ public class Controller {
         System.out.println("Establish " + con);
     }
 }
- */
 
 
 
+
+/*
 public interface Controller<T>{
     static Connection getConnection(){
         Connection connection = null;
@@ -53,8 +54,5 @@ public interface Controller<T>{
         return connection;
     }
 
-    public void add(T object);
-    public void update(T object);
-    public void delete(T object);
-
 }
+*/
