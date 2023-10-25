@@ -2,9 +2,8 @@ package Controllers;
 
 import java.sql.*;
 
-
 public class Controller {
-    Connection connection;
+    protected Connection connection;
 
     public Controller() {
         try {
@@ -16,7 +15,7 @@ public class Controller {
             System.err.println("Connected to the server");
 
             // Statement stmt = conn.createStatement();
-            // ResultSet rSet = stmt.executeQuery("SELECT * FROM room");e
+            // ResultSet rSet = stmt.executeQuery("SELECT * FROM room");
 
             // while (rSet.next()) {
             //     int n = rSet.getInt("room_number");
@@ -25,6 +24,16 @@ public class Controller {
 
         } catch (SQLException e) {
             System.err.println("Error connecting to the server");
+        }
+    }
+
+    public class TableState {
+        public String[] columns;
+        public String[][] data;
+
+        public TableState(String[] c, String[][] d) {
+            columns = c;
+            data = d;
         }
     }
 

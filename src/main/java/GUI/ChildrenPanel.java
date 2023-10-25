@@ -7,16 +7,6 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.event.*;
 
 public class ChildrenPanel extends JPanel {
-    public static class TableScrollPane {
-        public JTable table;
-        public JScrollPane scrollPane;
-
-        public TableScrollPane(JTable t, JScrollPane sp) {
-            table = t;
-            scrollPane = sp;
-        }
-    }
-
     public ChildrenPanel() {
         super();
         setLayout(null);
@@ -113,5 +103,15 @@ public class ChildrenPanel extends JPanel {
         scrollPane.setBounds(x, y, w, h);
 
         return new TableScrollPane(table, scrollPane);
+    }
+
+    public static class TableScrollPane {
+        public JTable table;
+        public JScrollPane scrollPane;
+
+        public TableScrollPane(JTable t, JScrollPane sp) {
+            table = t;
+            scrollPane = sp;
+        }
     }
 }

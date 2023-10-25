@@ -2,9 +2,14 @@ package GUI;
 
 import javax.swing.*;
 import javax.swing.event.*;
+
+import Controllers.AccountManagementController;
+import Controllers.Controller.TableState;
 import Modules.Account;
 
 public class AccountManagementPanel extends ChildrenPanel {
+    AccountManagementController controller;
+
     JLabel accountTypeLabel;
     JComboBox<Account.AccountType> accountTypeComboBox;
 
@@ -35,6 +40,7 @@ public class AccountManagementPanel extends ChildrenPanel {
 
     public AccountManagementPanel() {
         super();
+        controller = new AccountManagementController();
 
         accountTypeLabel = getFormattedLabel("Account Type", 30, 30, 120, 30);
         add(accountTypeLabel);
@@ -76,10 +82,9 @@ public class AccountManagementPanel extends ChildrenPanel {
         resetButton = getFormattedButton("Reset", 30, 370, 80, 24);
         add(resetButton);
 
-        String[][] data = {{"Alo", "Ola"}, {"Alo", "Ola"}};
-        String[] columns = {"Alo", "Ola"};
+        TableState tableState = controller.reset();
         TableScrollPane tableScrollPane = getFormattedTableScrollPane(
-            data, columns, 280, 30, 630, 200,
+            tableState.data, tableState.columns, 280, 30, 630, 200,
             new ListSelectionListener() {
                 public void valueChanged(ListSelectionEvent e) {
                     System.out.println("Row " + accountTable.getSelectedRow() + " selected");
