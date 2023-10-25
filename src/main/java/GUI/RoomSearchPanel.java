@@ -7,10 +7,16 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.text.NumberFormatter;
 import java.awt.event.*;
 import java.text.*;
+
+import Controllers.AccountManagementController;
+import Controllers.Controller;
+import Controllers.RoomSearchController;
 import Modules.Room;
 
 
 public class RoomSearchPanel extends ChildrenPanel {
+    Controller controller;
+
     JLabel roomStyleLabel;
     JComboBox<Room.RoomStyle> roomStyleComboBox;
 
@@ -31,7 +37,7 @@ public class RoomSearchPanel extends ChildrenPanel {
 
     public RoomSearchPanel() {
         super();
-        setLayout(null);
+        controller = new RoomSearchController();
         
         // Room style input
         roomStyleLabel = getFormattedLabel("Room style", 30, 30, 120, 30);
@@ -77,8 +83,9 @@ public class RoomSearchPanel extends ChildrenPanel {
         add(bookButton);
 
         // Room table
+        Controller.TableState tableState = controller.getAll();
         TableScrollPane tableScrollPane = getFormattedTableScrollPane(
-            getRoomTableData(), roomTableColumns, 280, 30, 630, 200,
+            tableState.data, tableState.columns, 280, 30, 630, 200,
             new ListSelectionListener() {
                 public void valueChanged(ListSelectionEvent e) {
                     System.out.println("Row " + roomTable.getSelectedRow() + " selected");

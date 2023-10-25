@@ -82,7 +82,7 @@ public class AccountManagementPanel extends ChildrenPanel {
         resetButton = getFormattedButton("Reset", 30, 370, 80, 24);
         add(resetButton);
 
-        TableState tableState = controller.reset();
+        TableState tableState = controller.getAll();
         TableScrollPane tableScrollPane = getFormattedTableScrollPane(
             tableState.data, tableState.columns, 280, 30, 630, 200,
             new ListSelectionListener() {

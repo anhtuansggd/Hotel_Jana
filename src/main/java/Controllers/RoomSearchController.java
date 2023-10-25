@@ -45,6 +45,10 @@ public class RoomSearchController extends Controller implements Search<RoomSearc
 
     }
 
+    public TableState getAll(){
+        return _getAll("room");
+    }
+
     public boolean find(int reservation_number){
         return false;
     };

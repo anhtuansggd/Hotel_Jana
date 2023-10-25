@@ -4,6 +4,7 @@ package Controllers;
 import Modules.RoomBooking;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 
 public class BookingReviewController extends Controller implements Delete<RoomBooking>{
@@ -109,6 +110,11 @@ public class BookingReviewController extends Controller implements Delete<RoomBo
             }
         }
     }
+
+    public TableState getAll() {
+        return _getAll("room_booking");
+    }
+
 
     public boolean find(int reservation_number){
         return false;

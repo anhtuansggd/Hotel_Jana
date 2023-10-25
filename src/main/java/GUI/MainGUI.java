@@ -50,6 +50,7 @@ public class MainGUI extends JFrame {
         add(tabbedPane);
 
         setLayout(null);
+        setLocationRelativeTo(null);
         setSize(1080, 720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
