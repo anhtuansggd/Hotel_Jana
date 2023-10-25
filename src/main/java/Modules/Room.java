@@ -3,13 +3,23 @@ package Modules;
 public class Room {
     private String roomNumber;
     private RoomStyle style;
-    private boolean isSmoking;
+    private int isSmoking;
 
     public enum RoomStyle {
         STANDARD,
         DELUXE,
         FAMILY_SUITE,
         BUSINESS_SUITE
+    }
+
+    public Room(){
+
+    }
+
+    public Room(String roomNumber, RoomStyle style, int isSmoking) {
+        this.roomNumber = roomNumber;
+        this.style = style;
+        this.isSmoking = isSmoking;
     }
 
     public boolean isRoomAvailable(){ return false; };
@@ -39,13 +49,14 @@ public class Room {
 
     }
 
-    public boolean isSmoking() {
+    public int isSmoking() {
         return isSmoking;
     }
 
-    public void setSmoking(boolean smoking) {
+    public void setSmoking(int smoking) {
         isSmoking = smoking;
     }
+
 
 }
 
