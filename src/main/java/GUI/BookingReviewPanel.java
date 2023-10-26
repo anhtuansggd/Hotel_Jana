@@ -5,6 +5,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import Controllers.RoomBookingController;
 
 public class BookingReviewPanel extends ChildrenPanel {
     JLabel reservationNumberLabel;
@@ -36,7 +37,7 @@ public class BookingReviewPanel extends ChildrenPanel {
     JScrollPane bookingScrollPane;
 
     public BookingReviewPanel() {
-        super();
+        super(new RoomBookingController());
 
         reservationNumberLabel = getFormattedLabel("Reservation number", 30, 30, 120, 30);
         add(reservationNumberLabel);

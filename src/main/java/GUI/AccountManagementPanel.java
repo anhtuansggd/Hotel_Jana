@@ -3,12 +3,12 @@ package GUI;
 import javax.swing.*;
 import javax.swing.event.*;
 
-import Controllers.AccountController;
+import Controllers.AccountManagementController;
 import Controllers.Controller.*;
 import Modules.Account;
 
 public class AccountManagementPanel extends ChildrenPanel {
-    AccountController controller;
+    AccountManagementController controller;
 
     JLabel accountTypeLabel;
     JComboBox<Account.AccountType> accountTypeComboBox;
@@ -39,8 +39,8 @@ public class AccountManagementPanel extends ChildrenPanel {
     JScrollPane accountScrollPane;
 
     public AccountManagementPanel() {
-        super();
-        controller = new AccountController();
+        super(new AccountManagementController());
+        controller = new AccountManagementController();
 
         accountTypeLabel = getFormattedLabel("Account Type", 30, 30, 120, 30);
         add(accountTypeLabel);

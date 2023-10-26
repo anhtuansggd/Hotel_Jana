@@ -3,12 +3,15 @@ package GUI;
 import java.text.Format;
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
-
+import Controllers.Controller;
 import java.awt.event.*;
 
 public class ChildrenPanel extends JPanel {
-    public ChildrenPanel() {
+    protected Controller controller;
+
+    public ChildrenPanel(Controller c) {
         super();
+        controller = c;
         setLayout(null);
     }
 
