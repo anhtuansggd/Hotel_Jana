@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 import Controllers.AccountManagementController;
-import Controllers.Controller.TableState;
+import Controllers.Controller.*;
 import Modules.Account;
 
 public class AccountManagementPanel extends ChildrenPanel {

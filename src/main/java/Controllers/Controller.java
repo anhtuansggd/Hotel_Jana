@@ -1,7 +1,10 @@
 package Controllers;
 
+import Modules.Room;
+
 import java.sql.*;
 import java.util.ArrayList;
+
 
 public class Controller {
     protected Connection connection;
@@ -92,12 +95,11 @@ public class Controller {
         }
     }
 
+
     public static void main(String[] args) {
         Controller con = new Controller();
         System.out.println("Establish " + con);
     }
-
-
 }
 
 
@@ -105,6 +107,7 @@ public class Controller {
 
 /*
 public interface Controller<T>{
+    //Connection connection = null;
     static Connection getConnection(){
         Connection connection = null;
         try {
@@ -120,5 +123,8 @@ public interface Controller<T>{
         return connection;
     }
 
+
 }
-*/
+
+ */
+

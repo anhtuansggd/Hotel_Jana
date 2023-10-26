@@ -4,16 +4,15 @@ package Controllers;
 import Modules.RoomBooking;
 
 import java.sql.*;
-import java.util.ArrayList;
 
 
-public class BookingReviewController extends Controller implements Delete<RoomBooking>{
+public class RoomBookingController extends Controller{
 
-    public BookingReviewController() {
+    public RoomBookingController() {
         super();
     }
 
-    public void add(RoomBooking R){
+    public TableState add(RoomBooking R){
         PreparedStatement ppsm = null;
 
         try{
@@ -46,9 +45,10 @@ public class BookingReviewController extends Controller implements Delete<RoomBo
                 System.out.println("ppsm close failed");
             }
         }
+        return getAll();
     }
 
-    public void update(RoomBooking R){
+    public TableState update(RoomBooking R){
         PreparedStatement ppsm = null;
 
         try{
@@ -81,21 +81,22 @@ public class BookingReviewController extends Controller implements Delete<RoomBo
                 System.out.println("ppsm close failed");
             }
         }
+        return getAll();
     }
 
 
-    public void delete(RoomBooking R){
+    public TableState delete(RoomBooking R){
         PreparedStatement ppsm = null;
 
         try{
             ppsm = connection.prepareStatement(
-                    "DELETE FROM WHERE reservation_number=?;");
+                    "DELETE FROM room_booking WHERE reservation_number=?;");
             ppsm.setInt(1, R.getReservationNumber());
             ppsm.executeUpdate();
 
             System.out.println("RoomBooking delete succeeded");
         }catch (SQLException e){
-            System.out.println("RoomBooking delete failed");
+            System.out.println("RoomBooking delete failed "+e.toString());
         } finally {
             try {
                 connection.close();
@@ -109,8 +110,10 @@ public class BookingReviewController extends Controller implements Delete<RoomBo
                 System.out.println("ppsm close failed");
             }
         }
+        return getAll();
     }
 
+    @Override
     public TableState getAll() {
         return _getAll("room_booking");
     }

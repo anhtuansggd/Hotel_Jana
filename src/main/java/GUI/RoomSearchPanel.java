@@ -8,9 +8,8 @@ import javax.swing.text.NumberFormatter;
 import java.awt.event.*;
 import java.text.*;
 
-import Controllers.AccountManagementController;
 import Controllers.Controller;
-import Controllers.RoomSearchController;
+import Controllers.RoomController;
 import Modules.Room;
 
 
@@ -37,7 +36,7 @@ public class RoomSearchPanel extends ChildrenPanel {
 
     public RoomSearchPanel() {
         super();
-        controller = new RoomSearchController();
+        controller = new RoomController();
         
         // Room style input
         roomStyleLabel = getFormattedLabel("Room style", 30, 30, 120, 30);
