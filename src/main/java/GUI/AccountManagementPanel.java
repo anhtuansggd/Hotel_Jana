@@ -39,7 +39,7 @@ public class AccountManagementPanel extends ChildrenPanel {
     JScrollPane accountScrollPane;
 
     public AccountManagementPanel() {
-        super();
+        super(new AccountManagementController());
         controller = new AccountManagementController();
 
         accountTypeLabel = getFormattedLabel("Account Type", 30, 30, 120, 30);

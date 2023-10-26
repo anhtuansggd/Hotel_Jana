@@ -14,8 +14,6 @@ import Modules.Room;
 
 
 public class RoomSearchPanel extends ChildrenPanel {
-    Controller controller;
-
     JLabel roomStyleLabel;
     JComboBox<Room.RoomStyle> roomStyleComboBox;
 
@@ -35,8 +33,7 @@ public class RoomSearchPanel extends ChildrenPanel {
     };
 
     public RoomSearchPanel() {
-        super();
-        controller = new RoomController();
+        super(new RoomController());
         
         // Room style input
         roomStyleLabel = getFormattedLabel("Room style", 30, 30, 120, 30);

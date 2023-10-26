@@ -1,11 +1,15 @@
 package GUI;
 
 import javax.swing.*;
+
+import com.formdev.flatlaf.FlatLightLaf;
+
 import java.awt.*;
+
 import Modules.Account;
 
-public class MainGUI extends JFrame {
-    public MainGUI(Account account) {
+public class MainFrame extends JFrame {
+    public MainFrame(Account account) {
         super();
 
         // For debugging children panels
@@ -53,11 +57,12 @@ public class MainGUI extends JFrame {
         setLocationRelativeTo(null);
         setSize(1080, 720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
     }
 
     public static void main(String[] args) {
-        MainGUI m = new MainGUI(new Account(null, null, null,null, null,null ));
-        System.out.println("Initialize " + m);
+        FlatLightLaf.setup();
+
+        MainFrame m = new MainFrame(new Account(null, null, null, null, null, null));
+        m.setVisible(true);
     }
 }
