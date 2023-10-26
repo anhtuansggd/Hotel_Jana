@@ -14,14 +14,14 @@ public class RoomController extends Controller{
     }
 
 
-    public TableState add(Room R){
+    public TableState add(Room room){
         PreparedStatement ppsm = null;
         try{
             ppsm = connection.prepareStatement(
                     "INSERT INTO room VALUES(?,?,?)");
-            ppsm.setString(1, R.getRoomNumber());
-            ppsm.setString(2, R.getStyle().toString());
-            ppsm.setInt(3, R.isSmoking());
+            ppsm.setString(1, room.getRoomNumber());
+            ppsm.setString(2, room.getStyle().toString());
+            ppsm.setInt(3, room.isSmoking());
             ppsm.executeUpdate();
 
             System.out.println("Room insert succeeded");
@@ -47,7 +47,7 @@ public class RoomController extends Controller{
         return getAll();
     }
 
-    public TableState update(Room R){
+    public TableState update(Room room){
         PreparedStatement ppsm = null;
 
         try{
@@ -56,9 +56,9 @@ public class RoomController extends Controller{
              */
             ppsm = connection.prepareStatement(
                     "UPDATE room SET room_style=?, is_smoking=? WHERE room_number=?;");
-            ppsm.setString(1, R.getStyle().toString());
-            ppsm.setInt(2, R.isSmoking());
-            ppsm.setString(3, R.getRoomNumber());
+            ppsm.setString(1, room.getStyle().toString());
+            ppsm.setInt(2, room.isSmoking());
+            ppsm.setString(3, room.getRoomNumber());
             ppsm.executeUpdate();
 
             System.out.println("RoomBooking update succeeded");
@@ -80,12 +80,12 @@ public class RoomController extends Controller{
         return getAll();
     }
 
-    public TableState delete(Room R){
+    public TableState delete(Room room){
         PreparedStatement ppsm = null;
         try{
             ppsm = connection.prepareStatement(
                     "DELETE FROM room WHERE room_number=?;");
-            ppsm.setString(1, R.getRoomNumber());
+            ppsm.setString(1, room.getRoomNumber());
             ppsm.executeUpdate();
 
             System.out.println("Room delete succeeded");
@@ -117,7 +117,10 @@ public class RoomController extends Controller{
         public int duration ;
     }
 
-    public TableState search(RoomSearchQuery Rsq) {
+    /**
+     * No attributes allowed to be null
+     **/
+    public TableState search(RoomSearchQuery roomSearchQuery) {
         PreparedStatement ppsm = null;
         try{
             ppsm = connection.prepareStatement(
@@ -130,11 +133,11 @@ public class RoomController extends Controller{
                             "\tWHERE (rb.start_date <= ? AND rb.start_date + rb.duration > ?)\n" +
                             "\tOR (rb.start_date < ? AND rb.start_date + rb.duration >= ?)\n" +
                             ")");
-            ppsm.setString(1, Rsq.roomStyle.toString());
-            ppsm.setDate(2, Date.valueOf(Rsq.startDate));
-            ppsm.setDate(3, Date.valueOf(Rsq.startDate));
-            ppsm.setDate(4, Date.valueOf(Rsq.startDate.plusDays(Rsq.duration)));
-            ppsm.setDate(5, Date.valueOf(Rsq.startDate.plusDays(Rsq.duration)));
+            ppsm.setString(1, roomSearchQuery.roomStyle.toString());
+            ppsm.setDate(2, Date.valueOf(roomSearchQuery.startDate));
+            ppsm.setDate(3, Date.valueOf(roomSearchQuery.startDate));
+            ppsm.setDate(4, Date.valueOf(roomSearchQuery.startDate.plusDays(roomSearchQuery.duration)));
+            ppsm.setDate(5, Date.valueOf(roomSearchQuery.startDate.plusDays(roomSearchQuery.duration)));
             System.out.println(ppsm);
             ppsm.executeQuery();
             System.out.println("Room search succeeded");

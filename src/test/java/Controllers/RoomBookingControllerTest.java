@@ -37,6 +37,11 @@ public class RoomBookingControllerTest {
     }
 
     @org.junit.Test
-    public void find() {
+    public void search() {
+        RoomBookingController controller = new RoomBookingController();
+        Room r = new Room();
+        r.setRoomNumber("101");
+        RoomBooking roomBooking = new RoomBooking(1, LocalDate.of(2023, 10, 25), 1, 1,(String) null);
+        //controller.search(roomBooking);
     }
 }
