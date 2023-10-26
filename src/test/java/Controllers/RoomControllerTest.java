@@ -3,6 +3,8 @@ package Controllers;
 import Modules.Room;
 import org.junit.Test;
 
+import java.time.LocalDate;
+
 public class RoomControllerTest {
 
     @Test
@@ -24,6 +26,15 @@ public class RoomControllerTest {
         RoomController controller = new RoomController();
         Room r = new Room("109", Room.RoomStyle.STANDARD, 1) ;
         controller.delete(r);
+    }
+
+
+
+    @Test
+    public void search( ){
+        RoomController controller = new RoomController();
+        controller.search();
+
     }
 
     @Test

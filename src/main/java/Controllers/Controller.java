@@ -31,6 +31,13 @@ public class Controller {
         }
     }
 
+    public TableState add(){ return null; }
+    public TableState update(){ return null; }
+    public TableState delete(){ return null; }
+    public TableState search(){ return null; }
+
+
+
     public TableState getAll() {
         return null;
     }
