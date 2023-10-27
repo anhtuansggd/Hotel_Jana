@@ -8,43 +8,19 @@ import java.util.ArrayList;
 
 public class Controller {
     protected Connection connection;
-    protected  PreparedStatement ppsm;
+    protected PreparedStatement ppsm;
 
     public Controller() {
         try {
             String dbUrl = "jdbc:mysql://localhost:3306/hotel_dbms";
-            String userName = "tuan";
-            String password = "Password123!";
+            String userName = "root";
+            String password = "firsttime";
             connection = DriverManager.getConnection(dbUrl, userName, password);
 
             System.err.println("Connected to the server");
 
-            // Statement stmt = conn.createStatement();
-            // ResultSet rSet = stmt.executeQuery("SELECT * FROM room");
-
-            // while (rSet.next()) {
-            //     int n = rSet.getInt("room_number");
-            //     System.out.println(n);
-            // }
-
         } catch (SQLException e) {
-            System.err.println("Error connecting to the server " + e.toString());
-        }
-    }
-
-    public void close(){
-        try {
-            connection.close();
-        }catch (SQLException e){
-            System.out.println("connection close failed "+ e.toString());
-        }
-
-        try{
-            if(ppsm!=null){
-                ppsm.close();
-            }
-        }catch (SQLException e){
-            System.out.println("ppsm close failed " + e.toString());
+            System.err.println("Error connecting to the server");
         }
     }
 

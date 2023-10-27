@@ -8,11 +8,9 @@ import java.time.LocalDate;
 
 
 public class RoomController extends Controller{
-
     public RoomController() {
         super();
     }
-
 
     public TableState add(Room room){
         try{

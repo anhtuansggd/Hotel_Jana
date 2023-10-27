@@ -12,21 +12,6 @@ public class MainFrame extends JFrame {
     public MainFrame(Account account) {
         super();
 
-        // For debugging children panels
-        // uncomment the below block and run MainGUI.java
-        
-        /*
-        JPanel p1 = new JPanel();
-        p1.setBackground(Color.gray);
-        p1.setBounds(0, 0, 120, 720);
-        add(p1);
-
-        JPanel p2 = new RoomSearchPanel();
-        p2.setBackground(Color.green);
-        p2.setBounds(120, 0, 960, 720);
-        add(p2);
-         */
-
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
         // creating icon
 

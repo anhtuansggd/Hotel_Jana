@@ -2,6 +2,7 @@ package GUI;
 
 import java.text.Format;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import Controllers.Controller;
 import java.awt.event.*;
@@ -9,10 +10,15 @@ import java.awt.event.*;
 public class ChildrenPanel extends JPanel {
     protected Controller controller;
 
+    protected JTable panelTable;
+    protected JScrollPane panelScrollPane;
+
     public ChildrenPanel(Controller c) {
         super();
         controller = c;
         setLayout(null);
+
+        refreshTableScrollPane();
     }
 
     protected static <T extends Enum<T>> JComboBox<T> getFormattedComboBox(Class<T> type, int x, int y, int w, int h) {
@@ -107,6 +113,48 @@ public class ChildrenPanel extends JPanel {
 
         return new TableScrollPane(table, scrollPane);
     }
+
+    protected void refreshTableScrollPane() {
+        Controller.TableState tableState = controller.getAll();
+
+        TableScrollPane tableScrollPane = getFormattedTableScrollPane(tableState.data, tableState.columns,
+                280, 30, 630, 620, new ListSelectionListener() {
+                    public void valueChanged(ListSelectionEvent e) {
+                        
+                    }
+                }
+        );
+            
+        if (panelScrollPane != null) {
+            remove(panelScrollPane);
+        }
+        panelTable = tableScrollPane.table;
+        panelScrollPane = tableScrollPane.scrollPane;
+        add(panelScrollPane);
+
+        revalidate();
+        repaint();
+    }
+    
+    protected void refreshTableScrollPane(Controller.TableState tableState) {
+        TableScrollPane tableScrollPane = getFormattedTableScrollPane(
+            tableState.data, tableState.columns, 280, 30, 630, 620, new ListSelectionListener() {
+                public void valueChanged(ListSelectionEvent e) {
+                    
+                }
+        });
+            
+        if (panelScrollPane != null) {
+            remove(panelScrollPane);
+        }
+        panelTable = tableScrollPane.table;
+        panelScrollPane = tableScrollPane.scrollPane;
+        add(panelScrollPane);
+
+        revalidate();
+        repaint();
+    }
+
 
     public static class TableScrollPane {
         public JTable table;
