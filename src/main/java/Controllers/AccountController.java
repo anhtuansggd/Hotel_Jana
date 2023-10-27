@@ -28,18 +28,6 @@ public class AccountController extends Controller {
             logger.log(Level.INFO, "Inserted failed");
              */
             System.out.println("Account insert failed " + e.toString());
-        } finally {
-            try {
-                connection.close();
-            }catch (SQLException e){
-                System.out.println("connection close failed");
-            }
-
-            try{
-                ppsm.close();
-            }catch (SQLException e){
-                System.out.println("ppsm close failed");
-            }
         }
         return getAll();
     }
@@ -64,18 +52,6 @@ public class AccountController extends Controller {
             logger.log(Level.INFO, "Inserted failed");
              */
             System.out.println("Account update failed " + e.toString());
-        } finally {
-            try {
-                connection.close();
-            }catch (SQLException e){
-                System.out.println("connection close failed");
-            }
-
-            try{
-                ppsm.close();
-            }catch (SQLException e){
-                System.out.println("ppsm close failed");
-            }
         }
         return getAll();
     }
@@ -94,18 +70,6 @@ public class AccountController extends Controller {
             logger.log(Level.INFO, "Inserted failed");
              */
             System.out.println("Account delete failed " + e.toString());
-        } finally {
-            try {
-                connection.close();
-            }catch (SQLException e){
-                System.out.println("connection close failed");
-            }
-
-            try{
-                ppsm.close();
-            }catch (SQLException e){
-                System.out.println("ppsm close failed");
-            }
         }
         return getAll();
     }
@@ -122,7 +86,6 @@ public class AccountController extends Controller {
     * id, username, name are allowed to be null
      */
     public TableState search(AccountSearchQuery accountSearchQuery) {
-        PreparedStatement ppsm = null;
         try{
             Account acount = new Account("4", Account.AccountType.GUEST, "frfr", "123456", "Frank", Account.Race.FRANKENSTEIN);
             ppsm = connection.prepareStatement(
@@ -143,19 +106,6 @@ public class AccountController extends Controller {
             return getAll();
         }catch (SQLException e){
             System.out.println("Account search failed "+e.toString());
-        } finally {
-            try {
-                connection.close();
-            }catch (SQLException e){
-                System.out.println("connection close failed "+ e.toString());
-            }
-
-            try{
-                ppsm.close();
-            }catch (SQLException e){
-                System.out.println("ppsm close failed");
-            }
-
         }
         return null;
     }

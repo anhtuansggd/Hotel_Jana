@@ -28,18 +28,6 @@ public class LogInController extends Controller{
             System.out.println("Room delete succeeded");
         }catch (SQLException e){
             System.out.println("Room delete failed");
-        } finally {
-            try {
-                connection.close();
-            }catch (SQLException e){
-                System.out.println("connection close failed");
-            }
-
-            try{
-                ppsm.close();
-            }catch (SQLException e){
-                System.out.println("ppsm close failed");
-            }
         }
 
     }

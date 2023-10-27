@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class Controller {
     protected Connection connection;
+    protected  PreparedStatement ppsm;
 
     public Controller() {
         try {
@@ -28,6 +29,18 @@ public class Controller {
 
         } catch (SQLException e) {
             System.err.println("Error connecting to the server");
+        } finally {
+            try {
+                connection.close();
+            }catch (SQLException e){
+                System.out.println("connection close failed "+ e.toString());
+            }
+
+            try{
+                ppsm.close();
+            }catch (SQLException e){
+                System.out.println("ppsm close failed");
+            }
         }
     }
 

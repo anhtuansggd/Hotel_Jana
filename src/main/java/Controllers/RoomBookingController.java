@@ -33,18 +33,6 @@ public class RoomBookingController extends Controller{
             //logger.log(Level.INFO, "Inserted failed");
 
             System.out.println("RoomBooking insert failed " + e.toString());
-        } finally {
-            try {
-                connection.close();
-            }catch (SQLException e){
-                System.out.println("connection close failed");
-            }
-
-            try{
-                ppsm.close();
-            }catch (SQLException e){
-                System.out.println("ppsm close failed");
-            }
         }
         return getAll();
     }
@@ -68,18 +56,6 @@ public class RoomBookingController extends Controller{
             System.out.println("RoomBooking update succeeded");
         }catch (SQLException e){
             System.out.println("RoomBooking update failed");
-        } finally {
-            try {
-                connection.close();
-            }catch (SQLException e){
-                System.out.println("connection close failed");
-            }
-
-            try{
-                ppsm.close();
-            }catch (SQLException e){
-                System.out.println("ppsm close failed");
-            }
         }
         return getAll();
     }
@@ -97,18 +73,6 @@ public class RoomBookingController extends Controller{
             System.out.println("RoomBooking delete succeeded");
         }catch (SQLException e){
             System.out.println("RoomBooking delete failed "+e.toString());
-        } finally {
-            try {
-                connection.close();
-            }catch (SQLException e){
-                System.out.println("connection close failed");
-            }
-
-            try{
-                ppsm.close();
-            }catch (SQLException e){
-                System.out.println("ppsm close failed");
-            }
         }
         return getAll();
     }
@@ -153,19 +117,6 @@ public class RoomBookingController extends Controller{
             return getAll();
         }catch (SQLException e){
             System.out.println("Room search failed "+e.toString());
-        } finally {
-            try {
-                connection.close();
-            }catch (SQLException e){
-                System.out.println("connection close failed "+ e.toString());
-            }
-
-            try{
-                ppsm.close();
-            }catch (SQLException e){
-                System.out.println("ppsm close failed");
-            }
-
         }
         return null;
     }

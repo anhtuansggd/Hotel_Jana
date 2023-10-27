@@ -31,18 +31,6 @@ public class RoomController extends Controller{
             logger.log(Level.INFO, "Inserted failed");
              */
             System.out.println("Room insert failed " + e.toString());
-        } finally {
-            try {
-                connection.close();
-            }catch (SQLException e){
-                System.out.println("connection close failed");
-            }
-
-            try{
-                ppsm.close();
-            }catch (SQLException e){
-                System.out.println("ppsm close failed");
-            }
         }
         return getAll();
     }
@@ -64,18 +52,6 @@ public class RoomController extends Controller{
             System.out.println("RoomBooking update succeeded");
         }catch (SQLException e){
             System.out.println("RoomBooking update failed");
-        } finally {
-            try {
-                connection.close();
-            }catch (SQLException e){
-                System.out.println("connection close failed");
-            }
-
-            try{
-                ppsm.close();
-            }catch (SQLException e){
-                System.out.println("ppsm close failed");
-            }
         }
         return getAll();
     }
@@ -91,18 +67,6 @@ public class RoomController extends Controller{
             System.out.println("Room delete succeeded");
         }catch (SQLException e){
             System.out.println("Room delete failed");
-        } finally {
-            try {
-                connection.close();
-            }catch (SQLException e){
-                System.out.println("connection close failed");
-            }
-
-            try{
-                ppsm.close();
-            }catch (SQLException e){
-                System.out.println("ppsm close failed");
-            }
         }
         return getAll();
     }
@@ -121,7 +85,6 @@ public class RoomController extends Controller{
      * No attributes allowed to be null
      **/
     public TableState search(RoomSearchQuery roomSearchQuery) {
-        PreparedStatement ppsm = null;
         try{
             ppsm = connection.prepareStatement(
                     "SELECT *\n" +
@@ -144,19 +107,6 @@ public class RoomController extends Controller{
             return getAll();
         }catch (SQLException e){
             System.out.println("Room search failed "+e.toString());
-        } finally {
-            try {
-                connection.close();
-            }catch (SQLException e){
-                System.out.println("connection close failed "+ e.toString());
-            }
-
-            try{
-                ppsm.close();
-            }catch (SQLException e){
-                System.out.println("ppsm close failed");
-            }
-
         }
         return null;
     }
