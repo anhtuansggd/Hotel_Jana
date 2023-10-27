@@ -74,12 +74,20 @@ public class AccountController extends Controller {
         return getAll();
     }
 
-    public class AccountSearchQuery {
+    public static class AccountSearchQuery {
         private String id;
         private Account.AccountType type;
         private String username;
         private String name;
         private Account.Race race;
+
+        public AccountSearchQuery(String i, Account.AccountType t, String u, String n, Account.Race r) {
+            id = i;
+            type = t;
+            username = u;
+            name = n;
+            race = r;
+        }
     }
 
     /*

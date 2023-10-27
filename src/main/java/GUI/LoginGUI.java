@@ -1,6 +1,9 @@
 package GUI;
 
 import javax.swing.*;
+
+import com.formdev.flatlaf.FlatLightLaf;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -52,6 +55,8 @@ public class LoginGUI extends JFrame {
     }
 
     public static void main(String[] args) {
+        FlatLightLaf.setup();
+
         LoginGUI f = new LoginGUI();
         f.setVisible(true);              
     }

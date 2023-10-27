@@ -33,9 +33,6 @@ public class BookingReviewPanel extends ChildrenPanel {
 
     JButton resetButton;
 
-    JTable bookingTable;
-    JScrollPane bookingScrollPane;
-
     public BookingReviewPanel() {
         super(new RoomBookingController());
 
@@ -85,13 +82,13 @@ public class BookingReviewPanel extends ChildrenPanel {
             data, columns, 280, 30, 630, 200,
             new ListSelectionListener() {
                 public void valueChanged(ListSelectionEvent e) {
-                    System.out.println("Row " + bookingTable.getSelectedRow() + " selected");
+                    System.out.println("Row " + panelTable.getSelectedRow() + " selected");
                 }
             }
         );
-        bookingTable = tableScrollPane.table;
-        bookingScrollPane = tableScrollPane.scrollPane;
-        add(bookingScrollPane);
+        panelTable = tableScrollPane.table;
+        panelScrollPane = tableScrollPane.scrollPane;
+        add(panelScrollPane);
 
     }   
 }

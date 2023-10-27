@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Controller {
     protected Connection connection;
-    protected  PreparedStatement ppsm;
+    protected PreparedStatement ppsm;
 
     public Controller() {
         try {
@@ -19,28 +19,8 @@ public class Controller {
 
             System.err.println("Connected to the server");
 
-            // Statement stmt = conn.createStatement();
-            // ResultSet rSet = stmt.executeQuery("SELECT * FROM room");
-
-            // while (rSet.next()) {
-            //     int n = rSet.getInt("room_number");
-            //     System.out.println(n);
-            // }
-
         } catch (SQLException e) {
             System.err.println("Error connecting to the server");
-        } finally {
-            try {
-                connection.close();
-            }catch (SQLException e){
-                System.out.println("connection close failed "+ e.toString());
-            }
-
-            try{
-                ppsm.close();
-            }catch (SQLException e){
-                System.out.println("ppsm close failed");
-            }
         }
     }
 

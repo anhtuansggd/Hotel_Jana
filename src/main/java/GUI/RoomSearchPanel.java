@@ -26,12 +26,6 @@ public class RoomSearchPanel extends ChildrenPanel {
     JButton searchButton;
     JButton bookButton;
 
-    JTable roomTable;
-    JScrollPane roomScrollPane;
-    String roomTableColumns[] = {
-        "ID", "NAME", "SALARY"
-    };
-
     public RoomSearchPanel() {
         super(new RoomController());
         
@@ -70,8 +64,8 @@ public class RoomSearchPanel extends ChildrenPanel {
         bookButton =  getFormattedButton("Book", 30, 200, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // System.out.println((Date)dateTextField.getValue());
-                if (roomTable.getSelectedRow() != -1) {
-                    Object roomNumber = roomTable.getValueAt(roomTable.getSelectedRow(), 0);
+                if (panelTable.getSelectedRow() != -1) {
+                    Object roomNumber = panelTable.getValueAt(panelTable.getSelectedRow(), 0);
                     System.out.printf("Book room number " + roomNumber + " for " + durationTextField.getValue() + " days\n");
                 }
             }
@@ -84,24 +78,12 @@ public class RoomSearchPanel extends ChildrenPanel {
             tableState.data, tableState.columns, 280, 30, 630, 200,
             new ListSelectionListener() {
                 public void valueChanged(ListSelectionEvent e) {
-                    System.out.println("Row " + roomTable.getSelectedRow() + " selected");
+                    System.out.println("Row " + panelTable.getSelectedRow() + " selected");
                 }
             }
         );
-        roomTable = tableScrollPane.table;
-        roomScrollPane = tableScrollPane.scrollPane;
-        add(roomScrollPane);
-
-        // Room info
-            // Add labels that show selected room info
-            // Add buttons to book the room
-    }
-
-    String[][] getRoomTableData() {
-        String[][] data = {
-            {"101", "Ami", "650"},
-            {"102", "FSi", "730"},
-        };
-        return data;
+        panelTable = tableScrollPane.table;
+        panelScrollPane = tableScrollPane.scrollPane;
+        add(panelScrollPane);
     }
 }

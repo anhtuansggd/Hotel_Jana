@@ -4,11 +4,18 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 import Controllers.AccountController;
+import Controllers.AccountController.AccountSearchQuery;
 import Controllers.Controller.*;
 import Modules.Account;
 
+import java.awt.event.*;
+import java.lang.invoke.VarHandle.AccessMode;
+
 public class AccountManagementPanel extends ChildrenPanel {
     AccountController controller;
+
+    JLabel idLabel;
+    JTextField idField;
 
     JLabel accountTypeLabel;
     JComboBox<Account.AccountType> accountTypeComboBox;
@@ -35,64 +42,86 @@ public class AccountManagementPanel extends ChildrenPanel {
 
     JButton resetButton;
 
-    JTable accountTable;
-    JScrollPane accountScrollPane;
-
     public AccountManagementPanel() {
         super(new AccountController());
         controller = new AccountController();
 
-        accountTypeLabel = getFormattedLabel("Account Type", 30, 30, 120, 30);
+        idLabel = getFormattedLabel("ID", 30, 30, 120, 30);
+        add(idLabel);
+        idField = getFormattedTextField(130, 40, 120, 24);
+        add(idField);
+
+        accountTypeLabel = getFormattedLabel("Account Type", 30, 60, 120, 30);
         add(accountTypeLabel);
-        accountTypeComboBox = getFormattedComboBox(Account.AccountType.class, 130, 40, 120, 20);
+        accountTypeComboBox = getFormattedComboBox(Account.AccountType.class, 130, 70, 120, 24);
         add(accountTypeComboBox);
 
-        usernameLabel = getFormattedLabel("Username", 30, 60, 120, 30);
+        usernameLabel = getFormattedLabel("Username", 30, 90, 120, 30);
         add(usernameLabel);
-        usernameField = getFormattedTextField(130, 70, 120, 20);
+        usernameField = getFormattedTextField(130, 100, 120, 24);
         add(usernameField);
 
-        passwordLabel = getFormattedLabel("Password", 30, 90, 120, 30);
+        passwordLabel = getFormattedLabel("Password", 30, 120, 120, 30);
         add(passwordLabel);
-        passwordField = getFormattedTextField(130, 100, 120, 20);
+        passwordField = getFormattedTextField(130, 130, 120, 24);
         add(passwordField);
 
-        nameLabel = getFormattedLabel("Name", 30, 120, 120, 30);
+        nameLabel = getFormattedLabel("Name", 30, 150, 120, 30);
         add(nameLabel);
-        nameField = getFormattedTextField(130, 130, 120, 20);
+        nameField = getFormattedTextField(130, 160, 120, 24);
         add(nameField);
 
-        raceLabel = getFormattedLabel("Account Type", 30, 150, 120, 30);
+        raceLabel = getFormattedLabel("Account Type", 30, 180, 120, 30);
         add(raceLabel);
-        raceComboBox = getFormattedComboBox(Account.Race.class, 130, 160, 120, 20);
+        raceComboBox = getFormattedComboBox(Account.Race.class, 130, 190, 120, 24);
         add(raceComboBox);
 
-        addButton = getFormattedButton("Add", 30, 210, 80, 24);
+        addButton = getFormattedButton("Add", 30, 240, 80, 24, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                TableState tableState = controller.addAccount(new Account(idField.getText(), (Account.AccountType)accountTypeComboBox.getSelectedItem(),
+                        usernameField.getText(), passwordField.getText(), nameField.getText(),
+                        (Account.Race)raceComboBox.getSelectedItem()));
+                refreshTableScrollPane(tableState);
+            }
+        });
         add(addButton);
 
-        updateButton = getFormattedButton("Update", 30, 250, 80, 24);
+        updateButton = getFormattedButton("Update", 30, 280, 80, 24, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                TableState tableState = controller.updateAccount(new Account(idField.getText(), (Account.AccountType)accountTypeComboBox.getSelectedItem(),
+                        usernameField.getText(), passwordField.getText(), nameField.getText(),
+                        (Account.Race)raceComboBox.getSelectedItem()));
+                refreshTableScrollPane(tableState);
+            }
+        });;
         add(updateButton);
 
-        deleteButton = getFormattedButton("Delete", 30, 290, 80, 24);
+        deleteButton = getFormattedButton("Delete", 30, 320, 80, 24, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                TableState tableState = controller.deleteAccount(new Account(idField.getText(), (Account.AccountType)accountTypeComboBox.getSelectedItem(),
+                        usernameField.getText(), passwordField.getText(), nameField.getText(),
+                        (Account.Race)raceComboBox.getSelectedItem()));
+                refreshTableScrollPane(tableState);
+            }
+        });;
         add(deleteButton);
 
-        searchButton = getFormattedButton("Search", 30, 330, 80, 24);
+        searchButton = getFormattedButton("Search", 30, 360, 80, 24, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                TableState tableState = controller.search(new AccountController.AccountSearchQuery(idField.getText(),
+                        (Account.AccountType)accountTypeComboBox.getSelectedItem(),
+                        usernameField.getText(), nameField.getText(),
+                        (Account.Race)raceComboBox.getSelectedItem()));
+                refreshTableScrollPane(tableState);
+            }
+        });;
         add(searchButton);
 
-        resetButton = getFormattedButton("Reset", 30, 370, 80, 24);
-        add(resetButton);
-
-        TableState tableState = controller.getAll();
-        TableScrollPane tableScrollPane = getFormattedTableScrollPane(
-            tableState.data, tableState.columns, 280, 30, 630, 200,
-            new ListSelectionListener() {
-                public void valueChanged(ListSelectionEvent e) {
-                    System.out.println("Row " + accountTable.getSelectedRow() + " selected");
-                }
+        resetButton = getFormattedButton("Reset", 30, 400, 80, 24, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                refreshTableScrollPane();
             }
-        );
-        accountTable = tableScrollPane.table;
-        accountScrollPane = tableScrollPane.scrollPane;
-        add(accountScrollPane);
+        });;
+        add(resetButton);
     }
 }
