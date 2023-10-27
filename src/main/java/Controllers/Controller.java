@@ -13,8 +13,8 @@ public class Controller {
     public Controller() {
         try {
             String dbUrl = "jdbc:mysql://localhost:3306/hotel_dbms";
-            String userName = "root";
-            String password = "firsttime";
+            String userName = "tuan";
+            String password = "Password123!";
             connection = DriverManager.getConnection(dbUrl, userName, password);
 
             System.err.println("Connected to the server");
@@ -28,19 +28,23 @@ public class Controller {
             // }
 
         } catch (SQLException e) {
-            System.err.println("Error connecting to the server");
-        } finally {
-            try {
-                connection.close();
-            }catch (SQLException e){
-                System.out.println("connection close failed "+ e.toString());
-            }
+            System.err.println("Error connecting to the server " + e.toString());
+        }
+    }
 
-            try{
+    public void close(){
+        try {
+            connection.close();
+        }catch (SQLException e){
+            System.out.println("connection close failed "+ e.toString());
+        }
+
+        try{
+            if(ppsm!=null){
                 ppsm.close();
-            }catch (SQLException e){
-                System.out.println("ppsm close failed");
             }
+        }catch (SQLException e){
+            System.out.println("ppsm close failed " + e.toString());
         }
     }
 

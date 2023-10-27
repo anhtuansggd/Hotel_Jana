@@ -29,6 +29,7 @@ public class LogInController extends Controller{
         }catch (SQLException e){
             System.out.println("Room delete failed");
         }
+        close();
 
     }
 }

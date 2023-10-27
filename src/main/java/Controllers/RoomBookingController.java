@@ -14,8 +14,6 @@ public class RoomBookingController extends Controller{
     }
 
     public TableState add(RoomBooking roombooking){
-        PreparedStatement ppsm = null;
-
         try{
             ppsm = connection.prepareStatement(
                     "INSERT INTO room_booking VALUES(?,?,?,?,?)");
@@ -34,12 +32,11 @@ public class RoomBookingController extends Controller{
 
             System.out.println("RoomBooking insert failed " + e.toString());
         }
+        close();
         return getAll();
     }
 
     public TableState update(RoomBooking roombooking){
-        PreparedStatement ppsm = null;
-
         try{
             /*
             reservation_number is pk
@@ -57,13 +54,12 @@ public class RoomBookingController extends Controller{
         }catch (SQLException e){
             System.out.println("RoomBooking update failed");
         }
+        close();
         return getAll();
     }
 
 
     public TableState delete(RoomBooking roombooking){
-        PreparedStatement ppsm = null;
-
         try{
             ppsm = connection.prepareStatement(
                     "DELETE FROM room_booking WHERE reservation_number=?;");
@@ -74,6 +70,7 @@ public class RoomBookingController extends Controller{
         }catch (SQLException e){
             System.out.println("RoomBooking delete failed "+e.toString());
         }
+        close();
         return getAll();
     }
 
@@ -89,7 +86,6 @@ public class RoomBookingController extends Controller{
      * start_date, duration, room_number, account_id are allowed to be null
      **/
     public TableState search(RoomBookingSearchQuery roomBookingSearchQuery){
-        PreparedStatement ppsm = null;
         try{
             ppsm = connection.prepareStatement(
                     "SELECT *\n" +
@@ -118,6 +114,7 @@ public class RoomBookingController extends Controller{
         }catch (SQLException e){
             System.out.println("Room search failed "+e.toString());
         }
+        close();
         return null;
     }
 

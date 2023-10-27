@@ -15,7 +15,6 @@ public class RoomController extends Controller{
 
 
     public TableState add(Room room){
-        PreparedStatement ppsm = null;
         try{
             ppsm = connection.prepareStatement(
                     "INSERT INTO room VALUES(?,?,?)");
@@ -32,12 +31,11 @@ public class RoomController extends Controller{
              */
             System.out.println("Room insert failed " + e.toString());
         }
+        close();
         return getAll();
     }
 
     public TableState update(Room room){
-        PreparedStatement ppsm = null;
-
         try{
             /*
             reservation_number is pk
@@ -53,11 +51,11 @@ public class RoomController extends Controller{
         }catch (SQLException e){
             System.out.println("RoomBooking update failed");
         }
+        close();
         return getAll();
     }
 
     public TableState delete(Room room){
-        PreparedStatement ppsm = null;
         try{
             ppsm = connection.prepareStatement(
                     "DELETE FROM room WHERE room_number=?;");
@@ -68,6 +66,7 @@ public class RoomController extends Controller{
         }catch (SQLException e){
             System.out.println("Room delete failed");
         }
+        close();
         return getAll();
     }
 
@@ -108,6 +107,7 @@ public class RoomController extends Controller{
         }catch (SQLException e){
             System.out.println("Room search failed "+e.toString());
         }
+        close();
         return null;
     }
 

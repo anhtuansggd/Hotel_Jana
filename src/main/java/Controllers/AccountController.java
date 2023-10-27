@@ -9,7 +9,6 @@ public class AccountController extends Controller {
     }
 
     public TableState addAccount(Account account) {
-        PreparedStatement ppsm = null;
         try{
             ppsm = connection.prepareStatement(
                     "INSERT INTO account VALUES(?,?,?,?,?,?)");
@@ -29,11 +28,11 @@ public class AccountController extends Controller {
              */
             System.out.println("Account insert failed " + e.toString());
         }
+        close();
         return getAll();
     }
 
     public TableState updateAccount(Account account) {
-        PreparedStatement ppsm = null;
         try{
             ppsm = connection.prepareStatement(
                     "UPDATE account SET account_type=?, user_name=?, password=?, name=?, race=? WHERE id=?");
@@ -53,11 +52,11 @@ public class AccountController extends Controller {
              */
             System.out.println("Account update failed " + e.toString());
         }
+        close();
         return getAll();
     }
 
     public TableState deleteAccount(Account account) {
-        PreparedStatement ppsm = null;
         try{
             ppsm = connection.prepareStatement(
                     "DELETE FROM account WHERE id=? ");
@@ -71,6 +70,7 @@ public class AccountController extends Controller {
              */
             System.out.println("Account delete failed " + e.toString());
         }
+        close();
         return getAll();
     }
 
@@ -107,6 +107,7 @@ public class AccountController extends Controller {
         }catch (SQLException e){
             System.out.println("Account search failed "+e.toString());
         }
+        close();
         return null;
     }
 
