@@ -16,33 +16,29 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `room_booking`
+-- Table structure for table `notification`
 --
 
-DROP TABLE IF EXISTS `room_booking`;
+DROP TABLE IF EXISTS `notification`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `room_booking` (
-  `reservation_number` int NOT NULL,
-  `start_date` datetime NOT NULL,
-  `duration` int NOT NULL,
-  `room_number` int NOT NULL,
+CREATE TABLE `notification` (
+  `id` int NOT NULL,
   `account_id` int NOT NULL,
-  PRIMARY KEY (`reservation_number`),
-  KEY `room_number_idx` (`room_number`),
-  KEY `account_id_idx` (`account_id`),
-  CONSTRAINT `account_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`),
-  CONSTRAINT `room_number` FOREIGN KEY (`room_number`) REFERENCES `room` (`room_number`)
+  `description` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `n_account_id_idx` (`account_id`),
+  CONSTRAINT `n_account_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `room_booking`
+-- Dumping data for table `notification`
 --
 
-LOCK TABLES `room_booking` WRITE;
-/*!40000 ALTER TABLE `room_booking` DISABLE KEYS */;
-/*!40000 ALTER TABLE `room_booking` ENABLE KEYS */;
+LOCK TABLES `notification` WRITE;
+/*!40000 ALTER TABLE `notification` DISABLE KEYS */;
+/*!40000 ALTER TABLE `notification` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
