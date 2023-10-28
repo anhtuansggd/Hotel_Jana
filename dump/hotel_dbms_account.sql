@@ -39,7 +39,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (1,'Manager','drac_34','password','Dracula','Vampire'),(2,'Receptionist','flyingsfun','abcdef','Mavis','Vampire'),(3,'Guest','djjohnny','gunth32','Johnny','Human'),(4,'Guest','frfr','123456','Frank','Frankenstein'),(5,'Guest','mywifespregnantagain','parentingsuck','Wayne','Werewolf'),(6,'Guest','sandsorcerer482','papertowel','Murray','Mummy'),(7,'Guest','marvingaye','426h8Q','Griffin','Invisible Human');
+INSERT INTO `account` VALUES (1,'Manager','drac_34','password','Dracula','Vampire'),(2,'Receptionist','flyingsfun','abcdef','Mavis','Vampire'),(3,'Guest','djjohnny','gunth32','Johnny','Human'),(4,'Guest','frfr','123456','Frank','Frankenstein'),(5,'Guest','mywifespregnantagain','parentingsuck','Wayne','Werewolf'),(6,'Guest','sandsorcerer482','papertowel','Murray','Mummy'),(7,'Guest','marvingaye','426h8Q','Griffin','Invisible Human'),(8,'Guest','guest_','1','Guest','Vampire'),(9,'Receptionist','receptionist_','1','Receptionist','Human'),(10,'Manager','manager_','1','Manager','Vampire');
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-29  1:12:52
+-- Dump completed on 2023-10-29  1:41:59
