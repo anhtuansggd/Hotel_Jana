@@ -1,18 +1,21 @@
 package Controllers;
 
+import Modules.Account;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import static java.lang.Enum.valueOf;
 
 public class LogInController extends Controller{
     public LogInController(){
         super();
     }
 
-    public void Login(){
+    public Account Login(){
         String user_name = "RemyRat";
         String password = "Remy123";
-        PreparedStatement ppsm = null;
         try{
             ppsm = connection.prepareStatement(
                     "SELECT * \n" +
@@ -21,15 +24,13 @@ public class LogInController extends Controller{
             ppsm.setString(1, user_name);
             ppsm.setString(2, password);
             ResultSet set = ppsm.executeQuery();
-            while(set.next()){
-                String s = set.getString(1);
-                System.out.println(s);
-            }
-            System.out.println("Room delete succeeded");
+            set.next();
+            System.out.println("Login succeeded");
+            return new Account(set.getString(1), Account.AccountType.valueOf(set.getString(2).toUpperCase()), set.getString(3), set.getString(4),  set.getString(5) , Account.Race.valueOf(set.getString(6).toUpperCase()));
         }catch (SQLException e){
-            System.out.println("Room delete failed");
+            System.out.println("Login  failed");
         }
         close();
-
+        return null;
     }
 }
