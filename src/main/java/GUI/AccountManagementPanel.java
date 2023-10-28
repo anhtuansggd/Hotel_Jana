@@ -9,10 +9,9 @@ import Controllers.Controller.*;
 import Modules.Account;
 
 import java.awt.event.*;
-import java.lang.invoke.VarHandle.AccessMode;
 
 public class AccountManagementPanel extends ChildrenPanel {
-    AccountController controller;
+    AccountController accountController;
 
     JLabel idLabel;
     JTextField idField;
@@ -43,8 +42,9 @@ public class AccountManagementPanel extends ChildrenPanel {
     JButton resetButton;
 
     public AccountManagementPanel() {
-        super(new AccountController());
-        controller = new AccountController();
+        super();
+        accountController = new AccountController();
+        refreshTableScrollPane(accountController.getAll());
 
         idLabel = getFormattedLabel("ID", 30, 30, 120, 30);
         add(idLabel);
@@ -78,7 +78,7 @@ public class AccountManagementPanel extends ChildrenPanel {
 
         addButton = getFormattedButton("Add", 30, 240, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                TableState tableState = controller.addAccount(new Account(idField.getText(), (Account.AccountType)accountTypeComboBox.getSelectedItem(),
+                TableState tableState = accountController.addAccount(new Account(idField.getText(), (Account.AccountType)accountTypeComboBox.getSelectedItem(),
                         usernameField.getText(), passwordField.getText(), nameField.getText(),
                         (Account.Race)raceComboBox.getSelectedItem()));
                 refreshTableScrollPane(tableState);
@@ -88,7 +88,7 @@ public class AccountManagementPanel extends ChildrenPanel {
 
         updateButton = getFormattedButton("Update", 30, 280, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                TableState tableState = controller.updateAccount(new Account(idField.getText(), (Account.AccountType)accountTypeComboBox.getSelectedItem(),
+                TableState tableState = accountController.updateAccount(new Account(idField.getText(), (Account.AccountType)accountTypeComboBox.getSelectedItem(),
                         usernameField.getText(), passwordField.getText(), nameField.getText(),
                         (Account.Race)raceComboBox.getSelectedItem()));
                 refreshTableScrollPane(tableState);
@@ -98,7 +98,7 @@ public class AccountManagementPanel extends ChildrenPanel {
 
         deleteButton = getFormattedButton("Delete", 30, 320, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                TableState tableState = controller.deleteAccount(new Account(idField.getText(), (Account.AccountType)accountTypeComboBox.getSelectedItem(),
+                TableState tableState = accountController.deleteAccount(new Account(idField.getText(), (Account.AccountType)accountTypeComboBox.getSelectedItem(),
                         usernameField.getText(), passwordField.getText(), nameField.getText(),
                         (Account.Race)raceComboBox.getSelectedItem()));
                 refreshTableScrollPane(tableState);
@@ -108,7 +108,7 @@ public class AccountManagementPanel extends ChildrenPanel {
 
         searchButton = getFormattedButton("Search", 30, 360, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                TableState tableState = controller.search(new AccountController.AccountSearchQuery(idField.getText(),
+                TableState tableState = accountController.search(new AccountController.AccountSearchQuery(idField.getText(),
                         (Account.AccountType)accountTypeComboBox.getSelectedItem(),
                         usernameField.getText(), nameField.getText(),
                         (Account.Race)raceComboBox.getSelectedItem()));
@@ -119,7 +119,7 @@ public class AccountManagementPanel extends ChildrenPanel {
 
         resetButton = getFormattedButton("Reset", 30, 400, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                refreshTableScrollPane();
+                refreshTableScrollPane(accountController.getAll());
             }
         });;
         add(resetButton);

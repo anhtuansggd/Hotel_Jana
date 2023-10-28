@@ -13,8 +13,8 @@ public class Controller {
     public Controller() {
         try {
             String dbUrl = "jdbc:mysql://localhost:3306/hotel_dbms";
-            String userName = "tuan";
-            String password = "Password123!";
+            String userName = "root";
+            String password = "firsttime";
             connection = DriverManager.getConnection(dbUrl, userName, password);
 
             System.err.println("Connected to the server");

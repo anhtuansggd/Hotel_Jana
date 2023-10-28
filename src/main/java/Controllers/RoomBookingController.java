@@ -25,7 +25,7 @@ public class RoomBookingController extends Controller{
             ppsm.executeUpdate();
 
             System.out.println("RoomBooking insert succeeded");
-        }catch (SQLException e){
+        }catch (SQLException e) {
 
             //Logger logger = Logger.getLogger(RoomBookingController.class.getName());
             //logger.log(Level.INFO, "Inserted failed");

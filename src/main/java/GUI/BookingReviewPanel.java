@@ -2,12 +2,15 @@ package GUI;
 
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
 import Controllers.RoomBookingController;
+import Modules.RoomBooking;
+
+import java.awt.event.*;
+import java.time.LocalDate;
 
 public class BookingReviewPanel extends ChildrenPanel {
+    RoomBookingController roomBookingController;
+
     JLabel reservationNumberLabel;
     JTextField reservationNumberField;
 
@@ -34,9 +37,11 @@ public class BookingReviewPanel extends ChildrenPanel {
     JButton resetButton;
 
     public BookingReviewPanel() {
-        super(new RoomBookingController());
+        super();
+        roomBookingController = new RoomBookingController();
+        refreshTableScrollPane(roomBookingController.getAll());
 
-        reservationNumberLabel = getFormattedLabel("Reservation number", 30, 30, 120, 30);
+        reservationNumberLabel = getFormattedLabel("Reservation num.", 30, 30, 120, 30);
         add(reservationNumberLabel);
         reservationNumberField = getFormattedTextField(130, 40, 120, 20);
         add(reservationNumberField);
@@ -61,13 +66,34 @@ public class BookingReviewPanel extends ChildrenPanel {
         accountIDField = getFormattedTextField(130, 160, 120, 20);
         add(accountIDField);
 
-        addButton = getFormattedButton("Add", 30, 210, 80, 24);
+        addButton = getFormattedButton("Add", 30, 210, 80, 24, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                RoomBooking roomBooking = new RoomBooking(Integer.valueOf(reservationNumberField.getText()),
+                        LocalDate.now(), Integer.valueOf(durationField.getText()),
+                        Integer.valueOf(accountIDField.getText()), roomNumberField.getText());
+                refreshTableScrollPane(roomBookingController.add(roomBooking));
+            }
+        });
         add(addButton);
 
-        updateButton = getFormattedButton("Update", 30, 250, 80, 24);
+        updateButton = getFormattedButton("Update", 30, 250, 80, 24, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                RoomBooking roomBooking = new RoomBooking(Integer.valueOf(reservationNumberField.getText()),
+                        LocalDate.now(), Integer.valueOf(durationField.getText()),
+                        Integer.valueOf(accountIDField.getText()), roomNumberField.getText());
+                refreshTableScrollPane(roomBookingController.update(roomBooking));
+            }
+        });
         add(updateButton);
 
-        deleteButton = getFormattedButton("Delete", 30, 290, 80, 24);
+        deleteButton = getFormattedButton("Delete", 30, 290, 80, 24, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                RoomBooking roomBooking = new RoomBooking(Integer.valueOf(reservationNumberField.getText()),
+                        LocalDate.now(), Integer.valueOf(durationField.getText()),
+                        Integer.valueOf(accountIDField.getText()), roomNumberField.getText());
+                refreshTableScrollPane(roomBookingController.delete(roomBooking));
+            }
+        });
         add(deleteButton);
 
         searchButton = getFormattedButton("Search", 30, 330, 80, 24);
@@ -75,20 +101,5 @@ public class BookingReviewPanel extends ChildrenPanel {
 
         resetButton = getFormattedButton("Reset", 30, 370, 80, 24);
         add(resetButton);
-        
-        String[][] data = {{"Alo", "Ola"}, {"Alo", "Ola"}};
-        String[] columns = {"Alo", "Ola"};
-        TableScrollPane tableScrollPane = getFormattedTableScrollPane(
-            data, columns, 280, 30, 630, 200,
-            new ListSelectionListener() {
-                public void valueChanged(ListSelectionEvent e) {
-                    System.out.println("Row " + panelTable.getSelectedRow() + " selected");
-                }
-            }
-        );
-        panelTable = tableScrollPane.table;
-        panelScrollPane = tableScrollPane.scrollPane;
-        add(panelScrollPane);
-
     }   
 }

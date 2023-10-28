@@ -9,25 +9,31 @@ import java.awt.event.*;
 import java.text.*;
 
 import Controllers.Controller;
+import Controllers.RoomBookingController;
 import Controllers.RoomController;
 import Modules.Room;
 
-
 public class RoomSearchPanel extends ChildrenPanel {
+    RoomController roomController;
+    RoomBookingController rommBookingController;
+
     JLabel roomStyleLabel;
     JComboBox<Room.RoomStyle> roomStyleComboBox;
 
     JLabel dateLabel;
-    JFormattedTextField dateTextField;
+    JFormattedTextField dateField;
 
     JLabel durationLabel;
-    JFormattedTextField durationTextField;
+    JFormattedTextField durationField;
 
     JButton searchButton;
     JButton bookButton;
 
     public RoomSearchPanel() {
-        super(new RoomController());
+        super();
+        roomController = new RoomController();
+        refreshTableScrollPane(roomController.getAll());
+        rommBookingController = new RoomBookingController();
         
         // Room style input
         roomStyleLabel = getFormattedLabel("Room style", 30, 30, 120, 30);
@@ -40,8 +46,8 @@ public class RoomSearchPanel extends ChildrenPanel {
         add(dateLabel);
 
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        dateTextField = getFormattedTextField(df, 130, 70, 120, 20, "10/2/2024");
-        add(dateTextField);
+        dateField = getFormattedTextField(df, 130, 70, 120, 20, "10/2/2024");
+        add(dateField);
 
         // Duration input
         durationLabel = getFormattedLabel("Duration", 30, 90, 120, 30);
@@ -49,31 +55,31 @@ public class RoomSearchPanel extends ChildrenPanel {
 
         NumberFormat numFormat = new DecimalFormat("#");
         NumberFormatter numFormatter  = new NumberFormatter(numFormat); 
-        durationTextField = getFormattedTextField(numFormatter, 130, 100, 40, 20, "2");
-        add(durationTextField);
+        durationField = getFormattedTextField(numFormatter, 130, 100, 40, 20, "2");
+        add(durationField);
 
         // Search button
         searchButton = getFormattedButton("Search", 30, 160, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // System.out.println((Date)dateTextField.getValue());
-                System.out.printf("Duration: %d days\n", durationTextField.getValue());
+                System.out.printf("Duration: %d days\n", durationField.getValue());
             }
         });
         add(searchButton);
 
         bookButton =  getFormattedButton("Book", 30, 200, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // System.out.println((Date)dateTextField.getValue());
-                if (panelTable.getSelectedRow() != -1) {
-                    Object roomNumber = panelTable.getValueAt(panelTable.getSelectedRow(), 0);
-                    System.out.printf("Book room number " + roomNumber + " for " + durationTextField.getValue() + " days\n");
-                }
+                int row = panelTable.getSelectedRow();
+                panelTable.getValueAt(row, 0);
+                
+                // RoomBooking roomBooking = new RoomBooking(69, LocalDate.now(), Integer.valueOf(durationField.getText()),
+                //         Integer.valueOf(accountIDField.getText()), roomNumberField.getText());
+                // refreshTableScrollPane(roomBookingController.add(roomBooking));
             }
         });
         add(bookButton);
 
         // Room table
-        Controller.TableState tableState = controller.getAll();
+        Controller.TableState tableState = roomController.getAll();
         TableScrollPane tableScrollPane = getFormattedTableScrollPane(
             tableState.data, tableState.columns, 280, 30, 630, 200,
             new ListSelectionListener() {
