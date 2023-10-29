@@ -51,12 +51,10 @@ public class Controller {
         Properties prop = new Properties();
         //System.out.println(System.getProperty("user.dir"));
         try(FileInputStream file = new FileInputStream("/home/tuan/Documents/Java/Hotel_Java/config.properties")){
-            System.out.println("ok");
             prop.load(file);
             dbUrl = prop.getProperty("db.url");
             dbUsername = prop.getProperty("db.username");
             dbPassword = prop.getProperty("db.password");
-            System.out.println(dbUrl+" "+dbPassword);
         }catch (IOException e){
             System.out.println("loadConfig "+e.toString());
         }

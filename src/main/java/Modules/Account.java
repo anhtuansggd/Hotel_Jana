@@ -112,7 +112,7 @@ public class Account {
         this.race = race;
     }
 
-    public String hashPassword(String password){
+    public static String hashPassword(String password){
         String hashedPassword = null;
         try{
             //160 bit - 40 bytes

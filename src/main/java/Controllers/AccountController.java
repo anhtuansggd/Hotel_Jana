@@ -27,7 +27,6 @@ public class AccountController extends Controller {
             ppsm.setString(1, account.getId());
             ppsm.setString(2, account.getAccountType().toString());
             ppsm.setString(3, account.getUsername());
-            System.out.println(account.hashPassword(account.getPassword()));
             ppsm.setString(4, account.hashPassword(account.getPassword()));
             ppsm.setString(5, account.getName());
             ppsm.setString(6, account.getRace().toString());
