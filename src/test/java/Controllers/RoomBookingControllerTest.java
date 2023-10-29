@@ -13,7 +13,7 @@ public class RoomBookingControllerTest {
         RoomBookingController controller = new RoomBookingController();
         Room r = new Room();
         r.setRoomNumber("101");
-        RoomBooking roomBooking = new RoomBooking(1, LocalDate.of(2023, 10, 25), 1, 1,r.getRoomNumber());
+        RoomBooking roomBooking = new RoomBooking(1 ,LocalDate.of(2023, 9, 25), 1, 1,r.getRoomNumber());
         controller.add(roomBooking);
         System.out.println("works");
     }
@@ -32,7 +32,7 @@ public class RoomBookingControllerTest {
         RoomBookingController controller = new RoomBookingController();
         Room r = new Room();
         r.setRoomNumber("101");
-        RoomBooking roomBooking = new RoomBooking(1, LocalDate.of(2023, 10, 25), 1, 1,r.getRoomNumber());
+        RoomBooking roomBooking = new RoomBooking(5, LocalDate.of(2023, 10, 25), 1, 1,r.getRoomNumber());
         controller.delete(roomBooking);
     }
 
@@ -41,7 +41,8 @@ public class RoomBookingControllerTest {
         RoomBookingController controller = new RoomBookingController();
         Room r = new Room();
         r.setRoomNumber("101");
-        RoomBooking roomBooking = new RoomBooking(1, LocalDate.of(2023, 10, 25), 1, 1,(String) null);
-        //controller.search(roomBooking);
+        //RoomBooking = new RoomBooking(1, LocalDate.of(2023, 10, 25), 1, 1,(String) null);
+        //RoomBookingController.RoomBookingSearchQuery a = new RoomBookingController.RoomBookingSearchQuery(1, LocalDate.of(2023, 10, 25), 1, "101", "1");
+        //controller.search(a);
     }
 }

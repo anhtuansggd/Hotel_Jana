@@ -78,7 +78,7 @@ public class AccountManagementPanel extends ChildrenPanel {
 
         addButton = getFormattedButton("Add", 30, 240, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                TableState tableState = accountController.addAccount(new Account(idField.getText(), (Account.AccountType)accountTypeComboBox.getSelectedItem(),
+                TableState tableState = accountController.add(new Account(idField.getText(), (Account.AccountType)accountTypeComboBox.getSelectedItem(),
                         usernameField.getText(), passwordField.getText(), nameField.getText(),
                         (Account.Race)raceComboBox.getSelectedItem()));
                 refreshTableScrollPane(tableState);
@@ -88,7 +88,7 @@ public class AccountManagementPanel extends ChildrenPanel {
 
         updateButton = getFormattedButton("Update", 30, 280, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                TableState tableState = accountController.updateAccount(new Account(idField.getText(), (Account.AccountType)accountTypeComboBox.getSelectedItem(),
+                TableState tableState = accountController.update(new Account(idField.getText(), (Account.AccountType)accountTypeComboBox.getSelectedItem(),
                         usernameField.getText(), passwordField.getText(), nameField.getText(),
                         (Account.Race)raceComboBox.getSelectedItem()));
                 refreshTableScrollPane(tableState);
@@ -98,7 +98,7 @@ public class AccountManagementPanel extends ChildrenPanel {
 
         deleteButton = getFormattedButton("Delete", 30, 320, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                TableState tableState = accountController.deleteAccount(new Account(idField.getText(), (Account.AccountType)accountTypeComboBox.getSelectedItem(),
+                TableState tableState = accountController.delete(new Account(idField.getText(), (Account.AccountType)accountTypeComboBox.getSelectedItem(),
                         usernameField.getText(), passwordField.getText(), nameField.getText(),
                         (Account.Race)raceComboBox.getSelectedItem()));
                 refreshTableScrollPane(tableState);

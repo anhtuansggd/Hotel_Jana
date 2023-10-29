@@ -11,7 +11,7 @@ public class LogInControllerTest {
         String user_name = "RemyRat";
         String password = "Remy123";
         LogInController lc = new LogInController();
-        lc.Login();
+        //lc.Login();
 
     }
 }

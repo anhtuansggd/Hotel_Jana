@@ -14,12 +14,12 @@ public class RoomController extends Controller{
 
     public TableState add(Room room){
         try{
-            ppsm = connection.prepareStatement(
-                    "INSERT INTO room VALUES(?,?,?)");
+            String sql = "INSERT INTO room VALUES(?,?,?);";
+            ppsm = connection.prepareStatement(sql);
             ppsm.setString(1, room.getRoomNumber());
             ppsm.setString(2, room.getStyle().toString());
             ppsm.setInt(3, room.isSmoking());
-            ppsm.executeUpdate();
+            executeInsert(sql, ppsm);
 
             System.out.println("Room insert succeeded");
         }catch (SQLException e){
@@ -38,12 +38,12 @@ public class RoomController extends Controller{
             /*
             reservation_number is pk
              */
-            ppsm = connection.prepareStatement(
-                    "UPDATE room SET room_style=?, is_smoking=? WHERE room_number=?;");
+            String sql = "UPDATE room SET room_style=?, is_smoking=? WHERE room_number=?;";
+            ppsm = connection.prepareStatement(sql);
             ppsm.setString(1, room.getStyle().toString());
             ppsm.setInt(2, room.isSmoking());
             ppsm.setString(3, room.getRoomNumber());
-            ppsm.executeUpdate();
+            executeUpdate(sql, ppsm);
 
             System.out.println("RoomBooking update succeeded");
         }catch (SQLException e){
@@ -55,10 +55,10 @@ public class RoomController extends Controller{
 
     public TableState delete(Room room){
         try{
-            ppsm = connection.prepareStatement(
-                    "DELETE FROM room WHERE room_number=?;");
+            String sql = "DELETE FROM room WHERE room_number=?;";
+            ppsm = connection.prepareStatement(sql);
             ppsm.setString(1, room.getRoomNumber());
-            ppsm.executeUpdate();
+            executeDelete(sql, ppsm);
 
             System.out.println("Room delete succeeded");
         }catch (SQLException e){
@@ -66,10 +66,6 @@ public class RoomController extends Controller{
         }
         close();
         return getAll();
-    }
-
-    public TableState getAll() {
-        return _getAll("room");
     }
 
     public class RoomSearchQuery {
@@ -83,23 +79,22 @@ public class RoomController extends Controller{
      **/
     public TableState search(RoomSearchQuery roomSearchQuery) {
         try{
-            ppsm = connection.prepareStatement(
-                    "SELECT *\n" +
-                            "FROM room r\n" +
-                            "WHERE r.room_style = ?\n" +
-                            "OR r.room_number IN (\n" +
-                            "    SELECT rb.room_number\n" +
-                            "\tFROM room_booking rb\n" +
-                            "\tWHERE (rb.start_date <= ? AND rb.start_date + rb.duration > ?)\n" +
-                            "\tOR (rb.start_date < ? AND rb.start_date + rb.duration >= ?)\n" +
-                            ")");
+            String sql = "SELECT *\n" +
+                    "FROM room r\n" +
+                    "WHERE r.room_style = ?\n" +
+                    "OR r.room_number IN (\n" +
+                    "    SELECT rb.room_number\n" +
+                    "\tFROM room_booking rb\n" +
+                    "\tWHERE (rb.start_date <= ? AND rb.start_date + rb.duration > ?)\n" +
+                    "\tOR (rb.start_date < ? AND rb.start_date + rb.duration >= ?)\n" +
+                    ");";
+            ppsm = connection.prepareStatement(sql);
             ppsm.setString(1, roomSearchQuery.roomStyle.toString());
             ppsm.setDate(2, Date.valueOf(roomSearchQuery.startDate));
             ppsm.setDate(3, Date.valueOf(roomSearchQuery.startDate));
             ppsm.setDate(4, Date.valueOf(roomSearchQuery.startDate.plusDays(roomSearchQuery.duration)));
             ppsm.setDate(5, Date.valueOf(roomSearchQuery.startDate.plusDays(roomSearchQuery.duration)));
-            System.out.println(ppsm);
-            ppsm.executeQuery();
+            executeSearch(sql, ppsm);
             System.out.println("Room search succeeded");
             return getAll();
         }catch (SQLException e){
@@ -109,11 +104,9 @@ public class RoomController extends Controller{
         return null;
     }
 
-
-    public boolean find(int reservation_number){
-        return false;
-    };
-
-
+    @Override
+    public TableState getAll() {
+        return _getAll("room");
+    }
 
 }
