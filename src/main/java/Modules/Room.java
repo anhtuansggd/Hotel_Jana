@@ -22,10 +22,6 @@ public class Room {
         this.isSmoking = isSmoking;
     }
 
-    public boolean isRoomAvailable(){ return false; };
-    public boolean checkin(){return false;};
-    public boolean checkout(){return false;};
-
     public String getRoomNumber() {
         return roomNumber;
     }

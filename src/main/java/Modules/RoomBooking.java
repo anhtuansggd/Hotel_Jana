@@ -18,8 +18,6 @@ public class RoomBooking {
         this.roomId = roomId;
     }
 
-    public RoomBooking fectchDetails(String reservationNumber){return null;};
-
     public int getReservationNumber() {
         return reservationNumber;
     }

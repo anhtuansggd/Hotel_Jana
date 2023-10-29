@@ -8,6 +8,16 @@ import java.time.LocalDate;
 
 
 public class RoomBookingController extends Controller{
+    private static final String insertRoomSQL = "INSERT INTO room_booking VALUES(?,?,?,?,?);";
+    private static final String updateRoomSQL = "UPDATE room_booking SET start_date=?, duration=?, room_number=?, account_id=? WHERE reservation_number=?;";
+    private static final String deleteRoomSQL = "DELETE FROM room_booking WHERE reservation_number=?;";
+    private static final String searchRoomSQL = "SELECT *\n" +
+            "FROM room_booking\n" +
+            "WHERE reservation_number = ?\n" +
+            "OR ((start_date LIKE ? OR start_date IS NULL)\n" +
+            "AND (duration=? OR duration IS NULL)\n" +
+            "AND (room_number=? OR room_number IS NULL)\n" +
+            "AND (account_id=? OR account_id IS NULL));";
 
     public RoomBookingController() {
         super();
@@ -15,15 +25,14 @@ public class RoomBookingController extends Controller{
 
     public TableState add(RoomBooking roombooking){
         try{
-            String sql = "INSERT INTO room_booking VALUES(?,?,?,?,?);";
-            ppsm = connection.prepareStatement(sql);
+            ppsm = connection.prepareStatement(insertRoomSQL);
             ppsm.setInt(1, roombooking.getReservationNumber());
             ppsm.setDate(2, java.sql.Date.valueOf(roombooking.getStartDate()));
             ppsm.setInt(3, roombooking.getDurationInDays());
             ppsm.setString(4, roombooking.getRoomId());
             ppsm.setInt(5, roombooking.getGuestId());
             System.out.println("Con1");
-            executeInsert(sql, ppsm);
+            executeInsert(insertRoomSQL, ppsm);
             System.out.println("RoomBooking insert succeeded");
         }catch (SQLException e) {
 
@@ -41,14 +50,13 @@ public class RoomBookingController extends Controller{
             /*
             reservation_number is pk
              */
-            String sql = "UPDATE room_booking SET start_date=?, duration=?, room_number=?, account_id=? WHERE reservation_number=?;";
-            ppsm = connection.prepareStatement(sql);
+            ppsm = connection.prepareStatement(updateRoomSQL);
             ppsm.setDate(1, java.sql.Date.valueOf(roombooking.getStartDate()));
             ppsm.setInt(2, roombooking.getDurationInDays());
             ppsm.setString(3, roombooking.getRoomId());
             ppsm.setInt(4, roombooking.getGuestId());
             ppsm.setInt(5, roombooking.getReservationNumber());
-            executeUpdate(sql, ppsm);
+            executeUpdate(updateRoomSQL, ppsm);
 
             System.out.println("RoomBooking update succeeded");
         }catch (SQLException e){
@@ -61,10 +69,9 @@ public class RoomBookingController extends Controller{
 
     public TableState delete(RoomBooking roombooking){
         try{
-            String sql = "DELETE FROM room_booking WHERE reservation_number=?;";
-            ppsm = connection.prepareStatement(sql);
+            ppsm = connection.prepareStatement(deleteRoomSQL);
             ppsm.setInt(1, roombooking.getReservationNumber());
-            executeDelete(sql, ppsm);
+            executeDelete(deleteRoomSQL, ppsm);
             System.out.println("RoomBooking delete succeeded");
         }catch (SQLException e){
             System.out.println("RoomBooking delete failed "+e.toString());
@@ -87,14 +94,7 @@ public class RoomBookingController extends Controller{
      **/
     public TableState search(RoomBookingSearchQuery roomBookingSearchQuery){
         try{
-            String sql = "SELECT *\n" +
-                    "FROM room_booking\n" +
-                    "WHERE reservation_number = ?\n" +
-                    "OR ((start_date LIKE ? OR start_date IS NULL)\n" +
-                    "AND (duration=? OR duration IS NULL)\n" +
-                    "AND (room_number=? OR room_number IS NULL)\n" +
-                    "AND (account_id=? OR account_id IS NULL));";
-            ppsm = connection.prepareStatement(sql);
+            ppsm = connection.prepareStatement(searchRoomSQL);
             /**
              * 3 variables below are to handle value of "" as null when being passed from GUI.
              * Primitive can't be null -> Wrapper class such as Integer
@@ -108,7 +108,7 @@ public class RoomBookingController extends Controller{
             ppsm.setInt(3, roomBookingSearchQuery.duration);
             ppsm.setString(4, roomBookingSearchQuery.room_number.equals("")? null : roomBookingSearchQuery.room_number);
             ppsm.setString(5, roomBookingSearchQuery.account_id.equals("")? null : roomBookingSearchQuery.account_id);
-            executeSearch(sql, ppsm);
+            executeSearch(searchRoomSQL, ppsm);
             System.out.println("Room search succeeded");
             return getAll();
         }catch (SQLException e){

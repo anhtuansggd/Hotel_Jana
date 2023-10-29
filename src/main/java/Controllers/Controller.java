@@ -5,10 +5,14 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.*;
+import java.io.*;
 
 
 public class Controller {
+    private static String dbUrl;
+    private static String dbUsername;
+    private static String dbPassword;
     /**
      * Instead of create new connection for each query
      * -> Implementing connection pool as cache of connection for reuse purpose
@@ -18,10 +22,11 @@ public class Controller {
     protected static HikariDataSource dataSource;
 
     static{
+        loadConfig();
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:mysql://localhost:3306/hotel_dbms");
-        config.setUsername("tuan");
-        config.setPassword("Password123!");
+        config.setJdbcUrl(dbUrl);
+        config.setUsername(dbUsername);
+        config.setPassword(dbPassword);
 
         dataSource = new HikariDataSource(config);
         System.err.println("Connected to the server");
@@ -34,6 +39,26 @@ public class Controller {
             connection = dataSource.getConnection();
         } catch (SQLException e) {
             System.err.println("Error connecting to the server");
+        }
+    }
+
+    /**
+     * System.out.println(System.getProperty("user.dir"));
+     * Use above command to get path, then replace before /config.properties
+     */
+
+    private static void loadConfig() {
+        Properties prop = new Properties();
+        //System.out.println(System.getProperty("user.dir"));
+        try(FileInputStream file = new FileInputStream("/home/tuan/Documents/Java/Hotel_Java/config.properties")){
+            System.out.println("ok");
+            prop.load(file);
+            dbUrl = prop.getProperty("db.url");
+            dbUsername = prop.getProperty("db.username");
+            dbPassword = prop.getProperty("db.password");
+            System.out.println(dbUrl+" "+dbPassword);
+        }catch (IOException e){
+            System.out.println("loadConfig "+e.toString());
         }
     }
 
@@ -58,33 +83,58 @@ public class Controller {
     }
 
 
-    public TableState add(){ return null; }
-    public TableState update(){ return null; }
-    public TableState delete(){ return null; }
-    public TableState search(){ return null; }
+//    public TableState add(){ return null; }
+//    public TableState update(){ return null; }
+//    public TableState delete(){ return null; }
+//    public TableState search(){ return null; }
 
-    protected void executeInsert(String sql, PreparedStatement ppsm) throws SQLException{
-        System.out.println("Con2");
-        ppsm.executeUpdate();
-        System.out.println("Inserted");
+    protected void executeInsert(String sql, PreparedStatement ppsm){
+        try{
+            if(connection.isClosed()){
+                connection = dataSource.getConnection();
+            }
+            ppsm.executeUpdate();
+            System.out.println("Inserted");
+        }catch (SQLException e){
+            System.out.println("Insert failed " + e.toString());
+        }
+
     }
 
-    protected void executeUpdate(String sql, PreparedStatement ppsm) throws SQLException{
-        System.out.println("Con3");
-        ppsm.executeUpdate();
-        System.out.println("Updated");
+    protected void executeUpdate(String sql, PreparedStatement ppsm){
+        try{
+            if(connection.isClosed()){
+                connection = dataSource.getConnection();
+            }
+            ppsm.executeUpdate();
+            System.out.println("Updated");
+        }catch (SQLException e){
+            System.out.println("Update failed " + e.toString());
+        }
     }
 
-    protected void executeDelete(String sql, PreparedStatement ppsm) throws SQLException{
-        System.out.println("Con4");
-        ppsm.executeUpdate();
-        System.out.println("Deleted");
+    protected void executeDelete(String sql, PreparedStatement ppsm){
+        try{
+            if(connection.isClosed()){
+                connection = dataSource.getConnection();
+            }
+            ppsm.executeUpdate();
+            System.out.println("Deleted");
+        }catch (SQLException e){
+            System.out.println("Delete failed " + e.toString());
+        }
     }
 
-    protected void executeSearch(String sql, PreparedStatement ppsm) throws SQLException{
-        System.out.println("Con5");
-        ppsm.executeQuery();
-        System.out.println("Searched");
+    protected void executeSearch(String sql, PreparedStatement ppsm){
+        try{
+            if(connection.isClosed()){
+                connection = dataSource.getConnection();
+            }
+            ppsm.executeQuery();
+            System.out.println("Searched");
+        }catch (SQLException e){
+            System.out.println("Search failed " + e.toString());
+        }
     }
 
 
@@ -104,6 +154,9 @@ public class Controller {
         ArrayList<String[]> accountsArrayList = new ArrayList<String[]>();
 
         try {
+            if(connection.isClosed()){
+                connection = dataSource.getConnection();
+            }
             Statement stmt = connection.createStatement();
             ResultSet rSet = stmt.executeQuery("SELECT * FROM " + tableName);
 
@@ -128,6 +181,9 @@ public class Controller {
         ArrayList<String> columnsArrayList = new ArrayList<String>();
 
         try {
+            if(connection.isClosed()){
+                connection = dataSource.getConnection();
+            }
             DatabaseMetaData metaData = connection.getMetaData();
             ResultSet columnSet = metaData.getColumns(null, null, tableName, null);
 

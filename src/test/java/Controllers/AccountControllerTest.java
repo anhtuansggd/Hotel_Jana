@@ -8,22 +8,20 @@ public class AccountControllerTest {
     @Test
     public void addAccount() {
         AccountController ac = new AccountController();
-        ac.addAccount(new Account("9", Account.AccountType.GUEST, "RemyRat", "Remy123", "Remy", Account.Race.HUMAN));
-        ac.update();
+        ac.add(new Account("11", Account.AccountType.GUEST, "RemyRat", "Remy123", "Remy", Account.Race.HUMAN));
+        //ac.update();
     }
 
     @Test
     public void updateAccount() {
         AccountController ac = new AccountController();
-        ac.updateAccount(new Account("9", Account.AccountType.GUEST, "RemyRaty", "Remy123", "Remy", Account.Race.HUMAN));
-        ac.update();
+        ac.update(new Account("11", Account.AccountType.GUEST, "RemyRaty", "Remy123", "Remy", Account.Race.HUMAN));
     }
 
     @Test
     public void deleteAccount() {
         AccountController ac = new AccountController();
-        ac.deleteAccount(new Account("9", Account.AccountType.GUEST, "RemyRaty", "Remy123", "Remy", Account.Race.HUMAN));
-        ac.update();
+        ac.delete(new Account("9", Account.AccountType.GUEST, "RemyRaty", "Remy123", "Remy", Account.Race.HUMAN));
     }
 
     @Test
