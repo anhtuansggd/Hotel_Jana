@@ -1,4 +1,10 @@
 package Modules;
+
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HexFormat;
+
 public class Account {
     private String id;
     private AccountType type;
@@ -104,5 +110,18 @@ public class Account {
 
     public void setRace(Race race) {
         this.race = race;
+    }
+
+    public String hashPassword(String password){
+        String hashedPassword = null;
+        try{
+            //160 bit - 40 bytes
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            byte[] bytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
+            hashedPassword = HexFormat.of().formatHex(bytes);
+        }catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        }
+        return hashedPassword;
     }
 }
