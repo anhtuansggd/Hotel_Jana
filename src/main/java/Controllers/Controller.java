@@ -50,7 +50,7 @@ public abstract class Controller<T> {
     private static void loadConfig() {
         Properties prop = new Properties();
         //System.out.println(System.getProperty("user.dir"));
-        try(FileInputStream file = new FileInputStream("/home/tuan/Documents/Java/Hotel_Java/config.properties")){
+        try(FileInputStream file = new FileInputStream("/home/tuan/Documents/Java/Hotel_Jana/config.properties")){
             prop.load(file);
             dbUrl = prop.getProperty("db.url");
             dbUsername = prop.getProperty("db.username");

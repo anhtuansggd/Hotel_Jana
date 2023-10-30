@@ -18,7 +18,6 @@ public class LogInController extends Controller<Account> {
                             "WHERE user_name=? AND password=?;");
             ppsm.setString(1, user_name);
             ppsm.setString(2, Account.hashPassword(password));
-            System.out.println(password+" "+Account.hashPassword(password));
             ResultSet set = ppsm.executeQuery();
             set.next();
             System.out.println("Login succeeded");
