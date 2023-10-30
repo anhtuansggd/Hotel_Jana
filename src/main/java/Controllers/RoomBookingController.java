@@ -7,7 +7,7 @@ import java.sql.*;
 import java.time.LocalDate;
 
 
-public class RoomBookingController extends Controller{
+public class RoomBookingController extends Controller<RoomBooking>{
     private static final String insertRoomSQL = "INSERT INTO room_booking VALUES(?,?,?,?,?);";
     private static final String updateRoomSQL = "UPDATE room_booking SET start_date=?, duration=?, room_number=?, account_id=? WHERE reservation_number=?;";
     private static final String deleteRoomSQL = "DELETE FROM room_booking WHERE reservation_number=?;";
@@ -23,6 +23,7 @@ public class RoomBookingController extends Controller{
         super();
     }
 
+    @Override
     public TableState add(RoomBooking roombooking){
         try{
             ppsm = connection.prepareStatement(insertRoomSQL);
@@ -45,6 +46,7 @@ public class RoomBookingController extends Controller{
         return getAll();
     }
 
+    @Override
     public TableState update(RoomBooking roombooking){
         try{
             /*
@@ -67,6 +69,7 @@ public class RoomBookingController extends Controller{
     }
 
 
+    @Override
     public TableState delete(RoomBooking roombooking){
         try{
             ppsm = connection.prepareStatement(deleteRoomSQL);

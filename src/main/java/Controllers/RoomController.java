@@ -7,11 +7,12 @@ import java.sql.*;
 import java.time.LocalDate;
 
 
-public class RoomController extends Controller{
+public class RoomController extends Controller<Room>{
     public RoomController() {
         super();
     }
 
+    @Override
     public TableState add(Room room){
         try{
             String sql = "INSERT INTO room VALUES(?,?,?);";
@@ -33,6 +34,7 @@ public class RoomController extends Controller{
         return getAll();
     }
 
+    @Override
     public TableState update(Room room){
         try{
             /*
@@ -53,6 +55,7 @@ public class RoomController extends Controller{
         return getAll();
     }
 
+    @Override
     public TableState delete(Room room){
         try{
             String sql = "DELETE FROM room WHERE room_number=?;";

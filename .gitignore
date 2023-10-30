@@ -1,4 +1,5 @@
-.idea/
+/.idea/
 /target/
 .vscode/settings.json
 config.properties
+Hotel_Java.iml

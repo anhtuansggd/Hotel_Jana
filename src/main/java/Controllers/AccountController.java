@@ -3,7 +3,7 @@ package Controllers;
 import Modules.Account;
 import java.sql.*;
 
-public class AccountController extends Controller {
+public class AccountController extends Controller<Account>{
     private static final String insertAccountSQL = "INSERT INTO account VALUES(?,?,?,?,?,?);";
     private static final String updateAccountSQL = "UPDATE account SET account_type=?, user_name=?, password=?, name=?, race=? WHERE id=?;";
     private static final String deleteAccountSQL = "DELETE FROM account WHERE id=?;";
@@ -21,6 +21,8 @@ public class AccountController extends Controller {
         super();
     }
 
+
+    @Override
     public TableState add(Account account) {
         try{
             ppsm = connection.prepareStatement(insertAccountSQL);
@@ -44,6 +46,7 @@ public class AccountController extends Controller {
         return getAll();
     }
 
+    @Override
     public TableState update(Account account) {
         try{
             ppsm = connection.prepareStatement(updateAccountSQL);
@@ -67,6 +70,7 @@ public class AccountController extends Controller {
         return getAll();
     }
 
+    @Override
     public TableState delete(Account account) {
         try{
             ppsm = connection.prepareStatement(deleteAccountSQL);

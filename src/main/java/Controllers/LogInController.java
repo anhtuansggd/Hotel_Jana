@@ -5,7 +5,7 @@ import Modules.Account;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class LogInController extends Controller {
+public class LogInController extends Controller<Account> {
     public LogInController(){
         super();
     }
@@ -18,6 +18,7 @@ public class LogInController extends Controller {
                             "WHERE user_name=? AND password=?;");
             ppsm.setString(1, user_name);
             ppsm.setString(2, Account.hashPassword(password));
+            System.out.println(password+" "+Account.hashPassword(password));
             ResultSet set = ppsm.executeQuery();
             set.next();
             System.out.println("Login succeeded");
@@ -28,4 +29,19 @@ public class LogInController extends Controller {
         close();
         return null;
     }
+
+    @Override
+    public TableState add(Account ac){
+        return null;
+    };
+
+    @Override
+    public TableState update(Account ac){
+        return null;
+    };
+
+    @Override
+    public TableState delete(Account ac){
+        return null;
+    };
 }

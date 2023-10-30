@@ -9,7 +9,7 @@ import java.util.*;
 import java.io.*;
 
 
-public class Controller {
+public abstract class Controller<T> {
     private static String dbUrl;
     private static String dbUsername;
     private static String dbPassword;
@@ -79,7 +79,17 @@ public class Controller {
             }
         }
     }
-    
+
+
+    /**
+     * Due to
+     */
+    public abstract TableState add(T entity);
+    public abstract TableState update(T entity);
+    public abstract TableState delete(T entity);
+    public TableState search(){return  null;};
+
+
     protected void executeInsert(String sql, PreparedStatement ppsm){
         try{
             if(connection.isClosed()){
@@ -204,8 +214,8 @@ public class Controller {
 
 
     public static void main(String[] args) {
-        Controller con = new Controller();
-        System.out.println("Establish " + con);
+        //Controller con = new Controller();
+        //System.out.println("Establish " + con);
     }
 }
 
