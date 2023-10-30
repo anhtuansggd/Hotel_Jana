@@ -29,7 +29,6 @@ public class Controller {
         config.setPassword(dbPassword);
 
         dataSource = new HikariDataSource(config);
-        System.err.println("Connected to the server");
     }
 
     protected Connection connection;
@@ -37,6 +36,7 @@ public class Controller {
     public Controller() {
         try {
             connection = dataSource.getConnection();
+            System.err.println("Connected to the server");
         } catch (SQLException e) {
             System.err.println("Error connecting to the server");
         }
@@ -79,13 +79,7 @@ public class Controller {
             }
         }
     }
-
-
-//    public TableState add(){ return null; }
-//    public TableState update(){ return null; }
-//    public TableState delete(){ return null; }
-//    public TableState search(){ return null; }
-
+    
     protected void executeInsert(String sql, PreparedStatement ppsm){
         try{
             if(connection.isClosed()){
