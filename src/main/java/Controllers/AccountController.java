@@ -1,6 +1,7 @@
 package Controllers;
 
 import Modules.Account;
+
 import java.sql.*;
 import java.util.*;
 
@@ -37,10 +38,6 @@ public class AccountController extends Controller<Account>{
 
             System.out.println("Account insert succeeded");
         }catch (SQLException e){
-            /*
-            Logger logger = Logger.getLogger(RoomBookingController.class.getName());
-            logger.log(Level.INFO, "Inserted failed");
-             */
             System.out.println("Account insert failed " + e.toString());
         }
         close();
@@ -61,10 +58,6 @@ public class AccountController extends Controller<Account>{
 
             System.out.println("Account update succeeded");
         }catch (SQLException e){
-            /*
-            Logger logger = Logger.getLogger(RoomBookingController.class.getName());
-            logger.log(Level.INFO, "Inserted failed");
-             */
             System.out.println("Account update failed " + e.toString());
         }
         close();
@@ -79,10 +72,6 @@ public class AccountController extends Controller<Account>{
             execute(ppsm);
             System.out.println("Account delete succeeded");
         }catch (SQLException e){
-            /*
-            Logger logger = Logger.getLogger(RoomBookingController.class.getName());
-            logger.log(Level.INFO, "Inserted failed");
-             */
             System.out.println("Account delete failed " + e.toString());
         }
         close();
