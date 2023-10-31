@@ -83,43 +83,59 @@ public class RoomBookingController extends Controller<RoomBooking>{
         return getAll();
     }
 
-    public class RoomBookingSearchQuery {
+    public static class RoomBookingSearchQuery {
         public int reservationNumber;
         public LocalDate startDate;
         public int duration;
         public String room_number;
         public String account_id;
 
+        public RoomBookingSearchQuery(int reservationNumber, LocalDate startDate, int duration, String room_number, String account_id) {
+            this.reservationNumber = reservationNumber;
+            this.startDate = startDate;
+            this.duration = duration;
+            this.room_number = room_number;
+            this.account_id = account_id;
+        }
     }
 
     /**
      * start_date, duration, room_number, account_id are allowed to be null
      **/
-    public TableState search(RoomBookingSearchQuery roomBookingSearchQuery){
-        try{
-            ppsm = connection.prepareStatement(searchRoomSQL);
-            /**
-             * 3 variables below are to handle value of "" as null when being passed from GUI.
-             * Primitive can't be null -> Wrapper class such as Integer
-             */
-            Integer reservationNumber = "".equals(roomBookingSearchQuery.reservationNumber) ? null : (roomBookingSearchQuery.reservationNumber);
-            LocalDate startDate = "".equals(roomBookingSearchQuery.startDate) ? null : (roomBookingSearchQuery.startDate);
-            Integer duration = "".equals(roomBookingSearchQuery.duration) ? null : (roomBookingSearchQuery.duration);
-
-            ppsm.setInt(1, reservationNumber);
-            ppsm.setDate(2, java.sql.Date.valueOf(roomBookingSearchQuery.startDate));
-            ppsm.setInt(3, roomBookingSearchQuery.duration);
-            ppsm.setString(4, roomBookingSearchQuery.room_number.equals("")? null : roomBookingSearchQuery.room_number);
-            ppsm.setString(5, roomBookingSearchQuery.account_id.equals("")? null : roomBookingSearchQuery.account_id);
-            //executeSearch(searchRoomSQL, ppsm);
-            System.out.println("Room search succeeded");
-            return getAll();
-        }catch (SQLException e){
-            System.out.println("Room search failed "+e.toString());
-        }
-        close();
-        return null;
-    }
+//    public void search(RoomBookingSearchQuery roomBookingSearchQuery){
+//        try{
+//            ppsm = connection.prepareStatement(searchRoomSQL);
+//            /**
+//             * 3 variables below are to handle value of "" as null when being passed from GUI.
+//             * Primitive can't be null -> Wrapper class such as Integer
+//             */
+//            Integer reservationNumber = "".equals(roomBookingSearchQuery.reservationNumber) ? null : (roomBookingSearchQuery.reservationNumber);
+//            LocalDate startDate = "".equals(roomBookingSearchQuery.startDate) ? null : (roomBookingSearchQuery.startDate);
+//            Integer duration = "".equals(roomBookingSearchQuery.duration) ? null : (roomBookingSearchQuery.duration);
+//
+//            ppsm.setInt(1, reservationNumber);
+//            ppsm.setDate(2, java.sql.Date.valueOf(roomBookingSearchQuery.startDate));
+//            ppsm.setInt(3, roomBookingSearchQuery.duration);
+//            ppsm.setString(4, roomBookingSearchQuery.room_number.equals("")? null : roomBookingSearchQuery.room_number);
+//            ppsm.setString(5, roomBookingSearchQuery.account_id.equals("")? null : roomBookingSearchQuery.account_id);
+//            ResultSet rs = executeSearch(ppsm);
+//
+//            while (rs.next()){
+//                String[] row= new String[6];
+//                for(int i=1; i<=5; i++){
+//                    row[i-1] = rs.getString(i);
+//                }
+//                arrayList.add(row);
+//            }
+//            System.out.println("Account search succeeded");
+//            String[][] resultArray = new String[arrayList.size()][];
+//            resultArray = arrayList.toArray(resultArray);
+//            System.out.println("Room search succeeded");
+//        }catch (SQLException e){
+//            System.out.println("Room search failed "+e.toString());
+//        }
+//        close();
+//    }
 
     @Override
     public TableState getAll() {

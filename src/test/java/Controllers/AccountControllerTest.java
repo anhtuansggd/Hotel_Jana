@@ -27,7 +27,7 @@ public class AccountControllerTest {
     @Test
     public void searchAccount() {
         AccountController ac = new AccountController();
-        ac.search(new AccountController.AccountSearchQuery("", "", "", "", Account.Race.VAMPIRE.toString()));
+        ac.search(new Account("", Account.AccountType.GUEST, "", "", "", Account.Race.VAMPIRE));
     }
 
     @Test

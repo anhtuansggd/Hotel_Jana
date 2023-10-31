@@ -41,8 +41,8 @@ public class RoomBookingControllerTest {
         RoomBookingController controller = new RoomBookingController();
         Room r = new Room();
         r.setRoomNumber("101");
-        //RoomBooking = new RoomBooking(1, LocalDate.of(2023, 10, 25), 1, 1,(String) null);
-        //RoomBookingController.RoomBookingSearchQuery a = new RoomBookingController.RoomBookingSearchQuery(1, LocalDate.of(2023, 10, 25), 1, "101", "1");
+        //RoomBooking  = new RoomBooking(1, LocalDate.of(2023, 10, 25), 1, 1,(String) null);
+        RoomBookingController.RoomBookingSearchQuery a = new RoomBookingController.RoomBookingSearchQuery(1, LocalDate.of(2023, 10, 2), 1, "101", "1");
         //controller.search(a);
     }
 }

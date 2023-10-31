@@ -14,12 +14,13 @@ public class RoomController extends Controller<Room>{
     private static final String deleteRoomSQL = "DELETE FROM room WHERE room_number=?;";
     private static final String searchRoomSQL = "SELECT *\n" +
             "FROM room r\n" +
-            "WHERE r.room_style = ?\n" +
-            "OR r.room_number IN (\n" +
-            "    SELECT rb.room_number\n" +
+            "WHERE (? IS NULL OR r.room_style=?)\n" +
+            "AND r.room_number NOT IN (\n" +
+            "\tSELECT rb.room_number\n" +
             "\tFROM room_booking rb\n" +
-            "\tWHERE (rb.start_date <= ? AND rb.start_date + rb.duration > ?)\n" +
-            "\tOR (rb.start_date < ? AND rb.start_date + rb.duration >= ?)\n" +
+            "    WHERE (rb.start_date <= ? AND DATE_ADD(start_date, INTERVAL duration DAY) > ?) \n" +
+            "\tOR (rb.start_date < ? AND DATE_ADD(start_date, INTERVAL duration DAY) >= ?) \n" +
+            "\tOR (rb.start_date >= ? AND DATE_ADD(start_date, INTERVAL duration DAY) <= ?)\n" +
             ");";
 
     public RoomController() {
@@ -82,61 +83,51 @@ public class RoomController extends Controller<Room>{
         return getAll();
     }
 
-    public class RoomSearchQuery {
+    public static class RoomSearchQuery {
         public Room.RoomStyle roomStyle;
         public LocalDate startDate;
         public int duration ;
+
+        public RoomSearchQuery(Room.RoomStyle roomStyle, LocalDate startDate, int duration) {
+            this.roomStyle = roomStyle;
+            this.startDate = startDate;
+            this.duration = duration;
+        }
     }
 
     /**
-     * No attributes allowed to be null
-     **/
-    public TableState search(RoomSearchQuery roomSearchQuery) {
-        try{
-            ppsm = connection.prepareStatement(searchRoomSQL);
-            ppsm.setString(1, roomSearchQuery.roomStyle.toString());
-            ppsm.setDate(2, Date.valueOf(roomSearchQuery.startDate));
-            ppsm.setDate(3, Date.valueOf(roomSearchQuery.startDate));
-            ppsm.setDate(4, Date.valueOf(roomSearchQuery.startDate.plusDays(roomSearchQuery.duration)));
-            ppsm.setDate(5, Date.valueOf(roomSearchQuery.startDate.plusDays(roomSearchQuery.duration)));
-            //executeSearch(searchRoomSQL, ppsm);
-
-            System.out.println("Room search succeeded");
-            return getAll();
-        }catch (SQLException e){
-            System.out.println("Room search failed "+e.toString());
-        }
-        close();
-        return null;
-    }
-
-    public String[][] search1(RoomSearchQuery roomSearchQuery) {
+     * Only room_style allowed to be null
+     */
+    public String[][] search(RoomSearchQuery roomSearchQuery) {
         ArrayList<String[]> arrayList = new ArrayList<String[]>();
         try{
             ppsm = connection.prepareStatement(searchRoomSQL);
-            ppsm.setString(1, roomSearchQuery.roomStyle.toString());
-            ppsm.setDate(2, Date.valueOf(roomSearchQuery.startDate));
+            ppsm.setString(1, roomSearchQuery.roomStyle.toString().equals("")? null :roomSearchQuery.roomStyle.toString());
+            ppsm.setString(2, roomSearchQuery.roomStyle.toString().equals("")? null :roomSearchQuery.roomStyle.toString());
             ppsm.setDate(3, Date.valueOf(roomSearchQuery.startDate));
-            ppsm.setDate(4, Date.valueOf(roomSearchQuery.startDate.plusDays(roomSearchQuery.duration)));
+            ppsm.setDate(4, Date.valueOf(roomSearchQuery.startDate));
             ppsm.setDate(5, Date.valueOf(roomSearchQuery.startDate.plusDays(roomSearchQuery.duration)));
+            ppsm.setDate(6, Date.valueOf(roomSearchQuery.startDate.plusDays(roomSearchQuery.duration)));
+            ppsm.setDate(7, Date.valueOf(roomSearchQuery.startDate));
+            ppsm.setDate(8, Date.valueOf(roomSearchQuery.startDate));
             executeSearch(ppsm);
             System.out.println(ppsm);
             ResultSet rs = executeSearch(ppsm);
 
             while (rs.next()){
-                String[] row= new String[6];
-                for(int i=1; i<3; i++){
-                    row[i] = rs.getString(i);
+                String[] row= new String[3];
+                for(int i=1; i<=3; i++){
+                    row[i-1] = rs.getString(i);
                 }
                 arrayList.add(row);
             }
-            System.out.println("Account search succeeded");
+            System.out.println("Room search succeeded");
             String[][] resultArray = new String[arrayList.size()][];
             resultArray = arrayList.toArray(resultArray);
             close();
             return resultArray;
         }catch (SQLException e){
-            System.out.println("Account search failed "+e.toString());
+            System.out.println("Room search failed "+e.toString());
         }
         return null;
     }
@@ -145,5 +136,4 @@ public class RoomController extends Controller<Room>{
     public TableState getAll() {
         return _getAll("room");
     }
-
 }

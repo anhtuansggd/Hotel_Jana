@@ -10,11 +10,11 @@ public class AccountController extends Controller<Account>{
     private static final String deleteAccountSQL = "DELETE FROM account WHERE id=?;";
     private static final String searchAccountSQL = "SELECT *\n" +
             "FROM account\n" +
-            "WHERE (id=? OR id IS NULL) \n" +
-            "OR (account_type=? OR account_type IS NULL) \n" +
-            "OR (user_name=? OR user_name IS NULL) \n" +
-            "OR (name=? OR name IS NULL) \n" +
-            "OR (race=? OR race IS NULL);";
+            "WHERE (id=? OR ? IS NULL) \n" +
+            "AND (account_type=? OR ? IS NULL) \n" +
+            "AND (user_name=? OR ? IS NULL) \n" +
+            "AND (name=? OR ? IS NULL) \n" +
+            "AND (race=? OR ? IS NULL);";
 
 
 
@@ -89,34 +89,25 @@ public class AccountController extends Controller<Account>{
         return getAll();
     }
 
-    public static class AccountSearchQuery {
-        private String id;
-        private String type;
-        private String username;
-        private String name;
-        private String race;
 
-        public AccountSearchQuery(String i, String t, String u, String n, String r) {
-            id = i;
-            type = t;
-            username = u;
-            name = n;
-            race = r;
-        }
-    }
 
     /*
     * id, username, name are allowed to be null
      */
-    public String[][] search(AccountSearchQuery accountSearchQuery) {
+    public String[][] search(Account accountSearchQuery) {
         ArrayList<String[]> arrayList = new ArrayList<String[]>();
         try{
             ppsm = connection.prepareStatement(searchAccountSQL);
-            ppsm.setString(1, accountSearchQuery.id.equals("")? null : accountSearchQuery.id);
-            ppsm.setString(2, accountSearchQuery.type.toString().equals("")? null : accountSearchQuery.type.toString());
-            ppsm.setString(3, accountSearchQuery.username.equals("")? null : accountSearchQuery.username);
-            ppsm.setString(4, accountSearchQuery.name.equals("")? null : accountSearchQuery.name);
-            ppsm.setString(5, accountSearchQuery.race.toString().equals("")? null : accountSearchQuery.race.toString());
+            ppsm.setString(1, accountSearchQuery.getId().equals("")? null : accountSearchQuery.getId());
+            ppsm.setString(2, accountSearchQuery.getId().equals("")? null : accountSearchQuery.getId());
+            ppsm.setString(3, accountSearchQuery.getType().toString().equals("")? null : accountSearchQuery.getType().toString());
+            ppsm.setString(4, accountSearchQuery.getType().toString().equals("")? null : accountSearchQuery.getType().toString());
+            ppsm.setString(5, accountSearchQuery.getUsername().equals("")? null : accountSearchQuery.getUsername());
+            ppsm.setString(6, accountSearchQuery.getUsername().equals("")? null : accountSearchQuery.getUsername());
+            ppsm.setString(7, accountSearchQuery.getName().equals("")? null : accountSearchQuery.getName());
+            ppsm.setString(8, accountSearchQuery.getName().equals("")? null : accountSearchQuery.getName());
+            ppsm.setString(9, accountSearchQuery.getRace().toString().equals("")? null : accountSearchQuery.getRace().toString());
+            ppsm.setString(10, accountSearchQuery.getRace().toString().equals("")? null : accountSearchQuery.getRace().toString());
             ResultSet rs = executeSearch(ppsm);
 
             while (rs.next()){

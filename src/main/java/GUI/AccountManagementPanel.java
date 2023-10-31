@@ -4,7 +4,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 import Controllers.AccountController;
-import Controllers.AccountController.AccountSearchQuery;
 import Controllers.Controller.*;
 import Modules.Account;
 

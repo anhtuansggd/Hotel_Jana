@@ -4,6 +4,7 @@ import Modules.Room;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class RoomControllerTest {
 
@@ -33,7 +34,8 @@ public class RoomControllerTest {
     @Test
     public void search( ){
         RoomController controller = new RoomController();
-        //controller.search();
+        LocalDate date = LocalDate.parse("2023-10-24", DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        //controller.search(new RoomController.RoomSearchQuery("Standard", date, 1));
 
     }
 
