@@ -5,9 +5,23 @@ import Modules.Room;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 
 public class RoomController extends Controller<Room>{
+    private static final String insertRoomSQL = "INSERT INTO room VALUES(?,?,?);";
+    private static final String updateRoomSQL = "UPDATE room SET room_style=?, is_smoking=? WHERE room_number=?;";
+    private static final String deleteRoomSQL = "DELETE FROM room WHERE room_number=?;";
+    private static final String searchRoomSQL = "SELECT *\n" +
+            "FROM room r\n" +
+            "WHERE r.room_style = ?\n" +
+            "OR r.room_number IN (\n" +
+            "    SELECT rb.room_number\n" +
+            "\tFROM room_booking rb\n" +
+            "\tWHERE (rb.start_date <= ? AND rb.start_date + rb.duration > ?)\n" +
+            "\tOR (rb.start_date < ? AND rb.start_date + rb.duration >= ?)\n" +
+            ");";
+
     public RoomController() {
         super();
     }
@@ -15,12 +29,11 @@ public class RoomController extends Controller<Room>{
     @Override
     public TableState add(Room room){
         try{
-            String sql = "INSERT INTO room VALUES(?,?,?);";
-            ppsm = connection.prepareStatement(sql);
+            ppsm = connection.prepareStatement(insertRoomSQL);
             ppsm.setString(1, room.getRoomNumber());
             ppsm.setString(2, room.getStyle().toString());
             ppsm.setInt(3, room.isSmoking());
-            executeInsert(sql, ppsm);
+            execute(ppsm);
 
             System.out.println("Room insert succeeded");
         }catch (SQLException e){
@@ -40,12 +53,11 @@ public class RoomController extends Controller<Room>{
             /*
             reservation_number is pk
              */
-            String sql = "UPDATE room SET room_style=?, is_smoking=? WHERE room_number=?;";
-            ppsm = connection.prepareStatement(sql);
+            ppsm = connection.prepareStatement(updateRoomSQL);
             ppsm.setString(1, room.getStyle().toString());
             ppsm.setInt(2, room.isSmoking());
             ppsm.setString(3, room.getRoomNumber());
-            executeUpdate(sql, ppsm);
+            execute(ppsm);
 
             System.out.println("RoomBooking update succeeded");
         }catch (SQLException e){
@@ -58,10 +70,9 @@ public class RoomController extends Controller<Room>{
     @Override
     public TableState delete(Room room){
         try{
-            String sql = "DELETE FROM room WHERE room_number=?;";
-            ppsm = connection.prepareStatement(sql);
+            ppsm = connection.prepareStatement(deleteRoomSQL);
             ppsm.setString(1, room.getRoomNumber());
-            executeDelete(sql, ppsm);
+            execute(ppsm);
 
             System.out.println("Room delete succeeded");
         }catch (SQLException e){
@@ -82,28 +93,51 @@ public class RoomController extends Controller<Room>{
      **/
     public TableState search(RoomSearchQuery roomSearchQuery) {
         try{
-            String sql = "SELECT *\n" +
-                    "FROM room r\n" +
-                    "WHERE r.room_style = ?\n" +
-                    "OR r.room_number IN (\n" +
-                    "    SELECT rb.room_number\n" +
-                    "\tFROM room_booking rb\n" +
-                    "\tWHERE (rb.start_date <= ? AND rb.start_date + rb.duration > ?)\n" +
-                    "\tOR (rb.start_date < ? AND rb.start_date + rb.duration >= ?)\n" +
-                    ");";
-            ppsm = connection.prepareStatement(sql);
+            ppsm = connection.prepareStatement(searchRoomSQL);
             ppsm.setString(1, roomSearchQuery.roomStyle.toString());
             ppsm.setDate(2, Date.valueOf(roomSearchQuery.startDate));
             ppsm.setDate(3, Date.valueOf(roomSearchQuery.startDate));
             ppsm.setDate(4, Date.valueOf(roomSearchQuery.startDate.plusDays(roomSearchQuery.duration)));
             ppsm.setDate(5, Date.valueOf(roomSearchQuery.startDate.plusDays(roomSearchQuery.duration)));
-            executeSearch(sql, ppsm);
+            //executeSearch(searchRoomSQL, ppsm);
+
             System.out.println("Room search succeeded");
             return getAll();
         }catch (SQLException e){
             System.out.println("Room search failed "+e.toString());
         }
         close();
+        return null;
+    }
+
+    public String[][] search1(RoomSearchQuery roomSearchQuery) {
+        ArrayList<String[]> arrayList = new ArrayList<String[]>();
+        try{
+            ppsm = connection.prepareStatement(searchRoomSQL);
+            ppsm.setString(1, roomSearchQuery.roomStyle.toString());
+            ppsm.setDate(2, Date.valueOf(roomSearchQuery.startDate));
+            ppsm.setDate(3, Date.valueOf(roomSearchQuery.startDate));
+            ppsm.setDate(4, Date.valueOf(roomSearchQuery.startDate.plusDays(roomSearchQuery.duration)));
+            ppsm.setDate(5, Date.valueOf(roomSearchQuery.startDate.plusDays(roomSearchQuery.duration)));
+            executeSearch(ppsm);
+            System.out.println(ppsm);
+            ResultSet rs = executeSearch(ppsm);
+
+            while (rs.next()){
+                String[] row= new String[6];
+                for(int i=1; i<3; i++){
+                    row[i] = rs.getString(i);
+                }
+                arrayList.add(row);
+            }
+            System.out.println("Account search succeeded");
+            String[][] resultArray = new String[arrayList.size()][];
+            resultArray = arrayList.toArray(resultArray);
+            close();
+            return resultArray;
+        }catch (SQLException e){
+            System.out.println("Account search failed "+e.toString());
+        }
         return null;
     }
 

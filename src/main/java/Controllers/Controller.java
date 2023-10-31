@@ -88,55 +88,30 @@ public abstract class Controller<T> {
     public abstract TableState update(T entity);
     public abstract TableState delete(T entity);
     public TableState search(){return  null;};
+    public String[][] getData(ResultSet rSet, String SQL){return null;};
 
 
-    protected void executeInsert(String sql, PreparedStatement ppsm){
+    protected void execute(PreparedStatement ppsm){
         try{
-            if(connection.isClosed()){
-                connection = dataSource.getConnection();
-            }
             ppsm.executeUpdate();
-            System.out.println("Inserted");
+            System.out.println("Executed");
         }catch (SQLException e){
-            System.out.println("Insert failed " + e.toString());
+            System.out.println("Execute failed " + e.toString());
         }
 
     }
 
-    protected void executeUpdate(String sql, PreparedStatement ppsm){
+    protected ResultSet executeSearch(PreparedStatement ppsm){
         try{
             if(connection.isClosed()){
                 connection = dataSource.getConnection();
             }
-            ppsm.executeUpdate();
-            System.out.println("Updated");
-        }catch (SQLException e){
-            System.out.println("Update failed " + e.toString());
-        }
-    }
-
-    protected void executeDelete(String sql, PreparedStatement ppsm){
-        try{
-            if(connection.isClosed()){
-                connection = dataSource.getConnection();
-            }
-            ppsm.executeUpdate();
-            System.out.println("Deleted");
-        }catch (SQLException e){
-            System.out.println("Delete failed " + e.toString());
-        }
-    }
-
-    protected void executeSearch(String sql, PreparedStatement ppsm){
-        try{
-            if(connection.isClosed()){
-                connection = dataSource.getConnection();
-            }
-            ppsm.executeQuery();
             System.out.println("Searched");
+            return ppsm.executeQuery();
         }catch (SQLException e){
             System.out.println("Search failed " + e.toString());
         }
+        return null;
     }
 
 
@@ -178,6 +153,8 @@ public abstract class Controller<T> {
         accountsArray = accountsArrayList.toArray(accountsArray);
         return accountsArray;
     }
+
+    
 
     private String[] getAccountColumns(String tableName) {
         ArrayList<String> columnsArrayList = new ArrayList<String>();

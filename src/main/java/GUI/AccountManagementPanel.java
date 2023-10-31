@@ -105,7 +105,7 @@ public class AccountManagementPanel extends ChildrenPanel {
             }
         });;
         add(deleteButton);
-
+/*
         searchButton = getFormattedButton("Search", 30, 360, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 TableState tableState = accountController.search(new AccountController.AccountSearchQuery(idField.getText(),
@@ -123,5 +123,7 @@ public class AccountManagementPanel extends ChildrenPanel {
             }
         });;
         add(resetButton);
+
+ */
     }
 }

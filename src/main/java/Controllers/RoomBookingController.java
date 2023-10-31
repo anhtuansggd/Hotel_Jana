@@ -33,7 +33,7 @@ public class RoomBookingController extends Controller<RoomBooking>{
             ppsm.setString(4, roombooking.getRoomId());
             ppsm.setInt(5, roombooking.getGuestId());
             System.out.println("Con1");
-            executeInsert(insertRoomSQL, ppsm);
+            execute(ppsm);
             System.out.println("RoomBooking insert succeeded");
         }catch (SQLException e) {
 
@@ -58,7 +58,7 @@ public class RoomBookingController extends Controller<RoomBooking>{
             ppsm.setString(3, roombooking.getRoomId());
             ppsm.setInt(4, roombooking.getGuestId());
             ppsm.setInt(5, roombooking.getReservationNumber());
-            executeUpdate(updateRoomSQL, ppsm);
+            execute( ppsm);
 
             System.out.println("RoomBooking update succeeded");
         }catch (SQLException e){
@@ -74,7 +74,7 @@ public class RoomBookingController extends Controller<RoomBooking>{
         try{
             ppsm = connection.prepareStatement(deleteRoomSQL);
             ppsm.setInt(1, roombooking.getReservationNumber());
-            executeDelete(deleteRoomSQL, ppsm);
+            execute(ppsm);
             System.out.println("RoomBooking delete succeeded");
         }catch (SQLException e){
             System.out.println("RoomBooking delete failed "+e.toString());
@@ -111,7 +111,7 @@ public class RoomBookingController extends Controller<RoomBooking>{
             ppsm.setInt(3, roomBookingSearchQuery.duration);
             ppsm.setString(4, roomBookingSearchQuery.room_number.equals("")? null : roomBookingSearchQuery.room_number);
             ppsm.setString(5, roomBookingSearchQuery.account_id.equals("")? null : roomBookingSearchQuery.account_id);
-            executeSearch(searchRoomSQL, ppsm);
+            //executeSearch(searchRoomSQL, ppsm);
             System.out.println("Room search succeeded");
             return getAll();
         }catch (SQLException e){
