@@ -7,6 +7,8 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import com.mysql.cj.xdevapi.Table;
+
 
 public class RoomController extends Controller<Room>{
     private static final String insertRoomSQL = "INSERT INTO room VALUES(?,?,?);";
@@ -98,7 +100,7 @@ public class RoomController extends Controller<Room>{
     /**
      * Only room_style allowed to be null
      */
-    public String[][] search(RoomSearchQuery roomSearchQuery) {
+    public TableState search(RoomSearchQuery roomSearchQuery) {
         ArrayList<String[]> arrayList = new ArrayList<String[]>();
         try{
             ppsm = connection.prepareStatement(searchRoomSQL);
@@ -124,8 +126,10 @@ public class RoomController extends Controller<Room>{
             System.out.println("Room search succeeded");
             String[][] resultArray = new String[arrayList.size()][];
             resultArray = arrayList.toArray(resultArray);
+            String[] columns = getAccountColumns("room");
             close();
-            return resultArray;
+            TableState tableState = new TableState(columns, resultArray);
+            return tableState;
         }catch (SQLException e){
             System.out.println("Room search failed "+e.toString());
         }

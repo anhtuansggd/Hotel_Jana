@@ -7,10 +7,12 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.text.NumberFormatter;
 import java.awt.event.*;
 import java.text.*;
+import java.time.*;
+import java.time.format.*;
 
-import Controllers.Controller;
 import Controllers.RoomBookingController;
 import Controllers.RoomController;
+import Controllers.RoomController.RoomSearchQuery;
 import Modules.Room;
 
 public class RoomSearchPanel extends ChildrenPanel {
@@ -21,13 +23,14 @@ public class RoomSearchPanel extends ChildrenPanel {
     JComboBox<Room.RoomStyle> roomStyleComboBox;
 
     JLabel dateLabel;
-    JFormattedTextField dateField;
+    JTextField dateField;
 
     JLabel durationLabel;
-    JFormattedTextField durationField;
+    JTextField durationField;
 
     JButton searchButton;
     JButton bookButton;
+    JButton resetButton;
 
     public RoomSearchPanel() {
         super();
@@ -45,23 +48,29 @@ public class RoomSearchPanel extends ChildrenPanel {
         dateLabel = getFormattedLabel("Date", 30, 60, 120, 30);
         add(dateLabel);
 
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        dateField = getFormattedTextField(df, 130, 70, 120, 20, "10/2/2024");
+        dateField = getFormattedTextField(130, 70, 120, 20, "10/02/2024");
         add(dateField);
 
         // Duration input
         durationLabel = getFormattedLabel("Duration", 30, 90, 120, 30);
         add(durationLabel);
-
-        NumberFormat numFormat = new DecimalFormat("#");
-        NumberFormatter numFormatter  = new NumberFormatter(numFormat); 
-        durationField = getFormattedTextField(numFormatter, 130, 100, 40, 20, "2");
+        
+        durationField = getFormattedTextField(130, 100, 40, 20, "2");
         add(durationField);
 
         // Search button
         searchButton = getFormattedButton("Search", 30, 160, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.out.printf("Duration: %d days\n", durationField.getValue());
+                String inputDate = dateField.getText();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                LocalDate date = LocalDate.parse(inputDate, formatter);
+
+                RoomSearchQuery rsq = new RoomSearchQuery(
+                    (Room.RoomStyle)roomStyleComboBox.getSelectedItem(), date, Integer.valueOf(durationField.getText()) 
+                );
+
+                RoomController.TableState tableState =  roomController.search(rsq);
+                refreshTableScrollPane(tableState);
             }
         });
         add(searchButton);
@@ -71,25 +80,11 @@ public class RoomSearchPanel extends ChildrenPanel {
                 int row = panelTable.getSelectedRow();
                 panelTable.getValueAt(row, 0);
                 
-                // RoomBooking roomBooking = new RoomBooking(69, LocalDate.now(), Integer.valueOf(durationField.getText()),
-                //         Integer.valueOf(accountIDField.getText()), roomNumberField.getText());
-                // refreshTableScrollPane(roomBookingController.add(roomBooking));
+            //     RoomBooking roomBooking = new RoomBooking(69, LocalDate.now(), Integer.valueOf(durationField.getText()),
+            //             Integer.valueOf(accountIDField.getText()), roomNumberField.getText());
+            //     refreshTableScrollPane(roomBookingController.add(roomBooking));
             }
         });
         add(bookButton);
-
-        // Room table
-        Controller.TableState tableState = roomController.getAll();
-        TableScrollPane tableScrollPane = getFormattedTableScrollPane(
-            tableState.data, tableState.columns, 280, 30, 630, 200,
-            new ListSelectionListener() {
-                public void valueChanged(ListSelectionEvent e) {
-                    System.out.println("Row " + panelTable.getSelectedRow() + " selected");
-                }
-            }
-        );
-        panelTable = tableScrollPane.table;
-        panelScrollPane = tableScrollPane.scrollPane;
-        add(panelScrollPane);
     }
 }

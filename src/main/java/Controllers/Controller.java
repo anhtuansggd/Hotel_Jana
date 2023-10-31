@@ -127,7 +127,7 @@ public abstract class Controller<T> {
         return new TableState(columns, data);
     }
 
-    private String[][] getAccountData(String tableName, String[] columns) {
+    protected String[][] getAccountData(String tableName, String[] columns) {
         ArrayList<String[]> accountsArrayList = new ArrayList<String[]>();
 
         try {
@@ -154,9 +154,7 @@ public abstract class Controller<T> {
         return accountsArray;
     }
 
-    
-
-    private String[] getAccountColumns(String tableName) {
+    protected String[] getAccountColumns(String tableName) {
         ArrayList<String> columnsArrayList = new ArrayList<String>();
 
         try {

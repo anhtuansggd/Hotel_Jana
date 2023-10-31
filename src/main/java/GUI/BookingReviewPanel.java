@@ -7,6 +7,7 @@ import Modules.RoomBooking;
 
 import java.awt.event.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class BookingReviewPanel extends ChildrenPanel {
     RoomBookingController roomBookingController;
@@ -69,7 +70,7 @@ public class BookingReviewPanel extends ChildrenPanel {
         addButton = getFormattedButton("Add", 30, 210, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 RoomBooking roomBooking = new RoomBooking(Integer.valueOf(reservationNumberField.getText()),
-                        LocalDate.now(), Integer.valueOf(durationField.getText()),
+                        getLocalDateFromString(startDateField.getText()), Integer.valueOf(durationField.getText()),
                         Integer.valueOf(accountIDField.getText()), roomNumberField.getText());
                 refreshTableScrollPane(roomBookingController.add(roomBooking));
             }
@@ -79,7 +80,7 @@ public class BookingReviewPanel extends ChildrenPanel {
         updateButton = getFormattedButton("Update", 30, 250, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 RoomBooking roomBooking = new RoomBooking(Integer.valueOf(reservationNumberField.getText()),
-                        LocalDate.now(), Integer.valueOf(durationField.getText()),
+                        getLocalDateFromString(startDateField.getText()), Integer.valueOf(durationField.getText()),
                         Integer.valueOf(accountIDField.getText()), roomNumberField.getText());
                 refreshTableScrollPane(roomBookingController.update(roomBooking));
             }
@@ -89,7 +90,7 @@ public class BookingReviewPanel extends ChildrenPanel {
         deleteButton = getFormattedButton("Delete", 30, 290, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 RoomBooking roomBooking = new RoomBooking(Integer.valueOf(reservationNumberField.getText()),
-                        LocalDate.now(), Integer.valueOf(durationField.getText()),
+                        getLocalDateFromString(startDateField.getText()), Integer.valueOf(durationField.getText()),
                         Integer.valueOf(accountIDField.getText()), roomNumberField.getText());
                 refreshTableScrollPane(roomBookingController.delete(roomBooking));
             }
@@ -102,4 +103,10 @@ public class BookingReviewPanel extends ChildrenPanel {
         resetButton = getFormattedButton("Reset", 30, 370, 80, 24);
         add(resetButton);
     }   
+
+    private LocalDate getLocalDateFromString(String s) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate date = LocalDate.parse(s, formatter);
+        return date;
+    }
 }

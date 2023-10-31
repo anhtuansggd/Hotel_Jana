@@ -36,17 +36,17 @@ public class ChildrenPanel extends JPanel {
         return textField;
     }
 
-    protected JFormattedTextField getFormattedTextField(int x, int y, int w, int h, String defaulString) {
+    protected JFormattedTextField getFormattedTextField(int x, int y, int w, int h, String defaultString) {
         JFormattedTextField textField = new JFormattedTextField();
         textField.setBounds(x, y, w, h);
-        textField.setText(defaulString);
+        textField.setText(defaultString);
         return textField;
     }
 
-    protected JFormattedTextField getFormattedTextField(Format format, int x, int y, int w, int h, String defaulString) {
+    protected JFormattedTextField getFormattedTextField(Format format, int x, int y, int w, int h, String defaultString) {
         JFormattedTextField textField = new JFormattedTextField(format);
         textField.setBounds(x, y, w, h);
-        textField.setText(defaulString);
+        textField.setText(defaultString);
         return textField;
     }
 

@@ -31,7 +31,7 @@ public class AccountController extends Controller<Account>{
             ppsm.setString(1, account.getId());
             ppsm.setString(2, account.getAccountType().toString());
             ppsm.setString(3, account.getUsername());
-            ppsm.setString(4, account.hashPassword(account.getPassword()));
+            ppsm.setString(4, Account.hashPassword(account.getPassword()));
             ppsm.setString(5, account.getName());
             ppsm.setString(6, account.getRace().toString());
             execute(ppsm);
@@ -50,7 +50,7 @@ public class AccountController extends Controller<Account>{
             ppsm = connection.prepareStatement(updateAccountSQL);
             ppsm.setString(1, account.getAccountType().toString());
             ppsm.setString(2, account.getUsername());
-            ppsm.setString(3, account.hashPassword(account.getPassword()));
+            ppsm.setString(3, Account.hashPassword(account.getPassword()));
             ppsm.setString(4, account.getName());
             ppsm.setString(5, account.getRace().toString());
             ppsm.setString(6, account.getId());
