@@ -11,10 +11,10 @@ import com.mysql.cj.xdevapi.Table;
 
 
 public class RoomController extends Controller<Room>{
-    private static final String insertRoomSQL = "INSERT INTO room VALUES(?,?,?);";
-    private static final String updateRoomSQL = "UPDATE room SET room_style=?, is_smoking=? WHERE room_number=?;";
-    private static final String deleteRoomSQL = "DELETE FROM room WHERE room_number=?;";
-    private static final String searchRoomSQL = "SELECT *\n" +
+    private final String insertRoomSQL = "INSERT INTO room VALUES(?,?,?);";
+    private final String updateRoomSQL = "UPDATE room SET room_style=?, is_smoking=? WHERE room_number=?;";
+    private final String deleteRoomSQL = "DELETE FROM room WHERE room_number=?;";
+    private final String searchRoomSQL = "SELECT *\n" +
             "FROM room r\n" +
             "WHERE (? IS NULL OR r.room_style=?)\n" +
             "AND r.room_number NOT IN (\n" +

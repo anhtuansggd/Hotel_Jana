@@ -1,34 +1,46 @@
 package Controllers;
 
 import Modules.Account;
+import com.google.protobuf.Value;
 
 import java.sql.*;
 import java.util.*;
 
 public class AccountController extends Controller<Account>{
-    private static final String insertAccountSQL = "INSERT INTO account VALUES(?,?,?,?,?,?);";
-    private static final String updateAccountSQL = "UPDATE account SET account_type=?, user_name=?, password=?, name=?, race=? WHERE id=?;";
-    private static final String deleteAccountSQL = "DELETE FROM account WHERE id=?;";
-    private static final String searchAccountSQL = "SELECT *\n" +
+    private final String insertAccountSQL = "INSERT INTO account VALUES(?,?,?,?,?,?);";
+    private final String updateAccountSQL = "UPDATE account \n" +
+            "SET account_type = ?,\n" +
+            "    user_name = COALESCE(?, user_name), \n" +
+            "    password = COALESCE(?, password), \n" +
+            "    name = COALESCE(?, name), \n" +
+            "    race = ?\n" +
+            "WHERE id = ?;";
+    private final String deleteAccountSQL = "DELETE FROM account WHERE id=?;";
+    private final String searchAccountSQL = "SELECT *\n" +
             "FROM account\n" +
             "WHERE (id=? OR ? IS NULL) \n" +
             "AND (account_type=? OR ? IS NULL) \n" +
             "AND (user_name=? OR ? IS NULL) \n" +
             "AND (name=? OR ? IS NULL) \n" +
             "AND (race=? OR ? IS NULL);";
-
+    private final String countTotalSQL = "select count(id)\n" +
+            "from account;";
 
 
     public AccountController() {
         super();
     }
 
-
+    /**
+     * if "getTotalRows()" is executed after "ppsm = connection."
+     * then there will be an error -> Why?
+     */
     @Override
     public TableState add(Account account) {
         try{
+            int total = getTotalRows(countTotalSQL)+1;
             ppsm = connection.prepareStatement(insertAccountSQL);
-            ppsm.setString(1, account.getId());
+            ppsm.setString(1, String.valueOf(total));
             ppsm.setString(2, account.getAccountType().toString());
             ppsm.setString(3, account.getUsername());
             ppsm.setString(4, Account.hashPassword(account.getPassword()));
@@ -44,16 +56,19 @@ public class AccountController extends Controller<Account>{
         return getAll();
     }
 
+    /**
+     * Only username, password, name are allowed to be null
+     */
     @Override
     public TableState update(Account account) {
         try{
             ppsm = connection.prepareStatement(updateAccountSQL);
             ppsm.setString(1, account.getAccountType().toString());
-            ppsm.setString(2, account.getUsername());
-            ppsm.setString(3, Account.hashPassword(account.getPassword()));
-            ppsm.setString(4, account.getName());
+            ppsm.setString(2, account.getUsername().equals("")? null : account.getUsername());
+            ppsm.setString(3, account.getPassword().equals("")? null : Account.hashPassword(account.getPassword()));
+            ppsm.setString(4, account.getName().equals("")? null : account.getName());
             ppsm.setString(5, account.getRace().toString());
-            ppsm.setString(6, account.getId());
+            ppsm.setString(6, String.valueOf(getTotalRows(countTotalSQL)+1));
             execute(ppsm);
 
             System.out.println("Account update succeeded");

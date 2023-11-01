@@ -13,7 +13,7 @@ public class RoomBookingControllerTest {
         RoomBookingController controller = new RoomBookingController();
         Room r = new Room();
         r.setRoomNumber("101");
-        RoomBooking roomBooking = new RoomBooking(1 ,LocalDate.of(2023, 9, 25), 1, 1,r.getRoomNumber());
+        RoomBooking roomBooking = new RoomBooking(LocalDate.of(2023, 5, 25), 1, 6,r.getRoomNumber());
         controller.add(roomBooking);
         System.out.println("works");
     }
@@ -22,8 +22,8 @@ public class RoomBookingControllerTest {
     public void update() {
         RoomBookingController controller = new RoomBookingController();
         Room r = new Room();
-        r.setRoomNumber("101");
-        RoomBooking roomBooking = new RoomBooking(1, LocalDate.of(2023, 10, 22), 1, 1,r.getRoomNumber());
+        r.setRoomNumber("105");
+        RoomBooking roomBooking = new RoomBooking(5, LocalDate.of(2023, 10, 22), 1, 7,"");
         controller.update(roomBooking);
     }
 
@@ -42,7 +42,13 @@ public class RoomBookingControllerTest {
         Room r = new Room();
         r.setRoomNumber("101");
         //RoomBooking  = new RoomBooking(1, LocalDate.of(2023, 10, 25), 1, 1,(String) null);
-        RoomBookingController.RoomBookingSearchQuery a = new RoomBookingController.RoomBookingSearchQuery(1, LocalDate.of(2023, 10, 2), 1, "101", "1");
+        //RoomBookingController.RoomBookingSearchQuery a = new RoomBookingController.RoomBookingSearchQuery(1, LocalDate.of(2023, 10, 2), 1, n, "1");
         //controller.search(a);
+    }
+
+    @org.junit.Test
+    public void getReservationTotal(){
+        RoomBookingController controller = new RoomBookingController();
+        //controller.getReservationTotal(countAllSQL);
     }
 }

@@ -187,6 +187,18 @@ public abstract class Controller<T> {
         }
     }
 
+    public int getTotalRows(String countAllSQL){
+        try{
+            ppsm = connection.prepareStatement(countAllSQL);
+            ResultSet rSet = executeSearch(ppsm);
+            rSet.next();
+            return rSet.getInt(1);
+        }catch (SQLException e) {
+            System.out.println("count failed " + e.toString());
+        }
+        return -1;
+    }
+
 
     public static void main(String[] args) {
         //Controller con = new Controller();

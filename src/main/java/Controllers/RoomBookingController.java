@@ -8,10 +8,15 @@ import java.time.LocalDate;
 
 
 public class RoomBookingController extends Controller<RoomBooking>{
-    private static final String insertRoomSQL = "INSERT INTO room_booking VALUES(?,?,?,?,?);";
-    private static final String updateRoomSQL = "UPDATE room_booking SET start_date=?, duration=?, room_number=?, account_id=? WHERE reservation_number=?;";
-    private static final String deleteRoomSQL = "DELETE FROM room_booking WHERE reservation_number=?;";
-    private static final String searchRoomSQL = "SELECT *\n" +
+    private final String insertRoomSQL = "INSERT INTO room_booking VALUES(?,?,?,?,?);";
+    private final String updateRoomSQL = "UPDATE room_booking \n" +
+            "SET start_date=?,\n" +
+            "duration=?,\n" +
+            "room_number=COALESCE(?, room_number),\n" +
+            "account_id=?\n" +
+            "WHERE reservation_number=?;";
+    private final String deleteRoomSQL = "DELETE FROM room_booking WHERE reservation_number=?;";
+    private final String searchRoomSQL = "SELECT *\n" +
             "FROM room_booking\n" +
             "WHERE reservation_number = ?\n" +
             "OR ((start_date LIKE ? OR start_date IS NULL)\n" +
@@ -19,22 +24,25 @@ public class RoomBookingController extends Controller<RoomBooking>{
             "AND (room_number=? OR room_number IS NULL)\n" +
             "AND (account_id=? OR account_id IS NULL));";
 
+    private final String countAllSQL = "select count(reservation_number)\n" +
+            "from room_booking;";
+
     public RoomBookingController() {
         super();
     }
 
+
     @Override
     public TableState add(RoomBooking roombooking){
         try{
+            int totalRows = getTotalRows(countAllSQL) + 1;
             ppsm = connection.prepareStatement(insertRoomSQL);
-            ppsm.setInt(1, roombooking.getReservationNumber());
+            ppsm.setInt(1, totalRows);
             ppsm.setDate(2, java.sql.Date.valueOf(roombooking.getStartDate()));
             ppsm.setInt(3, roombooking.getDurationInDays());
             ppsm.setString(4, roombooking.getRoomId());
             ppsm.setInt(5, roombooking.getGuestId());
-            System.out.println("Con1");
             execute(ppsm);
-            System.out.println("RoomBooking insert succeeded");
         }catch (SQLException e) {
 
             //Logger logger = Logger.getLogger(RoomBookingController.class.getName());
@@ -46,6 +54,10 @@ public class RoomBookingController extends Controller<RoomBooking>{
         return getAll();
     }
 
+
+    /**
+     * Only room_number allowed to be null
+     */
     @Override
     public TableState update(RoomBooking roombooking){
         try{
@@ -55,7 +67,7 @@ public class RoomBookingController extends Controller<RoomBooking>{
             ppsm = connection.prepareStatement(updateRoomSQL);
             ppsm.setDate(1, java.sql.Date.valueOf(roombooking.getStartDate()));
             ppsm.setInt(2, roombooking.getDurationInDays());
-            ppsm.setString(3, roombooking.getRoomId());
+            ppsm.setString(3, roombooking.getRoomId().equals("")? null : roombooking.getRoomId());
             ppsm.setInt(4, roombooking.getGuestId());
             ppsm.setInt(5, roombooking.getReservationNumber());
             execute( ppsm);
@@ -98,6 +110,8 @@ public class RoomBookingController extends Controller<RoomBooking>{
             this.account_id = account_id;
         }
     }
+
+
 
     /**
      * start_date, duration, room_number, account_id are allowed to be null
