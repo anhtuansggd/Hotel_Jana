@@ -1,7 +1,6 @@
 package Controllers;
 
 import Modules.Account;
-import com.google.protobuf.Value;
 
 import java.sql.*;
 import java.util.*;
@@ -68,7 +67,7 @@ public class AccountController extends Controller<Account>{
             ppsm.setString(3, account.getPassword().equals("")? null : Account.hashPassword(account.getPassword()));
             ppsm.setString(4, account.getName().equals("")? null : account.getName());
             ppsm.setString(5, account.getRace().toString());
-            ppsm.setString(6, String.valueOf(getTotalRows(countTotalSQL)+1));
+            ppsm.setString(6, account.getId());
             execute(ppsm);
 
             System.out.println("Account update succeeded");

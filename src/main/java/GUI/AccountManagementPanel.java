@@ -1,10 +1,8 @@
 package GUI;
 
 import javax.swing.*;
-import javax.swing.event.*;
 
 import Controllers.AccountController;
-import Controllers.Controller.*;
 import Modules.Account;
 
 import java.awt.event.*;
@@ -40,15 +38,15 @@ public class AccountManagementPanel extends ChildrenPanel {
 
     JButton resetButton;
 
-    public AccountManagementPanel() {
-        super();
+    public AccountManagementPanel(MainFrame f) {
+        super(f, 0);
         accountController = new AccountController();
         refreshTableScrollPane(accountController.getAll());
 
-        idLabel = getFormattedLabel("ID", 30, 30, 120, 30);
-        add(idLabel);
-        idField = getFormattedTextField(130, 40, 120, 24);
-        add(idField);
+        // idLabel = getFormattedLabel("ID", 30, 30, 120, 30);
+        // add(idLabel);
+        // idField = getFormattedTextField(130, 40, 120, 24);
+        // add(idField);
 
         accountTypeLabel = getFormattedLabel("Account Type", 30, 60, 120, 30);
         add(accountTypeLabel);
@@ -70,14 +68,15 @@ public class AccountManagementPanel extends ChildrenPanel {
         nameField = getFormattedTextField(130, 160, 120, 24);
         add(nameField);
 
-        raceLabel = getFormattedLabel("Account Type", 30, 180, 120, 30);
+        raceLabel = getFormattedLabel("Race", 30, 180, 120, 30);
         add(raceLabel);
         raceComboBox = getFormattedComboBox(Account.Race.class, 130, 190, 120, 24);
         add(raceComboBox);
 
         addButton = getFormattedButton("Add", 30, 240, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                AccountController.TableState tableState = accountController.add(new Account(idField.getText(), (Account.AccountType)accountTypeComboBox.getSelectedItem(),
+                AccountController.TableState tableState = accountController.add(new Account(null,
+                        (Account.AccountType)accountTypeComboBox.getSelectedItem(),
                         usernameField.getText(), passwordField.getText(), nameField.getText(),
                         (Account.Race)raceComboBox.getSelectedItem()));
                 refreshTableScrollPane(tableState);
@@ -87,7 +86,10 @@ public class AccountManagementPanel extends ChildrenPanel {
 
         updateButton = getFormattedButton("Update", 30, 280, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                AccountController.TableState tableState = accountController.update(new Account(idField.getText(), (Account.AccountType)accountTypeComboBox.getSelectedItem(),
+                if (getSelectedRow() == null) return;
+
+                AccountController.TableState tableState = accountController.update(new Account(getSelectedRow()[0],
+                        (Account.AccountType)accountTypeComboBox.getSelectedItem(),
                         usernameField.getText(), passwordField.getText(), nameField.getText(),
                         (Account.Race)raceComboBox.getSelectedItem()));
                 refreshTableScrollPane(tableState);
@@ -97,7 +99,10 @@ public class AccountManagementPanel extends ChildrenPanel {
 
         deleteButton = getFormattedButton("Delete", 30, 320, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                AccountController.TableState tableState = accountController.delete(new Account(idField.getText(), (Account.AccountType)accountTypeComboBox.getSelectedItem(),
+                if (getSelectedRow() == null) return;
+
+                AccountController.TableState tableState = accountController.delete(new Account(getSelectedRow()[0],
+                        (Account.AccountType)accountTypeComboBox.getSelectedItem(),
                         usernameField.getText(), passwordField.getText(), nameField.getText(),
                         (Account.Race)raceComboBox.getSelectedItem()));
                 refreshTableScrollPane(tableState);
@@ -124,5 +129,20 @@ public class AccountManagementPanel extends ChildrenPanel {
         add(resetButton);
 
  */
+    }
+
+    @Override
+    protected void scrollPaneValueChanged(String[] row) {
+        String accountTypeString = row[1].toUpperCase();
+        accountTypeComboBox.setSelectedItem(Account.AccountType.valueOf(accountTypeString));
+
+        usernameField.setText(row[2]);
+
+        passwordField.setText(row[3]);
+
+        nameField.setText(row[4]);
+
+        String raceString = row[5].toUpperCase();
+        raceComboBox.setSelectedItem(Account.Race.valueOf(raceString));
     }
 }

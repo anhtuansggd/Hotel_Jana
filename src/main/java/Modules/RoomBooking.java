@@ -1,7 +1,6 @@
 package Modules;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class RoomBooking {
     private int reservationNumber;

@@ -7,7 +7,6 @@ import Modules.RoomBooking;
 
 import java.awt.event.*;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class BookingReviewPanel extends ChildrenPanel {
     RoomBookingController roomBookingController;
@@ -37,15 +36,15 @@ public class BookingReviewPanel extends ChildrenPanel {
 
     JButton resetButton;
 
-    public BookingReviewPanel() {
-        super();
+    public BookingReviewPanel(MainFrame f) {
+        super(f, 0);
         roomBookingController = new RoomBookingController();
         refreshTableScrollPane(roomBookingController.getAll());
 
-        reservationNumberLabel = getFormattedLabel("Reservation num.", 30, 30, 120, 30);
-        add(reservationNumberLabel);
-        reservationNumberField = getFormattedTextField(130, 40, 120, 20);
-        add(reservationNumberField);
+        // reservationNumberLabel = getFormattedLabel("Reservation num.", 30, 30, 120, 30);
+        // add(reservationNumberLabel);
+        // reservationNumberField = getFormattedTextField(130, 40, 120, 20);
+        // add(reservationNumberField);
 
         startDateLabel = getFormattedLabel("Start date", 30, 60, 120, 30);
         add(startDateLabel);
@@ -69,8 +68,8 @@ public class BookingReviewPanel extends ChildrenPanel {
 
         addButton = getFormattedButton("Add", 30, 210, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                RoomBooking roomBooking = new RoomBooking(Integer.valueOf(reservationNumberField.getText()),
-                        getLocalDateFromString(startDateField.getText()), Integer.valueOf(durationField.getText()),
+                RoomBooking roomBooking = new RoomBooking(-1,
+                        getLocalDateFromString(startDateField.getText(), "dd/MM/yyyy"), Integer.valueOf(durationField.getText()),
                         Integer.valueOf(accountIDField.getText()), roomNumberField.getText());
                 refreshTableScrollPane(roomBookingController.add(roomBooking));
             }
@@ -79,8 +78,10 @@ public class BookingReviewPanel extends ChildrenPanel {
 
         updateButton = getFormattedButton("Update", 30, 250, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                RoomBooking roomBooking = new RoomBooking(Integer.valueOf(reservationNumberField.getText()),
-                        getLocalDateFromString(startDateField.getText()), Integer.valueOf(durationField.getText()),
+                if (getSelectedRow() == null) return;
+
+                RoomBooking roomBooking = new RoomBooking(Integer.valueOf(getSelectedRow()[0]),
+                        getLocalDateFromString(startDateField.getText(), "dd/MM/yyyy"), Integer.valueOf(durationField.getText()),
                         Integer.valueOf(accountIDField.getText()), roomNumberField.getText());
                 refreshTableScrollPane(roomBookingController.update(roomBooking));
             }
@@ -89,24 +90,36 @@ public class BookingReviewPanel extends ChildrenPanel {
 
         deleteButton = getFormattedButton("Delete", 30, 290, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                RoomBooking roomBooking = new RoomBooking(Integer.valueOf(reservationNumberField.getText()),
-                        getLocalDateFromString(startDateField.getText()), Integer.valueOf(durationField.getText()),
+                if (getSelectedRow() == null) return;
+
+                RoomBooking roomBooking = new RoomBooking(Integer.valueOf(getSelectedRow()[0]),
+                        getLocalDateFromString(startDateField.getText(), "dd/MM/yyyy"), Integer.valueOf(durationField.getText()),
                         Integer.valueOf(accountIDField.getText()), roomNumberField.getText());
                 refreshTableScrollPane(roomBookingController.delete(roomBooking));
             }
         });
         add(deleteButton);
 
-        searchButton = getFormattedButton("Search", 30, 330, 80, 24);
-        add(searchButton);
+        // searchButton = getFormattedButton("Search", 30, 330, 80, 24);
+        // add(searchButton);
 
-        resetButton = getFormattedButton("Reset", 30, 370, 80, 24);
+        resetButton = getFormattedButton("Reset", 30, 370, 80, 24, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                refreshTableScrollPane(roomBookingController.getAll());
+            }
+        });
         add(resetButton);
     }   
 
-    private LocalDate getLocalDateFromString(String s) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate date = LocalDate.parse(s, formatter);
-        return date;
+    @Override
+    protected void scrollPaneValueChanged(String[] row) {
+        LocalDate localDate = getLocalDateFromString(row[1].substring(0, 10), "yyyy-MM-dd");
+        startDateField.setText(getStringFromLocalDate(localDate));
+
+        durationField.setText(row[2]);
+
+        roomNumberField.setText(row[3]);
+
+        accountIDField.setText(row[4]);
     }
 }

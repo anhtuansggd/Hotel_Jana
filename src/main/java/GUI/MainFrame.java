@@ -10,10 +10,14 @@ import Modules.Account;
 import Modules.Account.*;
 
 public class MainFrame extends JFrame {
+    public Account account;
     JTabbedPane tabbedPane;
 
-    public MainFrame(Account account) {
+    public MainFrame(Account c) {
         super();
+
+        account = c;
+
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         setLayout(null);
         setLocationRelativeTo(null);
@@ -52,7 +56,7 @@ public class MainFrame extends JFrame {
     private <T> void addTab(JTabbedPane tabbedPane, Class<T> tabType, String tabName, int index) {
         T t;
         try {
-            t = tabType.getDeclaredConstructor().newInstance();
+            t = tabType.getDeclaredConstructor(MainFrame.class).newInstance(this);
             tabbedPane.addTab(tabName, null, (JComponent)t, "huh");
             JLabel label = new JLabel(tabName);
             label.setPreferredSize(new Dimension(100, 30));

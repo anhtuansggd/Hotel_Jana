@@ -2,22 +2,20 @@ package GUI;
 
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.text.NumberFormatter;
 import java.awt.event.*;
-import java.text.*;
 import java.time.*;
 import java.time.format.*;
+import java.awt.Color;
 
 import Controllers.RoomBookingController;
 import Controllers.RoomController;
 import Controllers.RoomController.RoomSearchQuery;
 import Modules.Room;
+import Modules.RoomBooking;
 
 public class RoomSearchPanel extends ChildrenPanel {
     RoomController roomController;
-    RoomBookingController rommBookingController;
+    RoomBookingController roomBookingController;
 
     JLabel roomStyleLabel;
     JComboBox<Room.RoomStyle> roomStyleComboBox;
@@ -32,11 +30,13 @@ public class RoomSearchPanel extends ChildrenPanel {
     JButton bookButton;
     JButton resetButton;
 
-    public RoomSearchPanel() {
-        super();
+    JLabel warningLabel;
+
+    public RoomSearchPanel(MainFrame f) {
+        super(f);
         roomController = new RoomController();
-        refreshTableScrollPane(roomController.getAll());
-        rommBookingController = new RoomBookingController();
+        refreshTableScrollPane(roomController.getAll(), true);
+        roomBookingController = new RoomBookingController();
         
         // Room style input
         roomStyleLabel = getFormattedLabel("Room style", 30, 30, 120, 30);
@@ -75,16 +75,29 @@ public class RoomSearchPanel extends ChildrenPanel {
         });
         add(searchButton);
 
-        bookButton =  getFormattedButton("Book", 30, 200, 80, 24, new ActionListener() {
+        bookButton = getFormattedButton("Book", 30, 200, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int row = panelTable.getSelectedRow();
-                panelTable.getValueAt(row, 0);
+                if (getSelectedRow() == null) return;
                 
-            //     RoomBooking roomBooking = new RoomBooking(69, LocalDate.now(), Integer.valueOf(durationField.getText()),
-            //             Integer.valueOf(accountIDField.getText()), roomNumberField.getText());
-            //     refreshTableScrollPane(roomBookingController.add(roomBooking));
+                RoomBooking roomBooking = new RoomBooking(-1,
+                        getLocalDateFromString(dateField.getText(), "dd/MM/yyyy"), Integer.valueOf(durationField.getText()),
+                        Integer.valueOf(mainFrame.account.getId()), getSelectedRow()[0]);
+                roomBookingController.add(roomBooking);
             }
         });
         add(bookButton);
+
+        warningLabel = new JLabel("Please choose a room before booking");
+        warningLabel.setVerticalAlignment(JLabel.BOTTOM);
+        warningLabel.setHorizontalAlignment(JLabel.CENTER);
+        warningLabel.setBounds(30, 240, 80, 48);
+        warningLabel.setForeground(Color.RED);
+        warningLabel.setVisible(false);
+        add(warningLabel);
+    }
+
+    @Override
+    protected void scrollPaneValueChanged(String[] row) {
+        
     }
 }

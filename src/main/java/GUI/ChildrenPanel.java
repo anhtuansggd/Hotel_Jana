@@ -1,19 +1,40 @@
 package GUI;
 
 import java.text.Format;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
 import Controllers.Controller;
+
 import java.awt.event.*;
 
 public class ChildrenPanel extends JPanel {
+    protected MainFrame mainFrame;
+    protected int pkIndex;
+    protected Controller.TableState tableState;
     protected JTable panelTable;
     protected JScrollPane panelScrollPane;
 
-    public ChildrenPanel() {
+    public ChildrenPanel(MainFrame f, int i) {
         super();
+
+        mainFrame = f;
         setLayout(null);
+
+        pkIndex = i;
+    }
+
+    public ChildrenPanel(MainFrame f) {
+        super();
+
+        mainFrame = f;
+        setLayout(null);
+
+        pkIndex = -1;
     }
 
     protected static <T extends Enum<T>> JComboBox<T> getFormattedComboBox(Class<T> type, int x, int y, int w, int h) {
@@ -109,11 +130,20 @@ public class ChildrenPanel extends JPanel {
         return new TableScrollPane(table, scrollPane);
     }
     
-    protected void refreshTableScrollPane(Controller.TableState tableState) {
+    protected void refreshTableScrollPane(Controller.TableState ts) {
+        tableState = ts;
+        Controller.TableState visibleTableState;
+        if (pkIndex != -1) {
+            visibleTableState = removePKFromTableState(ts);
+        } else {
+            visibleTableState = tableState;
+        }
+
         TableScrollPane tableScrollPane = getFormattedTableScrollPane(
-            tableState.data, tableState.columns, 280, 30, 630, 620, new ListSelectionListener() {
+            visibleTableState.data, visibleTableState.columns, 280, 30, 630, 620, new ListSelectionListener() {
                 public void valueChanged(ListSelectionEvent e) {
-                    
+                    String[] row = getSelectedRow();
+                    scrollPaneValueChanged(row);
                 }
         });
             
@@ -128,6 +158,75 @@ public class ChildrenPanel extends JPanel {
         repaint();
     }
 
+    protected void refreshTableScrollPane(Controller.TableState ts, boolean isEmpty) {
+        tableState = ts;
+        Controller.TableState visibleTableState;
+        if (pkIndex != -1) {
+            visibleTableState = removePKFromTableState(ts);
+        } else {
+            visibleTableState = tableState;
+        }
+
+        if (isEmpty) {
+            visibleTableState.data = new String[0][visibleTableState.columns.length];
+        }
+
+        TableScrollPane tableScrollPane = getFormattedTableScrollPane(
+            visibleTableState.data, visibleTableState.columns, 280, 30, 630, 620, new ListSelectionListener() {
+                public void valueChanged(ListSelectionEvent e) {
+                    String[] row = getSelectedRow();
+                    scrollPaneValueChanged(row);
+                }
+        });
+            
+        if (panelScrollPane != null) {
+            remove(panelScrollPane);
+        }
+        panelTable = tableScrollPane.table;
+        panelScrollPane = tableScrollPane.scrollPane;
+        add(panelScrollPane);
+
+        revalidate();
+        repaint();
+    }
+
+    protected Controller.TableState removePKFromTableState(Controller.TableState ts) {
+        String[] columns = new String[ts.columns.length - 1];
+        System.arraycopy(ts.columns, 0, columns, 0, pkIndex); 
+        System.arraycopy(ts.columns, pkIndex+1, columns, pkIndex, ts.columns.length - pkIndex-1);
+
+        String[][] data = new String[ts.data.length][ts.columns.length - 1];
+        for (int i = 0; i < ts.data.length; i++) {
+            data[i] = new String[ts.columns.length - 1];
+            System.arraycopy(ts.data[i], 0, data[i], 0, pkIndex); 
+            System.arraycopy(ts.data[i], pkIndex+1, data[i], pkIndex, ts.data[i].length - pkIndex-1);
+        }
+
+        return new Controller.TableState(columns, data);
+    }
+
+    public String[] getSelectedRow() {
+        int rowIndex = panelTable.getSelectedRow();
+        if (rowIndex == -1) {
+            return null;
+        } else {
+            return tableState.data[rowIndex];
+        }
+    }
+
+    protected void scrollPaneValueChanged(String[] row) {}
+
+    protected LocalDate getLocalDateFromString(String s, String pattern) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        LocalDate date = LocalDate.parse(s, formatter);
+        return date;
+    }
+
+    protected String getStringFromLocalDate(LocalDate localDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String s = localDate.format(formatter);
+        return s;
+    }
 
     public static class TableScrollPane {
         public JTable table;
