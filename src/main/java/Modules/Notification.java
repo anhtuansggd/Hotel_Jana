@@ -5,16 +5,16 @@ public class Notification {
     private int account_id;
     private String message;
 
-
-    public Notification(String id, int account_id, String message) {
-        this.id = id;
+    public Notification(int account_id, String message){
         this.account_id = account_id;
         this.message = message;
     }
 
-    public String getId() {return id;}
+    public Notification() {
 
-    public void setId(String id) {this.id = id;}
+    }
+
+    public String getId() {return id;}
 
     public int getAccount_id() {return account_id;}
 
