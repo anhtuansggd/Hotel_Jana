@@ -2,6 +2,10 @@ package GUI;
 
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import Controllers.Controller;
 import Controllers.RoomBookingController;
 import Modules.RoomBooking;
 
@@ -40,11 +44,6 @@ public class BookingReviewPanel extends ChildrenPanel {
         super(f, 0);
         roomBookingController = new RoomBookingController();
         refreshTableScrollPane(roomBookingController.getAll());
-
-        // reservationNumberLabel = getFormattedLabel("Reservation num.", 30, 30, 120, 30);
-        // add(reservationNumberLabel);
-        // reservationNumberField = getFormattedTextField(130, 40, 120, 20);
-        // add(reservationNumberField);
 
         startDateLabel = getFormattedLabel("Start date", 30, 60, 120, 30);
         add(startDateLabel);
@@ -112,9 +111,43 @@ public class BookingReviewPanel extends ChildrenPanel {
     }   
 
     @Override
+    protected void refreshTableScrollPane(Controller.TableState ts) {
+        tableState = ts;
+
+        for (int i = 0; i < tableState.data.length; i++) {
+            LocalDate localDate = getLocalDateFromString(tableState.data[i][1].substring(0, 10), "yyyy-MM-dd");
+            tableState.data[i][1] = getStringFromLocalDate(localDate); 
+        }
+
+        Controller.TableState visibleTableState;
+        if (pkIndex != -1) {
+            visibleTableState = removePKFromTableState(ts);
+        } else {
+            visibleTableState = tableState;
+        }
+
+        TableScrollPane tableScrollPane = getFormattedTableScrollPane(
+            visibleTableState.data, visibleTableState.columns, 280, 30, 630, 620, new ListSelectionListener() {
+                public void valueChanged(ListSelectionEvent e) {
+                    String[] row = getSelectedRow();
+                    scrollPaneValueChanged(row);
+                }
+        });
+            
+        if (panelScrollPane != null) {
+            remove(panelScrollPane);
+        }
+        panelTable = tableScrollPane.table;
+        panelScrollPane = tableScrollPane.scrollPane;
+        add(panelScrollPane);
+
+        revalidate();
+        repaint();
+    }
+
+    @Override
     protected void scrollPaneValueChanged(String[] row) {
-        LocalDate localDate = getLocalDateFromString(row[1].substring(0, 10), "yyyy-MM-dd");
-        startDateField.setText(getStringFromLocalDate(localDate));
+        startDateField.setText(row[1]);
 
         durationField.setText(row[2]);
 
