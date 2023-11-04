@@ -50,7 +50,6 @@ public class RoomBookingController extends Controller<RoomBooking>{
 
             System.out.println("RoomBooking insert failed " + e.toString());
         }
-        close();
         return getAll();
     }
 
@@ -76,7 +75,6 @@ public class RoomBookingController extends Controller<RoomBooking>{
         }catch (SQLException e){
             System.out.println("RoomBooking update failed");
         }
-        close();
         return getAll();
     }
 
@@ -91,7 +89,6 @@ public class RoomBookingController extends Controller<RoomBooking>{
         }catch (SQLException e){
             System.out.println("RoomBooking delete failed "+e.toString());
         }
-        close();
         return getAll();
     }
 

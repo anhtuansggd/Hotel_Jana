@@ -39,6 +39,13 @@ public class Account {
         this.race = race;
     }
 
+    public Account(AccountType type, String username, String name, Race race) {
+        this.type = type;
+        this.username = username;
+        this.name = name;
+        this.race = race;
+    }
+
     public Account(AccountType type, String username, String password, String name, Race race) {
         this.type = type;
         this.username = username;

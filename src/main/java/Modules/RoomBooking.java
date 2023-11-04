@@ -17,10 +17,17 @@ public class RoomBooking {
         this.roomId = roomId;
     }
 
+
     public RoomBooking(LocalDate startDate, int durationInDays, int guestId,  String roomId) {
         this.startDate = startDate;
         this.durationInDays = durationInDays;
         this.guestId = guestId;
+        this.roomId = roomId;
+    }
+
+    public RoomBooking(LocalDate startDate, int durationInDays,  String roomId) {
+        this.startDate = startDate;
+        this.durationInDays = durationInDays;
         this.roomId = roomId;
     }
 

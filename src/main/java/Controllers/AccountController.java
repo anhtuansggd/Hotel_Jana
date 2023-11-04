@@ -9,19 +9,17 @@ public class AccountController extends Controller<Account>{
     private final String insertAccountSQL = "INSERT INTO account VALUES(?,?,?,?,?,?);";
     private final String updateAccountSQL = "UPDATE account \n" +
             "SET account_type = ?,\n" +
-            "    user_name = COALESCE(?, user_name), \n" +
             "    password = COALESCE(?, password), \n" +
             "    name = COALESCE(?, name), \n" +
             "    race = ?\n" +
-            "WHERE id = ?;";
+            "WHERE user_name = ?;";
     private final String deleteAccountSQL = "DELETE FROM account WHERE id=?;";
     private final String searchAccountSQL = "SELECT *\n" +
             "FROM account\n" +
-            "WHERE (id=? OR ? IS NULL) \n" +
-            "AND (account_type=? OR ? IS NULL) \n" +
+            "WHERE (account_type=?)\n" +
             "AND (user_name=? OR ? IS NULL) \n" +
             "AND (name=? OR ? IS NULL) \n" +
-            "AND (race=? OR ? IS NULL);";
+            "AND (race=?);";
     private final String countTotalSQL = "select count(id)\n" +
             "from account;";
 
@@ -51,7 +49,6 @@ public class AccountController extends Controller<Account>{
         }catch (SQLException e){
             System.out.println("Account insert failed " + e.toString());
         }
-        close();
         return getAll();
     }
 
@@ -63,18 +60,19 @@ public class AccountController extends Controller<Account>{
         try{
             ppsm = connection.prepareStatement(updateAccountSQL);
             ppsm.setString(1, account.getAccountType().toString());
-            ppsm.setString(2, account.getUsername().equals("")? null : account.getUsername());
-            ppsm.setString(3, account.getPassword().equals("")? null : Account.hashPassword(account.getPassword()));
-            ppsm.setString(4, account.getName().equals("")? null : account.getName());
-            ppsm.setString(5, account.getRace().toString());
-            ppsm.setString(6, account.getId());
+            //ppsm.setString(2, account.getUsername().equals("")? null : account.getUsername());
+            ppsm.setString(2, account.getPassword().equals("")? null : Account.hashPassword(account.getPassword()));
+            ppsm.setString(3, account.getName().equals("")? null : account.getName());
+            ppsm.setString(4, account.getRace().toString());
+            ppsm.setString(5, account.getUsername());
+            //ppsm.setString(5, account.getId());
+            System.out.println(ppsm);
             execute(ppsm);
 
             System.out.println("Account update succeeded");
         }catch (SQLException e){
             System.out.println("Account update failed " + e.toString());
         }
-        close();
         return getAll();
     }
 
@@ -88,7 +86,6 @@ public class AccountController extends Controller<Account>{
         }catch (SQLException e){
             System.out.println("Account delete failed " + e.toString());
         }
-        close();
         return getAll();
     }
 
@@ -97,20 +94,16 @@ public class AccountController extends Controller<Account>{
     /*
     * id, username, name are allowed to be null
      */
-    public String[][] search(Account accountSearchQuery) {
+    public TableState search(Account accountSearchQuery) {
         ArrayList<String[]> arrayList = new ArrayList<String[]>();
         try{
             ppsm = connection.prepareStatement(searchAccountSQL);
-            ppsm.setString(1, accountSearchQuery.getId().equals("")? null : accountSearchQuery.getId());
-            ppsm.setString(2, accountSearchQuery.getId().equals("")? null : accountSearchQuery.getId());
-            ppsm.setString(3, accountSearchQuery.getType().toString().equals("")? null : accountSearchQuery.getType().toString());
-            ppsm.setString(4, accountSearchQuery.getType().toString().equals("")? null : accountSearchQuery.getType().toString());
-            ppsm.setString(5, accountSearchQuery.getUsername().equals("")? null : accountSearchQuery.getUsername());
-            ppsm.setString(6, accountSearchQuery.getUsername().equals("")? null : accountSearchQuery.getUsername());
-            ppsm.setString(7, accountSearchQuery.getName().equals("")? null : accountSearchQuery.getName());
-            ppsm.setString(8, accountSearchQuery.getName().equals("")? null : accountSearchQuery.getName());
-            ppsm.setString(9, accountSearchQuery.getRace().toString().equals("")? null : accountSearchQuery.getRace().toString());
-            ppsm.setString(10, accountSearchQuery.getRace().toString().equals("")? null : accountSearchQuery.getRace().toString());
+            ppsm.setString(1, accountSearchQuery.getType().toString());
+            ppsm.setString(2, accountSearchQuery.getUsername().equals("")? null : accountSearchQuery.getUsername());
+            ppsm.setString(3, accountSearchQuery.getUsername().equals("")? null : accountSearchQuery.getUsername());
+            ppsm.setString(4, accountSearchQuery.getName().equals("")? null : accountSearchQuery.getName());
+            ppsm.setString(5, accountSearchQuery.getName().equals("")? null : accountSearchQuery.getName());
+            ppsm.setString(6, accountSearchQuery.getRace().toString());
             ResultSet rs = executeSearch(ppsm);
 
             while (rs.next()){
@@ -123,8 +116,9 @@ public class AccountController extends Controller<Account>{
             System.out.println("Account search succeeded");
             String[][] resultArray = new String[arrayList.size()][];
             resultArray = arrayList.toArray(resultArray);
-            close();
-            return resultArray;
+            TableState resultTableState = new TableState( getAccountColumns("account"), resultArray);
+            //close();
+            return resultTableState;
         }catch (SQLException e){
             System.out.println("Account search failed "+e.toString());
         }

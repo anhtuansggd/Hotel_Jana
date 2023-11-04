@@ -35,7 +35,6 @@ public class RoomController extends Controller<Room>{
             ppsm.setString(2, room.getStyle().toString());
             ppsm.setInt(3, room.isSmoking());
             execute(ppsm);
-
             System.out.println("Room insert succeeded");
         }catch (SQLException e){
             /*
@@ -44,7 +43,6 @@ public class RoomController extends Controller<Room>{
              */
             System.out.println("Room insert failed " + e.toString());
         }
-        close();
         return getAll();
     }
 
@@ -64,7 +62,6 @@ public class RoomController extends Controller<Room>{
         }catch (SQLException e){
             System.out.println("RoomBooking update failed");
         }
-        close();
         return getAll();
     }
 
@@ -79,7 +76,6 @@ public class RoomController extends Controller<Room>{
         }catch (SQLException e){
             System.out.println("Room delete failed");
         }
-        close();
         return getAll();
     }
 
@@ -125,7 +121,6 @@ public class RoomController extends Controller<Room>{
             String[][] resultArray = new String[arrayList.size()][];
             resultArray = arrayList.toArray(resultArray);
             String[] columns = getAccountColumns("room");
-            close();
             TableState tableState = new TableState(columns, resultArray);
             return tableState;
         }catch (SQLException e){

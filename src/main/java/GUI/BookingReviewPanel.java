@@ -99,8 +99,8 @@ public class BookingReviewPanel extends ChildrenPanel {
         });
         add(deleteButton);
 
-        // searchButton = getFormattedButton("Search", 30, 330, 80, 24);
-        // add(searchButton);
+        //searchButton = getFormattedButton("Search", 30, 330, 80, 24);
+        //add(searchButton);
 
         resetButton = getFormattedButton("Reset", 30, 370, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {

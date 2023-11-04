@@ -32,7 +32,6 @@ public class NotificationController extends Controller<Notification> {
         } catch (SQLException e) {
             System.out.println("Notification insert failed: " + e.toString());
         }
-        close();
         return getAll();
     }
 

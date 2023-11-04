@@ -3,6 +3,7 @@ package GUI;
 import javax.swing.*;
 
 import Controllers.AccountController;
+import Controllers.Controller;
 import Modules.Account;
 
 import java.awt.event.*;
@@ -109,17 +110,20 @@ public class AccountManagementPanel extends ChildrenPanel {
             }
         });;
         add(deleteButton);
-/*
+
+
         searchButton = getFormattedButton("Search", 30, 360, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                TableState tableState = accountController.search(new AccountController.AccountSearchQuery(idField.getText(),
+                AccountController.TableState tableState = accountController.search(new Account(
                         (Account.AccountType)accountTypeComboBox.getSelectedItem(),
-                        usernameField.getText(), nameField.getText(),
+                        usernameField.getText(),
+                        nameField.getText(),
                         (Account.Race)raceComboBox.getSelectedItem()));
                 refreshTableScrollPane(tableState);
             }
         });;
         add(searchButton);
+
 
         resetButton = getFormattedButton("Reset", 30, 400, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -128,7 +132,7 @@ public class AccountManagementPanel extends ChildrenPanel {
         });;
         add(resetButton);
 
- */
+
     }
 
     @Override

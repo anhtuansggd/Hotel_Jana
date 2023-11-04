@@ -50,7 +50,8 @@ public abstract class Controller<T> {
         Properties prop = new Properties();
         //System.out.println(System.getProperty("user.dir"));
         //try(FileInputStream file = new FileInputStream("D:\\Documents\\3\\1 & 2\\OOP\\Hotel_Jana\\config.properties")){
-        try(FileInputStream file = new FileInputStream("C:\\Users\\ACER\\Documents\\GitHub\\Hotel_Jana\\config.properties")){
+        //try(FileInputStream file = new FileInputStream("C:\\Users\\ACER\\Documents\\GitHub\\Hotel_Jana\\config.properties")){
+        try(FileInputStream file = new FileInputStream("/home/tuan/Documents/Java/Hotel_Jana/config.properties")){
             prop.load(file);
             dbUrl = prop.getProperty("db.url");
             dbUsername = prop.getProperty("db.username");

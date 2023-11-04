@@ -25,7 +25,6 @@ public class LogInController extends Controller<Account> {
         }catch (SQLException e){
             System.out.println("Login failed");
         }
-        close();
         return null;
     }
 
