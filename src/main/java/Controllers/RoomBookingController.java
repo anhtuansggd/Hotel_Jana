@@ -35,19 +35,20 @@ public class RoomBookingController extends Controller<RoomBooking>{
     @Override
     public TableState add(RoomBooking roombooking){
         try{
-            int totalRows = getTotalRows(countAllSQL) + 1;
-            ppsm = connection.prepareStatement(insertRoomSQL);
+            connection = Controller.getConnection();
+
+            PreparedStatement ppsm = connection.prepareStatement(insertRoomSQL);
+            int totalRows = getTotalRows(countAllSQL,ppsm) + 1;
             ppsm.setInt(1, totalRows);
             ppsm.setDate(2, java.sql.Date.valueOf(roombooking.getStartDate()));
             ppsm.setInt(3, roombooking.getDurationInDays());
             ppsm.setString(4, roombooking.getRoomId());
             ppsm.setInt(5, roombooking.getGuestId());
             execute(ppsm);
+
+            ppsm.close();
+            System.out.println("RoomBooking inserted ");
         }catch (SQLException e) {
-
-            //Logger logger = Logger.getLogger(RoomBookingController.class.getName());
-            //logger.log(Level.INFO, "Inserted failed");
-
             System.out.println("RoomBooking insert failed " + e.toString());
         }
         return getAll();
@@ -60,10 +61,9 @@ public class RoomBookingController extends Controller<RoomBooking>{
     @Override
     public TableState update(RoomBooking roombooking){
         try{
-            /*
-            reservation_number is pk
-             */
-            ppsm = connection.prepareStatement(updateRoomSQL);
+            connection = Controller.getConnection();
+
+            PreparedStatement ppsm = connection.prepareStatement(updateRoomSQL);
             ppsm.setDate(1, java.sql.Date.valueOf(roombooking.getStartDate()));
             ppsm.setInt(2, roombooking.getDurationInDays());
             ppsm.setString(3, roombooking.getRoomId().equals("")? null : roombooking.getRoomId());
@@ -71,6 +71,7 @@ public class RoomBookingController extends Controller<RoomBooking>{
             ppsm.setInt(5, roombooking.getReservationNumber());
             execute( ppsm);
 
+            ppsm.close();
             System.out.println("RoomBooking update succeeded");
         }catch (SQLException e){
             System.out.println("RoomBooking update failed");
@@ -82,9 +83,13 @@ public class RoomBookingController extends Controller<RoomBooking>{
     @Override
     public TableState delete(RoomBooking roombooking){
         try{
-            ppsm = connection.prepareStatement(deleteRoomSQL);
+            connection = Controller.getConnection();
+
+            PreparedStatement ppsm = connection.prepareStatement(deleteRoomSQL);
             ppsm.setInt(1, roombooking.getReservationNumber());
             execute(ppsm);
+
+            ppsm.close();
             System.out.println("RoomBooking delete succeeded");
         }catch (SQLException e){
             System.out.println("RoomBooking delete failed "+e.toString());

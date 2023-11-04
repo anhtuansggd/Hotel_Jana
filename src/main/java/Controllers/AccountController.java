@@ -24,19 +24,12 @@ public class AccountController extends Controller<Account>{
             "from account;";
 
 
-    public AccountController() {
-        super();
-    }
-
-    /**
-     * if "getTotalRows()" is executed after "ppsm = connection."
-     * then there will be an error -> Why?
-     */
     @Override
     public TableState add(Account account) {
         try{
-            int total = getTotalRows(countTotalSQL)+1;
-            ppsm = connection.prepareStatement(insertAccountSQL);
+            connection = Controller.getConnection();
+            PreparedStatement ppsm = connection.prepareStatement(insertAccountSQL);
+            int total = getTotalRows(countTotalSQL, ppsm)+1;
             ppsm.setString(1, String.valueOf(total));
             ppsm.setString(2, account.getAccountType().toString());
             ppsm.setString(3, account.getUsername());
@@ -45,6 +38,7 @@ public class AccountController extends Controller<Account>{
             ppsm.setString(6, account.getRace().toString());
             execute(ppsm);
 
+            ppsm.close();
             System.out.println("Account insert succeeded");
         }catch (SQLException e){
             System.out.println("Account insert failed " + e.toString());
@@ -58,17 +52,17 @@ public class AccountController extends Controller<Account>{
     @Override
     public TableState update(Account account) {
         try{
-            ppsm = connection.prepareStatement(updateAccountSQL);
+            connection = Controller.getConnection();
+
+            PreparedStatement ppsm = connection.prepareStatement(updateAccountSQL);
             ppsm.setString(1, account.getAccountType().toString());
-            //ppsm.setString(2, account.getUsername().equals("")? null : account.getUsername());
             ppsm.setString(2, account.getPassword().equals("")? null : Account.hashPassword(account.getPassword()));
             ppsm.setString(3, account.getName().equals("")? null : account.getName());
             ppsm.setString(4, account.getRace().toString());
             ppsm.setString(5, account.getUsername());
-            //ppsm.setString(5, account.getId());
-            System.out.println(ppsm);
             execute(ppsm);
 
+            ppsm.close();
             System.out.println("Account update succeeded");
         }catch (SQLException e){
             System.out.println("Account update failed " + e.toString());
@@ -79,9 +73,13 @@ public class AccountController extends Controller<Account>{
     @Override
     public TableState delete(Account account) {
         try{
-            ppsm = connection.prepareStatement(deleteAccountSQL);
+             connection = Controller.getConnection();
+
+            PreparedStatement ppsm = connection.prepareStatement(deleteAccountSQL);
             ppsm.setString(1, account.getId());
             execute(ppsm);
+
+            ppsm.close();
             System.out.println("Account delete succeeded");
         }catch (SQLException e){
             System.out.println("Account delete failed " + e.toString());
@@ -97,15 +95,17 @@ public class AccountController extends Controller<Account>{
     public TableState search(Account accountSearchQuery) {
         ArrayList<String[]> arrayList = new ArrayList<String[]>();
         try{
-            ppsm = connection.prepareStatement(searchAccountSQL);
+            connection = Controller.getConnection();
+
+            PreparedStatement ppsm = connection.prepareStatement(searchAccountSQL);
             ppsm.setString(1, accountSearchQuery.getType().toString());
             ppsm.setString(2, accountSearchQuery.getUsername().equals("")? null : accountSearchQuery.getUsername());
             ppsm.setString(3, accountSearchQuery.getUsername().equals("")? null : accountSearchQuery.getUsername());
             ppsm.setString(4, accountSearchQuery.getName().equals("")? null : accountSearchQuery.getName());
             ppsm.setString(5, accountSearchQuery.getName().equals("")? null : accountSearchQuery.getName());
             ppsm.setString(6, accountSearchQuery.getRace().toString());
-            ResultSet rs = executeSearch(ppsm);
 
+            ResultSet rs = executeSearch(ppsm);
             while (rs.next()){
                 String[] row= new String[6];
                 for(int i=1; i<=6; i++){
@@ -117,7 +117,9 @@ public class AccountController extends Controller<Account>{
             String[][] resultArray = new String[arrayList.size()][];
             resultArray = arrayList.toArray(resultArray);
             TableState resultTableState = new TableState( getAccountColumns("account"), resultArray);
-            //close();
+
+            rs.close();
+            ppsm.close();
             return resultTableState;
         }catch (SQLException e){
             System.out.println("Account search failed "+e.toString());

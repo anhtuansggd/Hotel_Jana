@@ -30,11 +30,15 @@ public class RoomController extends Controller<Room>{
     @Override
     public TableState add(Room room){
         try{
-            ppsm = connection.prepareStatement(insertRoomSQL);
+            Connection connection = Controller.getConnection();
+
+            PreparedStatement ppsm = connection.prepareStatement(insertRoomSQL);
             ppsm.setString(1, room.getRoomNumber());
             ppsm.setString(2, room.getStyle().toString());
             ppsm.setInt(3, room.isSmoking());
             execute(ppsm);
+
+            ppsm.close();
             System.out.println("Room insert succeeded");
         }catch (SQLException e){
             /*
@@ -52,12 +56,15 @@ public class RoomController extends Controller<Room>{
             /*
             reservation_number is pk
              */
-            ppsm = connection.prepareStatement(updateRoomSQL);
+            Connection connection = Controller.getConnection();
+
+            PreparedStatement ppsm = connection.prepareStatement(updateRoomSQL);
             ppsm.setString(1, room.getStyle().toString());
             ppsm.setInt(2, room.isSmoking());
             ppsm.setString(3, room.getRoomNumber());
             execute(ppsm);
 
+            ppsm.close();
             System.out.println("RoomBooking update succeeded");
         }catch (SQLException e){
             System.out.println("RoomBooking update failed");
@@ -68,10 +75,13 @@ public class RoomController extends Controller<Room>{
     @Override
     public TableState delete(Room room){
         try{
-            ppsm = connection.prepareStatement(deleteRoomSQL);
+            Connection connection = Controller.getConnection();
+
+            PreparedStatement ppsm = connection.prepareStatement(deleteRoomSQL);
             ppsm.setString(1, room.getRoomNumber());
             execute(ppsm);
 
+            ppsm.close();
             System.out.println("Room delete succeeded");
         }catch (SQLException e){
             System.out.println("Room delete failed");
@@ -97,7 +107,9 @@ public class RoomController extends Controller<Room>{
     public TableState search(RoomSearchQuery roomSearchQuery) {
         ArrayList<String[]> arrayList = new ArrayList<String[]>();
         try{
-            ppsm = connection.prepareStatement(searchRoomSQL);
+            Connection connection = Controller.getConnection();
+
+            PreparedStatement ppsm = connection.prepareStatement(searchRoomSQL);
             ppsm.setString(1, roomSearchQuery.roomStyle.toString().equals("")? null :roomSearchQuery.roomStyle.toString());
             ppsm.setString(2, roomSearchQuery.roomStyle.toString().equals("")? null :roomSearchQuery.roomStyle.toString());
             ppsm.setDate(3, Date.valueOf(roomSearchQuery.startDate));
@@ -107,9 +119,8 @@ public class RoomController extends Controller<Room>{
             ppsm.setDate(7, Date.valueOf(roomSearchQuery.startDate));
             ppsm.setDate(8, Date.valueOf(roomSearchQuery.startDate));
             executeSearch(ppsm);
-            System.out.println(ppsm);
-            ResultSet rs = executeSearch(ppsm);
 
+            ResultSet rs = executeSearch(ppsm);
             while (rs.next()){
                 String[] row= new String[3];
                 for(int i=1; i<=3; i++){
@@ -122,6 +133,9 @@ public class RoomController extends Controller<Room>{
             resultArray = arrayList.toArray(resultArray);
             String[] columns = getAccountColumns("room");
             TableState tableState = new TableState(columns, resultArray);
+
+            rs.close();
+            ppsm.close();
             return tableState;
         }catch (SQLException e){
             System.out.println("Room search failed "+e.toString());

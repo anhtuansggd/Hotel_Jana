@@ -8,78 +8,61 @@ import java.util.*;
 import java.io.*;
 
 
+
 public abstract class Controller<T> {
     private static String dbUrl;
     private static String dbUsername;
     private static String dbPassword;
-    /**
-     * Instead of create new connection for each query
-     * -> Implementing connection pool as cache of connection for reuse purpose
-     * -> Use HikariCP library for this
-     */
+    protected static Connection connection;
 
-    protected static HikariDataSource dataSource;
-
-    static{
-        loadConfig();
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(dbUrl);
-        config.setUsername(dbUsername);
-        config.setPassword(dbPassword);
-
-        dataSource = new HikariDataSource(config);
-    }
-
-    protected Connection connection;
-    protected PreparedStatement ppsm;
-    public Controller() {
-        try {
-            connection = dataSource.getConnection();
-            System.err.println("Connected to the server");
-        } catch (SQLException e) {
-            System.err.println("Error connecting to the server");
-        }
-    }
-
-    /**
-     * System.out.println(System.getProperty("user.dir"));
-     * Use above command to get path, then replace before /config.properties
-     */
-
-    private static void loadConfig() {
-        Properties prop = new Properties();
-        //System.out.println(System.getProperty("user.dir"));
-        //try(FileInputStream file = new FileInputStream("D:\\Documents\\3\\1 & 2\\OOP\\Hotel_Jana\\config.properties")){
-        //try(FileInputStream file = new FileInputStream("C:\\Users\\ACER\\Documents\\GitHub\\Hotel_Jana\\config.properties")){
+    private void init(){
+        //try(FileInputStream file = new FileInputStream("D:\\Documents\\3\\1 & 2\\OOP\\Hotel_Jana\\config.properties"))){
+        //try(FileInputStream file = new FileInputStream("C:\\Users\\ACER\\Documents\\GitHub\\Hotel_Jana\\config.properties"){
         try(FileInputStream file = new FileInputStream("/home/tuan/Documents/Java/Hotel_Jana/config.properties")){
+            Properties prop = new Properties();
             prop.load(file);
             dbUrl = prop.getProperty("db.url");
             dbUsername = prop.getProperty("db.username");
             dbPassword = prop.getProperty("db.password");
-        }catch (IOException e){
+            connection = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
+            if(connection != null){
+                System.err.println("Connection connected");
+            }
+        }catch (IOException | SQLException e){
             System.out.println("loadConfig "+e.toString());
         }
     }
 
-    public void close(){
-        try{
-            if(ppsm!=null){
-                ppsm.close();
-            }
-        }catch (SQLException e){
-            System.out.println("PreparedStatement close failed " + e.toString());
-            System.err.println("Error closing PreparedStatement");
-        } finally {
-            try {
-                if(connection!=null && !connection.isClosed()){
-                    connection.close();
-                }
-            }catch (SQLException e){
-                System.out.println("Connection close failed " + e.toString());
-                System.err.println("Error closing Connection");
-            }
+
+    public Controller() {
+        if (connection == null){
+            init();
         }
     }
+
+    public static Connection getConnection(){
+        if(connection != null){
+            return connection;
+        }
+        System.out.println("getCon err");
+        return null;
+    }
+
+    static {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                if (connection != null) {
+                    try {
+                        connection.close();
+                        System.err.println("Connection closed");
+                    } catch (SQLException e) {
+                        System.err.println("Connection close err");
+                    }
+                }
+            }
+        });
+    }
+
 
 
     /**
@@ -88,8 +71,6 @@ public abstract class Controller<T> {
     public abstract TableState add(T entity);
     public abstract TableState update(T entity);
     public abstract TableState delete(T entity);
-    public TableState search(){return  null;};
-    public String[][] getData(ResultSet rSet, String SQL){return null;};
 
 
     protected void execute(PreparedStatement ppsm){
@@ -105,7 +86,7 @@ public abstract class Controller<T> {
     protected ResultSet executeSearch(PreparedStatement ppsm){
         try{
             if(connection.isClosed()){
-                connection = dataSource.getConnection();
+                connection = getConnection();
             }
             System.out.println("Searched");
             return ppsm.executeQuery();
@@ -133,7 +114,7 @@ public abstract class Controller<T> {
 
         try {
             if(connection.isClosed()){
-                connection = dataSource.getConnection();
+                connection = getConnection();
             }
             Statement stmt = connection.createStatement();
             ResultSet rSet = stmt.executeQuery("SELECT * FROM " + tableName);
@@ -160,7 +141,7 @@ public abstract class Controller<T> {
 
         try {
             if(connection.isClosed()){
-                connection = dataSource.getConnection();
+                connection = getConnection();
             }
             DatabaseMetaData metaData = connection.getMetaData();
             ResultSet columnSet = metaData.getColumns(null, null, tableName, null);
@@ -188,7 +169,7 @@ public abstract class Controller<T> {
         }
     }
 
-    public int getTotalRows(String countAllSQL){
+    public int getTotalRows(String countAllSQL, PreparedStatement ppsm){
         try{
             ppsm = connection.prepareStatement(countAllSQL);
             ResultSet rSet = executeSearch(ppsm);
@@ -208,28 +189,4 @@ public abstract class Controller<T> {
 }
 
 
-
-
-/*
-public interface Controller<T>{
-    //Connection connection = null;
-    static Connection getConnection(){
-        Connection connection = null;
-        try {
-            String dbUrl = "jdbc:mysql://localhost:3306/hotel_dbms";
-            String userName = "tuan";
-            String password = "Password123!";
-            return DriverManager.getConnection(dbUrl, userName, password);
-
-        } catch (SQLException e) {
-            System.err.println("Error connecting to the server");
-        }
-        System.err.println("Connected to the server");
-        return connection;
-    }
-
-
-}
-
- */
 
