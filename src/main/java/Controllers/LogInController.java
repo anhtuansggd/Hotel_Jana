@@ -15,7 +15,6 @@ public class LogInController extends Controller<Account> {
     public Account login(String user_name, String password){
         try{
             Connection connection = Controller.getConnection();
-
             PreparedStatement ppsm = connection.prepareStatement(
                     "SELECT * \n" +
                             "FROM account\n" +
@@ -25,12 +24,11 @@ public class LogInController extends Controller<Account> {
             ResultSet set = ppsm.executeQuery();
 
             set.next();
-            set.close();
-            ppsm.close();
+
             System.out.println("Login succeeded");
             return new Account(set.getString(1), Account.AccountType.valueOf(set.getString(2).toUpperCase()), set.getString(3), set.getString(4),  set.getString(5) , Account.Race.valueOf(set.getString(6).toUpperCase()));
         }catch (SQLException e){
-            System.out.println("Login failed");
+            System.out.println("Login failed" + e.toString());
         }
         return null;
     }
