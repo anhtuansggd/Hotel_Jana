@@ -5,8 +5,8 @@ public class Notification {
     private int reservation_number;
     private String message;
 
-    public Notification(int account_id, String message){
-        this.reservation_number = account_id;
+    public Notification(int reservation_number, String message){
+        this.reservation_number = reservation_number;
         this.message = message;
     }
 

@@ -22,7 +22,7 @@ public class AccountInfoPanel extends ChildrenPanel {
     public AccountInfoPanel(MainFrame f) {
         super(f);
 
-        infoLabel = getFormattedLabel("Account Information", 30, 24, 120, 30);
+        infoLabel = getFormattedLabel("Account Information", 30, 24, 300, 30);
         infoLabel.setFont(new Font("Helvetica", Font.PLAIN, 18));
         add(infoLabel);
 
@@ -62,6 +62,6 @@ public class AccountInfoPanel extends ChildrenPanel {
     }
 
     private JLabel getFormattedValueLabel(String s, int pos) {
-        return getFormattedLabel(":   " + s, 130, 60 + pos * 30, 120, 30);
+        return getFormattedLabel(":   " + s, 130, 60 + pos * 30, 200, 30);
     }
 }

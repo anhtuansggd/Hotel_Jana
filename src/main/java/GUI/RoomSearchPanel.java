@@ -7,15 +7,18 @@ import java.time.*;
 import java.time.format.*;
 import java.awt.Color;
 
+import Controllers.NotificationController;
 import Controllers.RoomBookingController;
 import Controllers.RoomController;
 import Controllers.RoomController.RoomSearchQuery;
+import Modules.Notification;
 import Modules.Room;
 import Modules.RoomBooking;
 
 public class RoomSearchPanel extends ChildrenPanel {
     RoomController roomController;
     RoomBookingController roomBookingController;
+    NotificationController notificationController;
 
     JLabel roomStyleLabel;
     JComboBox<Room.RoomStyle> roomStyleComboBox;
@@ -37,6 +40,7 @@ public class RoomSearchPanel extends ChildrenPanel {
         roomController = new RoomController();
         refreshTableScrollPane(roomController.getAll(), true);
         roomBookingController = new RoomBookingController();
+        notificationController = new NotificationController();
         
         // Room style input
         roomStyleLabel = getFormattedLabel("Room style", 30, 30, 120, 30);
@@ -83,6 +87,9 @@ public class RoomSearchPanel extends ChildrenPanel {
                         getLocalDateFromString(dateField.getText(), "dd/MM/yyyy"), Integer.valueOf(durationField.getText()),
                         Integer.valueOf(mainFrame.account.getId()), getSelectedRow()[0]);
                 roomBookingController.add(roomBooking);
+
+                Notification notification = new Notification(roomBooking.getReservationNumber(), "Greetings, Sir/Miss with customer number: "+ roomBooking.getGuestId()+". You have successfully booked room "+ roomBooking.getRoomId()+" on " + LocalDate.now()+" with our app. Thank you for choosing us.");
+                notificationController.add(notification);
             }
         });
         add(bookButton);

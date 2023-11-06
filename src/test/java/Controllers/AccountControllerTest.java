@@ -32,6 +32,12 @@ public class AccountControllerTest {
     }
 
     @Test
+    public void getAccount() {
+        AccountController ac = new AccountController();
+        ac.getAccount(13);
+    }
+
+    @Test
     public void getAll() {
     }
 }
