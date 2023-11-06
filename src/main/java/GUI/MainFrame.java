@@ -28,23 +28,23 @@ public class MainFrame extends JFrame {
         tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
         // creating icon
 
+        addTab(tabbedPane, NotificationPanel.class, "Notifications", 0);
+        addTab(tabbedPane, AccountInfoPanel.class, "Account info", 1);
         switch (account.getAccountType()) {
             case MANAGER:
-                addTab(tabbedPane, RoomSearchPanel.class, "Search room", 0);
-                addTab(tabbedPane, BookingReviewPanel.class, "Review Booking", 1);
-                addTab(tabbedPane, AccountManagementPanel.class, "Manage account", 2);
-                addTab(tabbedPane, NotificationPanel.class, "Notifications", 3);
+                addTab(tabbedPane, RoomSearchPanel.class, "Search room", 2);
+                addTab(tabbedPane, BookingReviewPanel.class, "Review Booking", 3);
+                addTab(tabbedPane, AccountManagementPanel.class, "Manage account", 4);
+                
                 break;
 
             case RECEPTIONIST:
-                addTab(tabbedPane, RoomSearchPanel.class, "Search room", 0);
-                addTab(tabbedPane, BookingReviewPanel.class, "Review Booking", 1);
-                addTab(tabbedPane, NotificationPanel.class, "Notifications", 2);
+                addTab(tabbedPane, RoomSearchPanel.class, "Search room", 2);
+                addTab(tabbedPane, BookingReviewPanel.class, "Review Booking", 3);
                 break;
 
             case GUEST:
-                addTab(tabbedPane, RoomSearchPanel.class, "Search room", 0);
-                addTab(tabbedPane, NotificationPanel.class, "Notifications", 1);
+                addTab(tabbedPane, RoomSearchPanel.class, "Search room", 2);
                 break;
 
             default:
