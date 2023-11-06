@@ -48,4 +48,9 @@ public class LogInController extends DatabaseManager implements Controller<Accou
     public TableState delete(Account ac){
         return null;
     };
+
+    @Override
+    public TableState getAll() {
+        return null;
+    }
 }

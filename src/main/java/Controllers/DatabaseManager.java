@@ -75,10 +75,7 @@ public abstract class DatabaseManager {
         return null;
     }
 
-    public TableState getAll() {
-        System.out.println("getAll() function not initialized");
-        return null;
-    }
+    public abstract TableState getAll();
 
     protected static TableState _getAll(String tableName) {
         String[] columns = getAccountColumns(tableName);
