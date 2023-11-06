@@ -37,7 +37,7 @@ public abstract class DatabaseManager {
     private static void init(){
         //try(FileInputStream file = new FileInputStream("D:\\Documents\\3\\1 & 2\\OOP\\Hotel_Jana\\config.properties"))){
         //try(FileInputStream file = new FileInputStream("C:\\Users\\ACER\\Documents\\GitHub\\Hotel_Jana\\config.properties"){
-        try(FileInputStream file = new FileInputStream("/home/tuan/Documents/Java/Hotel_Jana/config.properties")){
+        try(FileInputStream file = new FileInputStream(System.getProperty("user.dir").replace('\\', '/') + "/config.properties")){
             Properties prop = new Properties();
             prop.load(file);
             dbUrl = prop.getProperty("db.url");

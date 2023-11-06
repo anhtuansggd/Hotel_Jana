@@ -33,15 +33,18 @@ public class MainFrame extends JFrame {
                 addTab(tabbedPane, RoomSearchPanel.class, "Search room", 0);
                 addTab(tabbedPane, BookingReviewPanel.class, "Review Booking", 1);
                 addTab(tabbedPane, AccountManagementPanel.class, "Manage account", 2);
+                addTab(tabbedPane, NotificationPanel.class, "Notifications", 3);
                 break;
 
             case RECEPTIONIST:
                 addTab(tabbedPane, RoomSearchPanel.class, "Search room", 0);
                 addTab(tabbedPane, BookingReviewPanel.class, "Review Booking", 1);
+                addTab(tabbedPane, NotificationPanel.class, "Notifications", 2);
                 break;
 
             case GUEST:
                 addTab(tabbedPane, RoomSearchPanel.class, "Search room", 0);
+                addTab(tabbedPane, NotificationPanel.class, "Notifications", 1);
                 break;
 
             default:

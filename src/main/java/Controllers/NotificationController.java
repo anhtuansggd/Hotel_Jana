@@ -1,13 +1,14 @@
 package Controllers;
 
-
 import Modules.Notification;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class NotificationController extends DatabaseManager implements Controller<Notification> {
     private final String insertNotificationSQL = "INSERT INTO notification VALUES (?,?,?);";
     //private final String updateNotificationSQL = "UPDATE notifcation \n";
+    private static final String searchNotificationSQL = "SELECT * FROM notification N WHERE N.account_id = ?";
 
 
     private final String countTotalSQL = "select count(id)\n" + "from notification";
@@ -15,7 +16,6 @@ public class NotificationController extends DatabaseManager implements Controlle
     public NotificationController() {
         super();
     }
-
 
     @Override
     public TableState add(Notification notification) {
@@ -45,5 +45,38 @@ public class NotificationController extends DatabaseManager implements Controlle
     public TableState delete(Notification notification) {
         return null;
     }
+
+    public TableState search(int accountId) {
+        ArrayList<String[]> arrayList = new ArrayList<String[]>();
+        try{
+            Connection connection = getConnection();
+
+            PreparedStatement ppsm = connection.prepareStatement(searchNotificationSQL);
+            ppsm.setInt(1, accountId);
+            executeSearch(ppsm);
+
+            ResultSet rs = executeSearch(ppsm);
+            while (rs.next()){
+                String[] row= new String[3];
+                for(int i=1; i<=3; i++){
+                    row[i-1] = rs.getString(i);
+                }
+                arrayList.add(row);
+            }
+            System.out.println("Notification search succeeded");
+            String[][] resultArray = new String[arrayList.size()][];
+            resultArray = arrayList.toArray(resultArray);
+            String[] columns = getAccountColumns("notification");
+            TableState tableState = new TableState(columns, resultArray);
+
+            rs.close();
+            ppsm.close();
+            return tableState;
+        }catch (SQLException e){
+            System.out.println("Room search failed "+e.toString());
+        }
+        return null;
+    }
+
     public TableState getAll() {return _getAll("notification");}
 }

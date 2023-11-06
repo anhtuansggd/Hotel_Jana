@@ -138,5 +138,6 @@ public class Account {
             e.printStackTrace();
         }
         return hashedPassword;
+        // return password;
     }
 }
