@@ -4,8 +4,9 @@ import Modules.Account;
 
 import java.sql.*;
 import java.util.*;
+import static Controllers.DatabaseManager.*;
 
-public class AccountController extends Controller<Account>{
+public class AccountController extends DatabaseManager implements Controller<Account>{
     private final String insertAccountSQL = "INSERT INTO account VALUES(?,?,?,?,?,?);";
     private final String updateAccountSQL = "UPDATE account \n" +
             "SET account_type = ?,\n" +
@@ -27,7 +28,7 @@ public class AccountController extends Controller<Account>{
     @Override
     public TableState add(Account account) {
         try{
-            connection = Controller.getConnection();
+            Connection connection = getConnection();
             PreparedStatement ppsm = connection.prepareStatement(insertAccountSQL);
             int total = getTotalRows(countTotalSQL, ppsm)+1;
             ppsm.setString(1, String.valueOf(total));
@@ -52,7 +53,7 @@ public class AccountController extends Controller<Account>{
     @Override
     public TableState update(Account account) {
         try{
-            connection = Controller.getConnection();
+            Connection connection = getConnection();
 
             PreparedStatement ppsm = connection.prepareStatement(updateAccountSQL);
             ppsm.setString(1, account.getAccountType().toString());
@@ -73,7 +74,7 @@ public class AccountController extends Controller<Account>{
     @Override
     public TableState delete(Account account) {
         try{
-             connection = Controller.getConnection();
+            Connection connection = getConnection();
 
             PreparedStatement ppsm = connection.prepareStatement(deleteAccountSQL);
             ppsm.setString(1, account.getId());
@@ -95,7 +96,7 @@ public class AccountController extends Controller<Account>{
     public TableState search(Account accountSearchQuery) {
         ArrayList<String[]> arrayList = new ArrayList<String[]>();
         try{
-            connection = Controller.getConnection();
+            Connection connection = getConnection();
 
             PreparedStatement ppsm = connection.prepareStatement(searchAccountSQL);
             ppsm.setString(1, accountSearchQuery.getType().toString());

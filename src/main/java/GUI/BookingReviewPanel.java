@@ -5,7 +5,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import Controllers.Controller;
+import Controllers.DatabaseManager;
 import Controllers.RoomBookingController;
 import Modules.RoomBooking;
 
@@ -111,15 +111,15 @@ public class BookingReviewPanel extends ChildrenPanel {
     }   
 
     @Override
-    protected void refreshTableScrollPane(Controller.TableState ts) {
+    protected void refreshTableScrollPane(DatabaseManager.TableState ts) {
         tableState = ts;
 
         for (int i = 0; i < tableState.data.length; i++) {
             LocalDate localDate = getLocalDateFromString(tableState.data[i][1].substring(0, 10), "yyyy-MM-dd");
-            tableState.data[i][1] = getStringFromLocalDate(localDate); 
+            tableState.data[i][1] = getStringFromLocalDate(localDate);
         }
 
-        Controller.TableState visibleTableState;
+        DatabaseManager.TableState visibleTableState;
         if (pkIndex != -1) {
             visibleTableState = removePKFromTableState(ts);
         } else {

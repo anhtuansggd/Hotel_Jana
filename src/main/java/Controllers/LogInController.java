@@ -6,15 +6,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import static Controllers.DatabaseManager.*;
 
-public class LogInController extends Controller<Account> {
+public class LogInController extends DatabaseManager implements Controller<Account> {
     public LogInController(){
         super();
     }
 
     public Account login(String user_name, String password){
         try{
-            Connection connection = Controller.getConnection();
+            Connection connection = getConnection();
             PreparedStatement ppsm = connection.prepareStatement(
                     "SELECT * \n" +
                             "FROM account\n" +

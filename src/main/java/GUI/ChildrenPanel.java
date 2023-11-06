@@ -8,14 +8,14 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import Controllers.Controller;
+import Controllers.DatabaseManager;
 
 import java.awt.event.*;
 
 public class ChildrenPanel extends JPanel {
     protected MainFrame mainFrame;
     protected int pkIndex;
-    protected Controller.TableState tableState;
+    protected DatabaseManager.TableState tableState;
     protected JTable panelTable;
     protected JScrollPane panelScrollPane;
 
@@ -130,9 +130,9 @@ public class ChildrenPanel extends JPanel {
         return new TableScrollPane(table, scrollPane);
     }
     
-    protected void refreshTableScrollPane(Controller.TableState ts) {
+    protected void refreshTableScrollPane(DatabaseManager.TableState ts) {
         tableState = ts;
-        Controller.TableState visibleTableState;
+        DatabaseManager.TableState visibleTableState;
         if (pkIndex != -1) {
             visibleTableState = removePKFromTableState(ts);
         } else {
@@ -158,9 +158,9 @@ public class ChildrenPanel extends JPanel {
         repaint();
     }
 
-    protected void refreshTableScrollPane(Controller.TableState ts, boolean isEmpty) {
+    protected void refreshTableScrollPane(DatabaseManager.TableState ts, boolean isEmpty) {
         tableState = ts;
-        Controller.TableState visibleTableState;
+        DatabaseManager.TableState visibleTableState;
         if (pkIndex != -1) {
             visibleTableState = removePKFromTableState(ts);
         } else {
@@ -190,7 +190,7 @@ public class ChildrenPanel extends JPanel {
         repaint();
     }
 
-    protected Controller.TableState removePKFromTableState(Controller.TableState ts) {
+    protected DatabaseManager.TableState removePKFromTableState(DatabaseManager.TableState ts) {
         String[] columns = new String[ts.columns.length - 1];
         System.arraycopy(ts.columns, 0, columns, 0, pkIndex); 
         System.arraycopy(ts.columns, pkIndex+1, columns, pkIndex, ts.columns.length - pkIndex-1);
@@ -202,7 +202,7 @@ public class ChildrenPanel extends JPanel {
             System.arraycopy(ts.data[i], pkIndex+1, data[i], pkIndex, ts.data[i].length - pkIndex-1);
         }
 
-        return new Controller.TableState(columns, data);
+        return new DatabaseManager.TableState(columns, data);
     }
 
     public String[] getSelectedRow() {

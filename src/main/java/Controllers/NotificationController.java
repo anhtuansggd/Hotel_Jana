@@ -3,11 +3,9 @@ package Controllers;
 
 import Modules.Notification;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
-public class NotificationController extends Controller<Notification> {
+public class NotificationController extends DatabaseManager implements Controller<Notification> {
     private final String insertNotificationSQL = "INSERT INTO notification VALUES (?,?,?);";
     //private final String updateNotificationSQL = "UPDATE notifcation \n";
 
@@ -22,7 +20,7 @@ public class NotificationController extends Controller<Notification> {
     @Override
     public TableState add(Notification notification) {
         try {
-            Connection connection = Controller.getConnection();
+            Connection connection = getConnection();
             PreparedStatement ppsm = connection.prepareStatement(insertNotificationSQL);
             int total = getTotalRows(countTotalSQL, ppsm) + 1;
             ppsm.setString(1, String.valueOf(total));

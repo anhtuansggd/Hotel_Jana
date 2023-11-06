@@ -6,9 +6,10 @@ import Modules.Room;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import static Controllers.DatabaseManager.*;
 
 
-public class RoomController extends Controller<Room>{
+public class RoomController extends DatabaseManager implements Controller<Room>{
     private static final String insertRoomSQL = "INSERT INTO room VALUES(?,?,?);";
     private static final String updateRoomSQL = "UPDATE room SET room_style=?, is_smoking=? WHERE room_number=?;";
     private static final String deleteRoomSQL = "DELETE FROM room WHERE room_number=?;";
@@ -30,7 +31,7 @@ public class RoomController extends Controller<Room>{
     @Override
     public TableState add(Room room){
         try{
-            Connection connection = Controller.getConnection();
+            Connection connection = getConnection();
 
             PreparedStatement ppsm = connection.prepareStatement(insertRoomSQL);
             ppsm.setString(1, room.getRoomNumber());
@@ -56,7 +57,7 @@ public class RoomController extends Controller<Room>{
             /*
             reservation_number is pk
              */
-            Connection connection = Controller.getConnection();
+            Connection connection = getConnection();
 
             PreparedStatement ppsm = connection.prepareStatement(updateRoomSQL);
             ppsm.setString(1, room.getStyle().toString());
@@ -75,7 +76,7 @@ public class RoomController extends Controller<Room>{
     @Override
     public TableState delete(Room room){
         try{
-            Connection connection = Controller.getConnection();
+            Connection connection = getConnection();
 
             PreparedStatement ppsm = connection.prepareStatement(deleteRoomSQL);
             ppsm.setString(1, room.getRoomNumber());
@@ -107,7 +108,7 @@ public class RoomController extends Controller<Room>{
     public TableState search(RoomSearchQuery roomSearchQuery) {
         ArrayList<String[]> arrayList = new ArrayList<String[]>();
         try{
-            Connection connection = Controller.getConnection();
+            Connection connection = getConnection();
 
             PreparedStatement ppsm = connection.prepareStatement(searchRoomSQL);
             ppsm.setString(1, roomSearchQuery.roomStyle.toString().equals("")? null :roomSearchQuery.roomStyle.toString());

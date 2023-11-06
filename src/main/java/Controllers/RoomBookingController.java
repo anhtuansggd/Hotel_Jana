@@ -3,11 +3,13 @@ package Controllers;
 
 import Modules.RoomBooking;
 
+
 import java.sql.*;
 import java.time.LocalDate;
+import static Controllers.DatabaseManager.*;
 
 
-public class RoomBookingController extends Controller<RoomBooking>{
+public class RoomBookingController extends DatabaseManager implements Controller<RoomBooking>{
     private final String insertRoomSQL = "INSERT INTO room_booking VALUES(?,?,?,?,?);";
     private final String updateRoomSQL = "UPDATE room_booking \n" +
             "SET start_date=?,\n" +
@@ -35,7 +37,7 @@ public class RoomBookingController extends Controller<RoomBooking>{
     @Override
     public TableState add(RoomBooking roombooking){
         try{
-            connection = Controller.getConnection();
+            Connection connection = getConnection();
 
             PreparedStatement ppsm = connection.prepareStatement(insertRoomSQL);
             int totalRows = getTotalRows(countAllSQL,ppsm) + 1;
@@ -61,7 +63,7 @@ public class RoomBookingController extends Controller<RoomBooking>{
     @Override
     public TableState update(RoomBooking roombooking){
         try{
-            connection = Controller.getConnection();
+            Connection connection = getConnection();
 
             PreparedStatement ppsm = connection.prepareStatement(updateRoomSQL);
             ppsm.setDate(1, java.sql.Date.valueOf(roombooking.getStartDate()));
@@ -83,7 +85,7 @@ public class RoomBookingController extends Controller<RoomBooking>{
     @Override
     public TableState delete(RoomBooking roombooking){
         try{
-            connection = Controller.getConnection();
+            Connection connection = getConnection();
 
             PreparedStatement ppsm = connection.prepareStatement(deleteRoomSQL);
             ppsm.setInt(1, roombooking.getReservationNumber());
