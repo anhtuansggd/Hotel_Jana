@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.35, for Linux (x86_64)
 --
 -- Host: localhost    Database: hotel_dbms
 -- ------------------------------------------------------
--- Server version	8.2.0
+-- Server version	8.0.35
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -42,7 +42,7 @@ CREATE TABLE `room_booking` (
 
 LOCK TABLES `room_booking` WRITE;
 /*!40000 ALTER TABLE `room_booking` DISABLE KEYS */;
-INSERT INTO `room_booking` VALUES (1,'2023-10-22 00:00:00',1,101,8),(2,'2023-10-25 00:00:00',1,101,7),(3,'2023-11-19 00:00:00',2,101,6),(4,'2023-11-24 00:00:00',2,103,5);
+INSERT INTO `room_booking` VALUES (1,'2023-10-22 00:00:00',1,101,8),(2,'2023-10-26 00:00:00',1,101,7),(3,'2023-11-19 00:00:00',2,101,6),(4,'2023-11-24 00:00:00',2,103,5),(5,'2023-10-22 00:00:00',1,105,7),(6,'2023-05-25 00:00:00',1,101,6),(7,'2024-02-10 00:00:00',2,101,13),(8,'2023-02-10 00:00:00',2,102,13);
 /*!40000 ALTER TABLE `room_booking` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-29  1:41:59
+-- Dump completed on 2023-11-06 10:58:19

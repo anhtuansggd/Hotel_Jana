@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.35, for Linux (x86_64)
 --
 -- Host: localhost    Database: hotel_dbms
 -- ------------------------------------------------------
--- Server version	8.2.0
+-- Server version	8.0.35
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -24,11 +24,11 @@ DROP TABLE IF EXISTS `notification`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `notification` (
   `id` int NOT NULL,
-  `account_id` int NOT NULL,
+  `reservation_number` int NOT NULL,
   `description` varchar(200) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `n_account_id_idx` (`account_id`),
-  CONSTRAINT `n_account_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`)
+  KEY `n_notification_res_resx` (`reservation_number`),
+  CONSTRAINT `n_notification_res` FOREIGN KEY (`reservation_number`) REFERENCES `room_booking` (`reservation_number`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -38,7 +38,7 @@ CREATE TABLE `notification` (
 
 LOCK TABLES `notification` WRITE;
 /*!40000 ALTER TABLE `notification` DISABLE KEYS */;
-INSERT INTO `notification` VALUES (1,1,'abds'),(2,1,'jwen'),(3,1,'eqwe'),(4,2,'uytf'),(5,2,'qwea'),(6,2,'dasd');
+INSERT INTO `notification` VALUES (1,7,'test'),(2,8,'test2');
 /*!40000 ALTER TABLE `notification` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-29  1:41:59
+-- Dump completed on 2023-11-06 10:58:19
