@@ -8,7 +8,10 @@ import java.util.ArrayList;
 public class NotificationController extends DatabaseManager implements Controller<Notification> {
     private final String insertNotificationSQL = "INSERT INTO notification VALUES (?,?,?);";
     //private final String updateNotificationSQL = "UPDATE notifcation \n";
-    private static final String searchNotificationSQL = "SELECT * FROM notification N WHERE N.account_id = ?";
+    private static final String searchNotificationSQL = "SELECT n.id, n.reservation_number, n.description\n" +
+            "FROM notification n\n" +
+            "JOIN room_booking rb ON n.reservation_number = rb.reservation_number\n" +
+            "WHERE rb.account_id = ?;";
 
 
     private final String countTotalSQL = "select count(id)\n" + "from notification";
@@ -24,7 +27,7 @@ public class NotificationController extends DatabaseManager implements Controlle
             PreparedStatement ppsm = connection.prepareStatement(insertNotificationSQL);
             int total = getTotalRows(countTotalSQL, ppsm) + 1;
             ppsm.setString(1, String.valueOf(total));
-            ppsm.setInt(2, notification.getAccount_id());
+            ppsm.setInt(2, notification.getReservation_number());
             ppsm.setString(3, notification.getMessage());
             execute(ppsm);
 

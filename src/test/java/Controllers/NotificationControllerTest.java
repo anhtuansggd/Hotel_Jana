@@ -18,4 +18,11 @@ public class NotificationControllerTest extends TestCase {
 
     public void testDelete() {
     }
+
+    public void testSearch() {
+        NotificationController nc = new NotificationController();
+
+        nc.search(13);
+
+    }
 }
