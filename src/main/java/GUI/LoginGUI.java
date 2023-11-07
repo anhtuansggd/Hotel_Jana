@@ -23,6 +23,8 @@ public class LoginGUI extends JFrame {
 
     JLabel warningLabel;
 
+    JLabel quitButton;
+
     public LoginGUI() {
         super();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -79,6 +81,15 @@ public class LoginGUI extends JFrame {
             }
         });
         add(loginButton);
+
+        JButton quitButton = new JButton("Quit");
+        quitButton.setBounds(460, 384, 100, 32);
+        quitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        add(quitButton);
 
         warningLabel = new JLabel("Incorrect username or password");
         warningLabel.setVerticalAlignment(JLabel.BOTTOM);
