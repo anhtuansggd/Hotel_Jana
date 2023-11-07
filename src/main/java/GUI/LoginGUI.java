@@ -94,6 +94,7 @@ public class LoginGUI extends JFrame {
 
                 if (account != null) {
                     MainFrame m = new MainFrame(account);
+                    m.setResizable(false);
                     m.setVisible(true);
 
                     setVisible(false);

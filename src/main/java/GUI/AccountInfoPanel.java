@@ -1,7 +1,10 @@
 package GUI;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 
 public class AccountInfoPanel extends ChildrenPanel {
@@ -18,6 +21,8 @@ public class AccountInfoPanel extends ChildrenPanel {
     JLabel usernameLabel;
     JLabel nameLabel;
     JLabel raceLabel;
+
+    JButton logoutButton;
 
     public AccountInfoPanel(MainFrame f) {
         super(f);
@@ -55,6 +60,18 @@ public class AccountInfoPanel extends ChildrenPanel {
 
         raceLabel = getFormattedValueLabel(String.valueOf(f.account.getRace()), 4);
         add(raceLabel);
+
+        logoutButton = getFormattedButton("Log out", 30, 240, 96, 30, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                mainFrame.setVisible(false);
+                mainFrame.setEnabled(false);
+
+                LoginGUI f = new LoginGUI();
+                f.setResizable(false);
+                f.setVisible(true);              
+            }
+        });
+        add(logoutButton);
     }
 
     private JLabel getFormattedAttributeLabel(String s, int pos) {
