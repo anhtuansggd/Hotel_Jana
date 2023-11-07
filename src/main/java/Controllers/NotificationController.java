@@ -16,9 +16,6 @@ public class NotificationController extends DatabaseManager implements Controlle
 
     private final String countTotalSQL = "select count(id)\n" + "from notification";
 
-    public NotificationController() {
-        super();
-    }
 
     @Override
     public TableState add(Notification notification) {

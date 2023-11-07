@@ -11,19 +11,6 @@ import Controllers.DatabaseManager.*;
 
 
 public interface Controller<T> {
-
-
-
-//    public Controller() {
-//        if (connection == null){
-//            init();
-//        }
-//    }
-
-
-
-
-
     /**
      * Due to
      */

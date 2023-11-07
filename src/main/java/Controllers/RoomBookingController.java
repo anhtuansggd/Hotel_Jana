@@ -26,10 +26,6 @@ public class RoomBookingController extends DatabaseManager implements Controller
     private final String countAllSQL = "select count(reservation_number)\n" +
             "from room_booking;";
 
-    public RoomBookingController() {
-        super();
-    }
-
 
     @Override
     public TableState add(RoomBooking roombooking){

@@ -9,9 +9,6 @@ import java.sql.SQLException;
 import static Controllers.DatabaseManager.*;
 
 public class LogInController extends DatabaseManager implements Controller<Account> {
-    public LogInController(){
-        super();
-    }
 
     public Account login(String user_name, String password){
         try{

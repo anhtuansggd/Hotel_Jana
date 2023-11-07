@@ -24,10 +24,6 @@ public class RoomController extends DatabaseManager implements Controller<Room>{
             "\tOR (rb.start_date >= ? AND DATE_ADD(start_date, INTERVAL duration DAY) <= ?)\n" +
             ");";
 
-    public RoomController() {
-        super();
-    }
-
     @Override
     public TableState add(Room room){
         try{
