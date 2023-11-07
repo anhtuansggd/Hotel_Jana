@@ -2,11 +2,8 @@ package Controllers;
 
 
 import Modules.RoomBooking;
-
-
 import java.sql.*;
 import java.time.LocalDate;
-import static Controllers.DatabaseManager.*;
 
 
 public class RoomBookingController extends DatabaseManager implements Controller<RoomBooking>{
@@ -38,9 +35,9 @@ public class RoomBookingController extends DatabaseManager implements Controller
     public TableState add(RoomBooking roombooking){
         try{
             Connection connection = getConnection();
-
             PreparedStatement ppsm = connection.prepareStatement(insertRoomSQL);
-            int totalRows = getTotalRows(countAllSQL,ppsm) + 1;
+            roombooking.setReservationNumber(getTotalRows(countAllSQL,ppsm) + 1);
+            int totalRows = roombooking.getReservationNumber();
             ppsm.setInt(1, totalRows);
             ppsm.setDate(2, java.sql.Date.valueOf(roombooking.getStartDate()));
             ppsm.setInt(3, roombooking.getDurationInDays());

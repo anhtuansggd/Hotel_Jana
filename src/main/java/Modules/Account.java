@@ -39,6 +39,14 @@ public class Account {
         this.race = race;
     }
 
+    public Account(String id, AccountType type, String username, String name, Race race) {
+        this.id = id;
+        this.type = type;
+        this.username = username;
+        this.name = name;
+        this.race = race;
+    }
+
     public Account(AccountType type, String username, String name, Race race) {
         this.type = type;
         this.username = username;
@@ -98,6 +106,8 @@ public class Account {
     public AccountType getType() {
         return type;
     }
+
+
 
     public void setType(AccountType type) {
         this.type = type;

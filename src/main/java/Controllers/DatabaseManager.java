@@ -29,14 +29,11 @@ public abstract class DatabaseManager {
         if(connection == null){
             init();
         }
-        System.out.println("getCon err");
         return connection;
     }
 
 
     private static void init(){
-        //try(FileInputStream file = new FileInputStream("D:\\Documents\\3\\1 & 2\\OOP\\Hotel_Jana\\config.properties"))){
-        //try(FileInputStream file = new FileInputStream("C:\\Users\\ACER\\Documents\\GitHub\\Hotel_Jana\\config.properties"){
         try(FileInputStream file = new FileInputStream(System.getProperty("user.dir").replace('\\', '/') + "/config.properties")){
             Properties prop = new Properties();
             prop.load(file);

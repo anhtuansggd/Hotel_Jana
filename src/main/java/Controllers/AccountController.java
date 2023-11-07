@@ -24,6 +24,10 @@ public class AccountController extends DatabaseManager implements Controller<Acc
     private final String countTotalSQL = "select count(id)\n" +
             "from account;";
 
+    private final String getAccountSQL = "SELECT *\n" +
+            "FROM account\n" +
+            "WHERE id = ?;";
+
 
     @Override
     public TableState add(Account account) {
@@ -124,6 +128,20 @@ public class AccountController extends DatabaseManager implements Controller<Acc
             return resultTableState;
         }catch (SQLException e){
             System.out.println("Account search failed "+e.toString());
+        }
+        return null;
+    }
+
+    public Account getAccount(int account_id){
+        try{
+            Connection connection = getConnection();
+            PreparedStatement ppsm = connection.prepareStatement(getAccountSQL);
+            ppsm.setInt(1, account_id);
+            ResultSet rs = executeSearch(ppsm);
+            rs.next();
+            return new Account(rs.getString(1), Account.AccountType.valueOf(rs.getString(2).toUpperCase()), rs.getString(3), rs.getString(5), Account.Race.valueOf(rs.getString(6).toUpperCase()));
+        }catch (SQLException e){
+            System.out.println("Account get failed "+ e.toString());
         }
         return null;
     }
