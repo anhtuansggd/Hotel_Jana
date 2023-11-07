@@ -37,8 +37,6 @@ public class BookingReviewPanel extends ChildrenPanel {
 
     JButton searchButton;
 
-    JButton resetButton;
-
     public BookingReviewPanel(MainFrame f) {
         super(f, 0);
         roomBookingController = new RoomBookingController();
@@ -70,6 +68,8 @@ public class BookingReviewPanel extends ChildrenPanel {
                         getLocalDateFromString(startDateField.getText(), "dd/MM/yyyy"), Integer.valueOf(durationField.getText()),
                         Integer.valueOf(accountIDField.getText()), roomNumberField.getText());
                 refreshTableScrollPane(roomBookingController.add(roomBooking));
+
+                mainFrame.onDataBaseChange();
             }
         });
         add(addButton);
@@ -82,6 +82,8 @@ public class BookingReviewPanel extends ChildrenPanel {
                         getLocalDateFromString(startDateField.getText(), "dd/MM/yyyy"), Integer.valueOf(durationField.getText()),
                         Integer.valueOf(accountIDField.getText()), roomNumberField.getText());
                 refreshTableScrollPane(roomBookingController.update(roomBooking));
+
+                mainFrame.onDataBaseChange();
             }
         });
         add(updateButton);
@@ -94,19 +96,11 @@ public class BookingReviewPanel extends ChildrenPanel {
                         getLocalDateFromString(startDateField.getText(), "dd/MM/yyyy"), Integer.valueOf(durationField.getText()),
                         Integer.valueOf(accountIDField.getText()), roomNumberField.getText());
                 refreshTableScrollPane(roomBookingController.delete(roomBooking));
+
+                mainFrame.onDataBaseChange();
             }
         });
         add(deleteButton);
-
-        //searchButton = getFormattedButton("Search", 30, 330, 80, 24);
-        //add(searchButton);
-
-        resetButton = getFormattedButton("Reset", 30, 370, 80, 24, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                refreshTableScrollPane(roomBookingController.getAll());
-            }
-        });
-        add(resetButton);
     }   
 
     @Override
@@ -153,5 +147,10 @@ public class BookingReviewPanel extends ChildrenPanel {
         roomNumberField.setText(row[3]);
 
         accountIDField.setText(row[4]);
+    }
+
+    @Override
+    public void onDataBaseChange() {
+        refreshTableScrollPane(roomBookingController.getAll());
     }
 }

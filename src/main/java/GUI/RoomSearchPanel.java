@@ -35,6 +35,8 @@ public class RoomSearchPanel extends ChildrenPanel {
 
     JLabel warningLabel;
 
+    private boolean isSearching = false;
+
     public RoomSearchPanel(MainFrame f) {
         super(f);
         roomController = new RoomController();
@@ -65,15 +67,7 @@ public class RoomSearchPanel extends ChildrenPanel {
         // Search button
         searchButton = getFormattedButton("Search", 30, 160, 80, 24, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String inputDate = dateField.getText();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                LocalDate date = LocalDate.parse(inputDate, formatter);
-
-                RoomSearchQuery rsq = new RoomSearchQuery(
-                    (Room.RoomStyle)roomStyleComboBox.getSelectedItem(), date, Integer.valueOf(durationField.getText()) 
-                );
-
-                RoomController.TableState tableState =  roomController.search(rsq);
+                RoomController.TableState tableState = search(dateField.getText());
                 refreshTableScrollPane(tableState);
             }
         });
@@ -90,6 +84,8 @@ public class RoomSearchPanel extends ChildrenPanel {
 
                 Notification notification = new Notification(roomBooking.getReservationNumber(), "Greetings, Sir/Miss with customer number: "+ roomBooking.getGuestId()+". You have successfully booked room "+ roomBooking.getRoomId()+" on " + LocalDate.now()+" with our app. Thank you for choosing us.");
                 notificationController.add(notification);
+
+                mainFrame.onDataBaseChange();
             }
         });
         add(bookButton);
@@ -103,8 +99,26 @@ public class RoomSearchPanel extends ChildrenPanel {
         add(warningLabel);
     }
 
-    @Override
-    protected void scrollPaneValueChanged(String[] row) {
+    private RoomController.TableState search(String stringDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate date = LocalDate.parse(stringDate, formatter);
+
+        RoomSearchQuery rsq = new RoomSearchQuery(
+            (Room.RoomStyle)roomStyleComboBox.getSelectedItem(), date, Integer.valueOf(durationField.getText()) 
+        );
         
+        isSearching = true;
+
+        return roomController.search(rsq);
+    }
+
+    @Override
+    public void onDataBaseChange() {
+        if (isSearching) {
+            RoomController.TableState tableState = search(dateField.getText());
+            refreshTableScrollPane(tableState);
+        } else {
+            refreshTableScrollPane(roomController.getAll(), true);
+        }
     }
 }

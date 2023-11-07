@@ -3,7 +3,6 @@ package GUI;
 import javax.swing.*;
 
 import Controllers.AccountController;
-import Controllers.Controller;
 import Modules.Account;
 
 import java.awt.event.*;
@@ -36,8 +35,6 @@ public class AccountManagementPanel extends ChildrenPanel {
     JButton deleteButton;
 
     JButton searchButton;
-
-    JButton resetButton;
 
     public AccountManagementPanel(MainFrame f) {
         super(f, 0);
@@ -81,6 +78,8 @@ public class AccountManagementPanel extends ChildrenPanel {
                         usernameField.getText(), passwordField.getText(), nameField.getText(),
                         (Account.Race)raceComboBox.getSelectedItem()));
                 refreshTableScrollPane(tableState);
+
+                mainFrame.onDataBaseChange();
             }
         });
         add(addButton);
@@ -94,6 +93,8 @@ public class AccountManagementPanel extends ChildrenPanel {
                         usernameField.getText(), passwordField.getText(), nameField.getText(),
                         (Account.Race)raceComboBox.getSelectedItem()));
                 refreshTableScrollPane(tableState);
+
+                mainFrame.onDataBaseChange();
             }
         });;
         add(updateButton);
@@ -107,6 +108,8 @@ public class AccountManagementPanel extends ChildrenPanel {
                         usernameField.getText(), passwordField.getText(), nameField.getText(),
                         (Account.Race)raceComboBox.getSelectedItem()));
                 refreshTableScrollPane(tableState);
+
+                mainFrame.onDataBaseChange();
             }
         });;
         add(deleteButton);
@@ -123,16 +126,6 @@ public class AccountManagementPanel extends ChildrenPanel {
             }
         });;
         add(searchButton);
-
-
-        resetButton = getFormattedButton("Reset", 30, 400, 80, 24, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                refreshTableScrollPane(accountController.getAll());
-            }
-        });;
-        add(resetButton);
-
-
     }
 
     @Override
@@ -148,5 +141,9 @@ public class AccountManagementPanel extends ChildrenPanel {
 
         String raceString = row[5].toUpperCase();
         raceComboBox.setSelectedItem(Account.Race.valueOf(raceString));
+    }
+
+    public void onDataBaseChange() {
+        refreshTableScrollPane(accountController.getAll());
     }
 }

@@ -228,6 +228,11 @@ public class ChildrenPanel extends JPanel {
         return s;
     }
 
+    // Messages
+    public void onDataBaseChange() {
+        
+    }
+
     public static class TableScrollPane {
         public JTable table;
         public JScrollPane scrollPane;

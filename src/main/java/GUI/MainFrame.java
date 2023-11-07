@@ -71,6 +71,13 @@ public class MainFrame extends JFrame {
         }
     }
 
+    public void onDataBaseChange() {
+        for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+            ChildrenPanel p = (ChildrenPanel)tabbedPane.getComponentAt(i);
+            p.onDataBaseChange();
+        }
+    }
+
     public static void main(String[] args) {
         FlatLightLaf.setup();
 
