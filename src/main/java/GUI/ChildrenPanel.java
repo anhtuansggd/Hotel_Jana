@@ -230,7 +230,7 @@ public class ChildrenPanel extends JPanel {
 
     // Messages
     public void onDataBaseChange() {
-        
+
     }
 
     public static class TableScrollPane {

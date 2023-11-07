@@ -1,12 +1,12 @@
 package GUI;
 
 import javax.swing.*;
+
 import com.formdev.flatlaf.FlatLightLaf;
 import Controllers.LogInController;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import Modules.Account;
 import java.awt.*;
+import java.awt.event.*;
 
 public class LoginGUI extends JFrame {
     LogInController loginController;
@@ -15,9 +15,11 @@ public class LoginGUI extends JFrame {
 
     JLabel usernameLabel;
     JTextField usernameField;
+    JButton usernameClearButton;
 
     JLabel passwordLabel;
     JPasswordField passwordField;
+    JButton passwordClearButton;
 
     JButton loginButton;
 
@@ -42,6 +44,27 @@ public class LoginGUI extends JFrame {
         loginLabel.setHorizontalAlignment(JLabel.CENTER);
         loginLabel.setBounds(140, 74, 320, 30);
         add(loginLabel);
+
+        // Clear buttons
+        int w = 14;
+        int h = 14;
+
+        ImageIcon xNormalIcon = newIcon("/xButtonImageNormal.png", w, h);
+        ImageIcon xHoveredIcon = newIcon("/xButtonImageHovered.png", w, h);
+
+        usernameClearButton = newImageButton(xNormalIcon, xHoveredIcon, 428 - w/2, 152 - h/2, w, h, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                usernameField.setText("");
+            }
+        });
+        add(usernameClearButton);
+
+        passwordClearButton = newImageButton(xNormalIcon, xHoveredIcon, 428 - w/2, 192 - h/2, w, h, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                passwordField.setText("");
+            }
+        });
+        add(passwordClearButton);
 
         usernameLabel = new JLabel("Username");
         usernameLabel.setVerticalAlignment(JLabel.BOTTOM);
@@ -98,6 +121,31 @@ public class LoginGUI extends JFrame {
         warningLabel.setForeground(Color.RED);
         warningLabel.setVisible(false);
         add(warningLabel);
+    }
+
+    private ImageIcon newIcon(String path, int w, int h) {
+        ImageIcon xIcon = new ImageIcon(getClass().getResource(path));
+        Image xImage = xIcon.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
+        return new ImageIcon(xImage);
+    }
+
+    private JButton newImageButton(ImageIcon normalIcon, ImageIcon hoveredIcon, int x, int y, int w, int h, ActionListener actionListener) {
+        JButton button = new JButton(normalIcon);
+        button.setContentAreaFilled(false);
+        button.setBorder(BorderFactory.createEmptyBorder());
+        button.addActionListener(actionListener);
+        button.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                button.setIcon(hoveredIcon);
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                button.setIcon(normalIcon);
+            }
+        });
+        button.setBounds(x, y, w, h);
+
+        return button;
     }
 
     public static void main(String[] args) {
