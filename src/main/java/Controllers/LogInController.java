@@ -9,18 +9,17 @@ import java.sql.SQLException;
 import static Controllers.DatabaseManager.*;
 
 public class LogInController extends DatabaseManager implements Controller<Account> {
+    private final String loginSQL = "SELECT * \n" +
+            "FROM account\n" +
+            "WHERE user_name=? AND password=?;";
 
     public Account login(String user_name, String password){
         try{
             Connection connection = getConnection();
-            PreparedStatement ppsm = connection.prepareStatement(
-                    "SELECT * \n" +
-                            "FROM account\n" +
-                            "WHERE user_name=? AND password=?;");
+            PreparedStatement ppsm = connection.prepareStatement(loginSQL);
             ppsm.setString(1, user_name);
             ppsm.setString(2, Account.hashPassword(password));
             ResultSet set = ppsm.executeQuery();
-
             set.next();
 
             System.out.println("Login succeeded");

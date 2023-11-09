@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class NotificationController extends DatabaseManager implements Controller<Notification> {
     private final String insertNotificationSQL = "INSERT INTO notification VALUES (?,?,?);";
     //private final String updateNotificationSQL = "UPDATE notifcation \n";
-    private static final String searchNotificationSQL = "SELECT n.id, n.reservation_number, n.description\n" +
+    private final String searchNotificationSQL = "SELECT n.id, n.reservation_number, n.description\n" +
             "FROM notification n\n" +
             "JOIN room_booking rb ON n.reservation_number = rb.reservation_number\n" +
             "WHERE rb.account_id = ?;";
