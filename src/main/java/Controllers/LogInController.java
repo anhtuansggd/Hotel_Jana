@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import static Controllers.DatabaseManager.*;
 
-public class LogInController extends DatabaseManager implements Controller<Account> {
+public class LogInController extends DatabaseManager{
     private final String loginSQL = "SELECT * \n" +
             "FROM account\n" +
             "WHERE user_name=? AND password=?;";
@@ -29,21 +29,6 @@ public class LogInController extends DatabaseManager implements Controller<Accou
         }
         return null;
     }
-
-    @Override
-    public TableState add(Account ac){
-        return null;
-    };
-
-    @Override
-    public TableState update(Account ac){
-        return null;
-    };
-
-    @Override
-    public TableState delete(Account ac){
-        return null;
-    };
 
     @Override
     public TableState getAll() {
