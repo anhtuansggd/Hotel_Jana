@@ -38,7 +38,7 @@ CREATE TABLE `notification` (
 
 LOCK TABLES `notification` WRITE;
 /*!40000 ALTER TABLE `notification` DISABLE KEYS */;
-INSERT INTO `notification` VALUES (1,11,'Greetings, Sir/Miss with customer number: 18. You have successfully booked room 102 on 2023-11-09 with our app. Thank you for choosing us.'),(2,12,'Greetings, Sir/Miss with customer number: 18. You have successfully booked room 107 on 2023-11-09 with our app. Thank you for choosing us.'),(3,13,'Greetings, Sir/Miss with customer number: 18. You have successfully booked room 112 on 2023-11-09 with our app. Thank you for choosing us.'),(4,14,'Greetings, Sir/Miss with customer number: 18. You have successfully booked room 105 on 2023-11-09 with our app. Thank you for choosing us.'),(5,15,'Greetings, Sir/Miss with customer number: 18. You have successfully booked room 116 on 2023-11-09 with our app. Thank you for choosing us.'),(6,16,'Greetings, Sir/Miss with customer number: 18. You have successfully booked room 104 on 2023-11-09 with our app. Thank you for choosing us.'),(7,17,'Greetings, Sir/Miss with customer number: 18. You have successfully booked room 109 on 2023-11-09 with our app. Thank you for choosing us.'),(8,18,'Greetings, Sir/Miss with customer number: 18. You have successfully booked room 114 on 2023-11-09 with our app. Thank you for choosing us.');
+INSERT INTO `notification` VALUES (1,20,'Greetings, Sir/Miss with customer number: 12. You have successfully booked room 110 on 2023-11-10 with our app. Thank you for choosing us.'),(2,21,'Greetings, Sir/Miss with customer number: 12. You have successfully booked room 113 on 2023-11-10 with our app. Thank you for choosing us.'),(3,22,'Greetings, Sir/Miss with customer number: 12. You have successfully booked room 111 on 2023-11-10 with our app. Thank you for choosing us.'),(4,23,'Greetings, Sir/Miss with customer number: 12. You have successfully booked room 104 on 2023-11-10 with our app. Thank you for choosing us.'),(5,24,'Greetings, Sir/Miss with customer number: 12. You have successfully booked room 109 on 2023-11-10 with our app. Thank you for choosing us.'),(6,25,'Greetings, Sir/Miss with customer number: 12. You have successfully booked room 115 on 2023-11-10 with our app. Thank you for choosing us.'),(7,26,'Greetings, Sir/Miss with customer number: 12. You have successfully booked room 112 on 2023-11-10 with our app. Thank you for choosing us.');
 /*!40000 ALTER TABLE `notification` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-09 22:35:16
+-- Dump completed on 2023-11-13 11:22:13
