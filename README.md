@@ -23,15 +23,16 @@ The Java OOP programming paradigm is used to design classes. So we apply the pri
 
 ![image](https://github.com/anhtuansggd/Hotel_Jana/assets/122171727/3bb80449-8fe0-408d-a607-5eba42c36e63)
 ## Class Diagram
-![image34](https://github.com/anhtuansggd/Hotel_Jana/assets/122171727/41ff9614-2a90-4d12-a07b-833f3c5407da)
-![image27](https://github.com/anhtuansggd/Hotel_Jana/assets/122171727/baa9c1fc-729e-4435-9423-54ce3ff30ebf)
-![image19](https://github.com/anhtuansggd/Hotel_Jana/assets/122171727/d95229fc-5d08-4e90-878f-dbd065ec28b0)
+![image34](https://github.com/anhtuansggd/Hotel_Jana/assets/122171727/17bbbff2-345b-4455-a223-90259a452948)
+![image27](https://github.com/anhtuansggd/Hotel_Jana/assets/122171727/cfc90929-de7d-4a9b-a4bf-a4030dc1c469)
+![image19](https://github.com/anhtuansggd/Hotel_Jana/assets/122171727/7bf892ea-69d8-492f-bae4-d40127724217)
 
 ## Use-Case Diagram
-![UC Diagram drawio(2)](https://github.com/anhtuansggd/Hotel_Jana/assets/122171727/8ba3671a-9cd3-4a7b-b9f1-8720344ef175)
+
+![image32](https://github.com/anhtuansggd/Hotel_Jana/assets/122171727/ad3fe947-52f1-4e13-a8e8-263b7813b7be)
 
 ## Relational Schema
-![image25](https://github.com/anhtuansggd/Hotel_Jana/assets/122171727/3ebf71f1-c50f-4f95-8559-28689da0339a)
+![image25](https://github.com/anhtuansggd/Hotel_Jana/assets/122171727/fbc68661-aa8b-40f1-beb3-19400946fc9a)
 
 
 ## Graphical User Interface
