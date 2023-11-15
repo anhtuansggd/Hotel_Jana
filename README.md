@@ -45,6 +45,7 @@ The Java OOP programming paradigm is used to design classes. So we apply the pri
 
 ## Run Locally
 **Requirement Programs:**
+* >= Java 17
 * Netbeans
 * MySQL Community Server
 * MySQL Workbench
